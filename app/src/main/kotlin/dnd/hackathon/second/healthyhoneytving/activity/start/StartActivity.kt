@@ -70,7 +70,7 @@ class StartActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val builtDate = Calendar.getInstance().apply { timeInMillis = BuildConfig.TIMESTAMP }
-        val builtTime = "${builtDate.get(Calendar.HOUR_OF_DAY)}h" +
+        val builtTime = "${builtDate.get(Calendar.HOUR_OF_DAY)}h " +
             "${builtDate.get(Calendar.MINUTE)}m " +
             "${builtDate.get(Calendar.SECOND)}s"
         toast(builtTime)

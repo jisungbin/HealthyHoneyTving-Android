@@ -26,7 +26,7 @@ object Versions {
 
     object Compose {
         const val Lottie = "4.2.1"
-        const val Master = "1.0.5"
+        const val Master = "1.1.0-beta03"
         const val Activity = "1.4.0"
         const val Lifecycle = "2.4.0"
         const val LandscapistCoil = "1.4.3"
