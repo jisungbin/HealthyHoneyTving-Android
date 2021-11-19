@@ -15,7 +15,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +34,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.composable.TopBar
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
+import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -54,7 +57,7 @@ class MainActivity : ComponentActivity() {
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.White)
+                .background(color = colorBackgroundGray)
         ) {
             val (content, bottomBar) = createRefs()
 
@@ -70,11 +73,11 @@ class MainActivity : ComponentActivity() {
                 }
             ) {
                 TopBar()
-                HorizontalDivider()
+                HorizontalDivider(thickness = 1.dp)
                 Categorie()
-                HorizontalDivider()
+                HorizontalDivider(thickness = 1.dp)
                 Menu()
-                HorizontalDivider(thickness = 2.dp)
+                Spacer(Modifier.height(3.dp))
                 LazyFeed()
             }
             BottomBar(
