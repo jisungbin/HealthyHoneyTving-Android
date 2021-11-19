@@ -77,7 +77,7 @@ fun Categorie() {
                     textAlign = TextAlign.Center
                 )
                 if (index < categories.lastIndex) {
-                    VerticalDivider(height = 20.dp)
+                    VerticalDivider(height = 20.dp, thickness = 1.dp)
                 }
             }
         }
@@ -88,6 +88,7 @@ fun Categorie() {
 fun Menu() {
 }
 
+@Suppress("RedundantExplicitType")
 @Composable
 fun HorizontalDivider(width: Dp = Dp.Unspecified, thickness: Dp = 2.dp) {
     var modifier: Modifier = Modifier
@@ -98,17 +99,22 @@ fun HorizontalDivider(width: Dp = Dp.Unspecified, thickness: Dp = 2.dp) {
     }
     Box(
         modifier = modifier
-            // .runIf(width != Dp.Unspecified) { this.width(width) }
             .height(thickness)
             .background(color = Color.LightGray),
     )
 }
 
+@Suppress("RedundantExplicitType")
 @Composable
 fun VerticalDivider(height: Dp = Dp.Unspecified, thickness: Dp = 2.dp) {
+    var modifier: Modifier = Modifier
+    modifier = if (height != Dp.Unspecified) {
+        modifier.height(height)
+    } else {
+        modifier.fillMaxHeight()
+    }
     Box(
-        modifier = Modifier
-            .apply { if (height != Dp.Unspecified) this.height(height) else this.fillMaxHeight() }
+        modifier = modifier
             .width(thickness)
             .background(color = Color.LightGray),
     )

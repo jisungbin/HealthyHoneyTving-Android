@@ -61,11 +61,15 @@ fun TopBar() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                modifier = Modifier.size(30.dp),
+                modifier = Modifier.size(40.dp),
                 painter = painterResource(R.drawable.ic_round_logo_transparent_24),
                 contentDescription = null
             )
-            Text(text = stringResource(R.string.app_name), fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(R.string.app_name),
+                style = TextStyle(fontSize = 18.sp),
+                fontWeight = FontWeight.Bold
+            )
         }
         Icon(
             modifier = Modifier,
