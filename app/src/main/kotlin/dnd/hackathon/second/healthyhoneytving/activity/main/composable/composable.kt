@@ -9,6 +9,7 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -38,6 +39,7 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityV
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.operator.times
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Categorie() {
     val vm: MainViewModel = composableActivityViewModel()
@@ -57,7 +59,10 @@ fun Categorie() {
         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 5.dp)
     ) {
         itemsIndexed(categories) { index, category ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.animateItemPlacement(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -109,7 +114,7 @@ fun Menu() {
         }
         Row(
             horizontalArrangement = Arrangement.spacedBy(
-                space = 10.dp,
+                space = 15.dp,
                 alignment = Alignment.CenterHorizontally
             ),
             verticalAlignment = Alignment.CenterVertically
