@@ -127,9 +127,7 @@ class StartActivity : ComponentActivity() {
             }
 
             doDelayed(2000L) {
-                titleOffsetY = (-150).dp
-                showButtons = true
-                /*if (autoLoginId == null) {
+                if (autoLoginId == null) {
                     titleOffsetY = (-150).dp
                     showButtons = true
                 } else {
@@ -143,7 +141,7 @@ class StartActivity : ComponentActivity() {
                             errorToast(this@StartActivity, throwable.toException())
                         }
                     )
-                }*/
+                }
             }
         }
 
