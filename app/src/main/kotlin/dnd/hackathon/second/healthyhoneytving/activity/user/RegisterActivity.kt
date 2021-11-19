@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -79,8 +80,18 @@ class RegisterActivity : ComponentActivity() {
         val passwordFieldState = remember { mutableStateOf(TextFieldValue()) }
         val passwordConfirmFieldState = remember { mutableStateOf(TextFieldValue()) }
         val nicknameFieldState = remember { mutableStateOf(TextFieldValue()) }
-        val subLabelState = remember { mutableStateOf("") }
+        var passwordFieldSubLabelState by remember { mutableStateOf("") }
+        var nicknameFieldSubLabelState by remember { mutableStateOf("") }
+        var nicknameFieldSubLabalColorState by remember { mutableStateOf(Color.Unspecified) }
         val isNicknameUseableState = remember { mutableStateOf<Boolean?>(null) }
+
+        if (isNicknameUseableState.value == true) {
+            nicknameFieldSubLabelState = "사용할 수 있는 닉네임 입니다"
+            nicknameFieldSubLabalColorState = colors.primary
+        } else if (isNicknameUseableState.value == false) {
+            nicknameFieldSubLabelState = "이미 사용중인 닉네임 입니다"
+            nicknameFieldSubLabalColorState = colorError
+        }
 
         Column(
             modifier = Modifier
@@ -95,7 +106,9 @@ class RegisterActivity : ComponentActivity() {
                 passwordFieldState = passwordFieldState,
                 passwordConfirmFieldState = passwordConfirmFieldState,
                 nicknameFieldState = nicknameFieldState,
-                subLabel = subLabelState.value,
+                passwordFieldSubLabel = passwordFieldSubLabelState,
+                nicknameFieldSubLabel = nicknameFieldSubLabelState,
+                nicknameFieldSubLabalColor = nicknameFieldSubLabalColorState,
                 isNicknameUseableState = isNicknameUseableState
             )
             Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
@@ -110,9 +123,13 @@ class RegisterActivity : ComponentActivity() {
         passwordFieldState: MutableState<TextFieldValue>,
         passwordConfirmFieldState: MutableState<TextFieldValue>,
         nicknameFieldState: MutableState<TextFieldValue>,
-        subLabel: String,
+        passwordFieldSubLabel: String,
+        nicknameFieldSubLabel: String,
+        nicknameFieldSubLabalColor: Color,
         isNicknameUseableState: MutableState<Boolean?>
     ) {
+        val passwordVisibilityState = remember { mutableStateOf(false) }
+
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -121,20 +138,22 @@ class RegisterActivity : ComponentActivity() {
             Field(
                 label = "비밀번호",
                 textFieldState = passwordFieldState,
+                passwordVisibilityState = passwordVisibilityState,
                 isPasswordField = true
             )
             Field(
                 label = "비밀번호 확인",
                 textFieldState = passwordConfirmFieldState,
                 isPasswordField = true,
-                subLabel = subLabel,
+                passwordVisibilityState = passwordVisibilityState,
+                subLabel = passwordFieldSubLabel,
                 subLabelColor = colorError
             )
             Field(
                 label = "닉네임",
                 textFieldState = nicknameFieldState,
-                subLabel = subLabel,
-                subLabelColor = colorError,
+                subLabel = nicknameFieldSubLabel,
+                subLabelColor = nicknameFieldSubLabalColor,
                 isNicknameField = true,
                 isNicknameUseableState = isNicknameUseableState
             )
@@ -148,6 +167,7 @@ class RegisterActivity : ComponentActivity() {
         subLabel: String = "",
         subLabelColor: Color = Color.Unspecified,
         isPasswordField: Boolean = false,
+        passwordVisibilityState: MutableState<Boolean> = mutableStateOf(false),
         isNicknameField: Boolean = false,
         isNicknameUseableState: MutableState<Boolean?> = mutableStateOf(null)
     ) {
@@ -156,7 +176,8 @@ class RegisterActivity : ComponentActivity() {
         val shape = RoundedCornerShape(5.dp)
         val coroutineScope = rememberCoroutineScope()
 
-        var passwordVisibility by remember { mutableStateOf(false) }
+        val textField = textFieldState.value
+        val passwordVisibility = passwordVisibilityState.value
 
         Column(
             modifier = Modifier
@@ -172,10 +193,15 @@ class RegisterActivity : ComponentActivity() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                value = textFieldState.value,
+                value = textField,
                 onValueChange = { textFieldState.value = it },
                 shape = shape,
-                visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                singleLine = true,
+                maxLines = 1,
+                textStyle = TextStyle(fontSize = 15.sp),
+                visualTransformation = if (isPasswordField) {
+                    if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
+                } else VisualTransformation.None,
                 colors = TextFieldDefaults.textFieldColors(
                     disabledIndicatorColor = colorTextGray,
                     focusedIndicatorColor = colors.primary,
@@ -188,7 +214,7 @@ class RegisterActivity : ComponentActivity() {
                         isPasswordField -> {
                             Icon(
                                 modifier = Modifier.clickable {
-                                    passwordVisibility = !passwordVisibility
+                                    passwordVisibilityState.value = !passwordVisibility
                                 },
                                 painter = painterResource(if (passwordVisibility) R.drawable.ic_round_visibility_off_24 else R.drawable.ic_round_visibility_24),
                                 contentDescription = null
@@ -199,7 +225,7 @@ class RegisterActivity : ComponentActivity() {
                                 modifier = Modifier.padding(5.dp),
                                 onClick = {
                                     coroutineScope.launch {
-                                        vm.findUserByNickname(textFieldState.value.text).doWhen(
+                                        vm.findUserByNickname(textField.text).doWhen(
                                             onSuccess = { users ->
                                                 isNicknameUseableState.value = users.isEmpty()
                                                 if (!isNicknameUseableState.value!!) {
@@ -218,7 +244,7 @@ class RegisterActivity : ComponentActivity() {
                             ) {
                                 Text(
                                     text = stringResource(R.string.activity_register_button_check_nickname_duplicate),
-                                    fontSize = 10.sp
+                                    style = TextStyle(fontSize = 14.sp)
                                 )
                             }
                         }

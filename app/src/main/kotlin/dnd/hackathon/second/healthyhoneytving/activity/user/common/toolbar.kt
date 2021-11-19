@@ -10,7 +10,6 @@
 package dnd.hackathon.second.healthyhoneytving.activity.user.common
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -21,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 
@@ -31,8 +30,7 @@ fun Toolbar(title: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+            .wrapContentHeight()
     ) {
         Icon(
             modifier = Modifier.clickable {
@@ -41,6 +39,6 @@ fun Toolbar(title: String) {
             painter = painterResource(R.drawable.ic_round_arrow_back_24),
             contentDescription = null
         )
-        Text(text = title, color = Color.Black, fontWeight = FontWeight.Bold)
+        Text(text = title, color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 30.sp)
     }
 }
