@@ -12,16 +12,17 @@ package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -31,15 +32,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MainType
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
-import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
+import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 
 @Composable
 fun TopBar(modifier: Modifier) {
@@ -73,14 +76,14 @@ fun BottomBar(modifier: Modifier) {
 
     @Composable
     fun calcTintStateAnimation(mainType: String) =
-        animateColorAsState(if (mainType == mainTypeState.value) Color.Black else colorBackgroundGray)
+        animateColorAsState(if (mainType == mainTypeState.value) Color.Black else Color.LightGray)
 
     BottomAppBar(
         modifier = modifier,
         backgroundColor = Color.White,
         contentPadding = PaddingValues(0.dp)
     ) {
-        ConstraintLayout {
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (media, fab, healthy) = createRefs()
 
             BottomBarItem(
@@ -90,10 +93,13 @@ fun BottomBar(modifier: Modifier) {
                         end.linkTo(fab.start)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
+
+                        width = Dimension.fillToConstraints
+                        height = Dimension.fillToConstraints
                     }
-                    .clickable {
+                    .noRippleClickable(onClick = {
                         vm.updateMainType(MainType.Media)
-                    },
+                    }),
                 iconRes = R.drawable.ic_round_media_24,
                 title = "미디어",
                 tint = calcTintStateAnimation(MainType.Media).value
@@ -105,7 +111,8 @@ fun BottomBar(modifier: Modifier) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-                onClick = { /*TODO*/ }
+                onClick = { /*TODO*/ },
+                elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_round_add_24),
@@ -120,10 +127,13 @@ fun BottomBar(modifier: Modifier) {
                         end.linkTo(parent.end)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
+
+                        width = Dimension.fillToConstraints
+                        height = Dimension.fillToConstraints
                     }
-                    .clickable {
-                        vm.updateMainType(MainType.Media)
-                    },
+                    .noRippleClickable(onClick = {
+                        vm.updateMainType(MainType.Healthy)
+                    }),
                 iconRes = R.drawable.ic_round_healthy_24,
                 title = "건강",
                 tint = calcTintStateAnimation(MainType.Healthy).value
@@ -140,11 +150,14 @@ private fun BottomBarItem(
     tint: Color
 ) {
     Column(
-        modifier = modifier.wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(
+            space = 2.dp,
+            alignment = Alignment.CenterVertically
+        ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(painter = painterResource(iconRes), contentDescription = null, tint = tint)
-        Text(text = title, color = tint, fontSize = 10.sp)
+        Text(text = title, color = tint, style = TextStyle(fontSize = 10.sp))
     }
 }
