@@ -102,8 +102,8 @@ class RegisterActivity : ComponentActivity() {
         val passwordFieldState = remember { mutableStateOf(TextFieldValue()) }
         val passwordConfirmFieldState = remember { mutableStateOf(TextFieldValue()) }
         val nicknameFieldState = remember { mutableStateOf(TextFieldValue()) }
-        var passwordFieldSubLabelState = remember { mutableStateOf("") }
-        var nicknameFieldSubLabelState = remember { mutableStateOf("") }
+        val passwordFieldSubLabelState = remember { mutableStateOf("") }
+        val nicknameFieldSubLabelState = remember { mutableStateOf("") }
         var nicknameFieldSubLabalColorState by remember { mutableStateOf(Color.Unspecified) }
         val isNicknameUseableState = remember { mutableStateOf<Boolean?>(null) }
 
