@@ -9,8 +9,6 @@
 
 package dnd.hackathon.second.healthyhoneytving.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.Typography
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
@@ -38,22 +36,10 @@ internal val typography = Typography(defaultFontFamily = defaultFontFamily)
 
 @Composable
 inline fun MaterialTheme(crossinline content: @Composable () -> Unit) {
-    MaterialTheme(
+    androidx.compose.material.MaterialTheme(
         colors = colors,
         typography = typography
     ) {
         content()
     }
 }
-
-@Composable
-fun transparentTextFieldColors(
-    backgroundColor: Color = MaterialTheme.colors.onSurface.copy(alpha = TextFieldDefaults.BackgroundOpacity),
-    textColor: Color = Color.Black,
-) = TextFieldDefaults.textFieldColors(
-    disabledIndicatorColor = Color.Transparent,
-    focusedIndicatorColor = Color.Transparent,
-    unfocusedIndicatorColor = Color.Transparent,
-    backgroundColor = backgroundColor,
-    textColor = textColor
-)
