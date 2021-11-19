@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -36,12 +38,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -147,6 +154,7 @@ class RegisterActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     private fun Fields(
         modifier: Modifier,
@@ -161,32 +169,55 @@ class RegisterActivity : ComponentActivity() {
     ) {
         val passwordVisibilityState = remember { mutableStateOf(false) }
 
+        val focusManager = LocalFocusManager.current
+        val (idFocus, passwordFocus, passwordConfirmFocus, nicknameFocus) = FocusRequester.createRefs()
+
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            Field(label = "아이디", textFieldState = idFieldState)
             Field(
-                label = "비밀번호",
-                textFieldState = passwordFieldState,
-                passwordVisibilityState = passwordVisibilityState,
-                isPasswordField = true
+                label = stringResource(R.string.activity_register_id),
+                textFieldState = idFieldState,
+                focusRequester = idFocus,
+                keyboardActions = {
+                    passwordFocus.requestFocus()
+                }
             )
             Field(
-                label = "비밀번호 확인",
+                label = stringResource(R.string.activity_register_password),
+                textFieldState = passwordFieldState,
+                passwordVisibilityState = passwordVisibilityState,
+                isPasswordField = true,
+                focusRequester = passwordFocus,
+                keyboardActions = {
+                    passwordConfirmFocus.requestFocus()
+                }
+            )
+            Field(
+                label = stringResource(R.string.activity_register_confirm_password),
                 textFieldState = passwordConfirmFieldState,
                 isPasswordField = true,
                 passwordVisibilityState = passwordVisibilityState,
                 subLabel = passwordFieldSubLabel,
-                subLabelColor = colorError
+                subLabelColor = colorError,
+                focusRequester = passwordConfirmFocus,
+                keyboardActions = {
+                    nicknameFocus.requestFocus()
+                }
             )
             Field(
-                label = "닉네임",
+                label = stringResource(R.string.activity_register_nickname),
                 textFieldState = nicknameFieldState,
                 subLabel = nicknameFieldSubLabel,
                 subLabelColor = nicknameFieldSubLabalColor,
                 isNicknameField = true,
-                isNicknameUseableState = isNicknameUseableState
+                isNicknameUseableState = isNicknameUseableState,
+                imeAction = ImeAction.Done,
+                focusRequester = nicknameFocus,
+                keyboardActions = {
+                    focusManager.clearFocus()
+                }
             )
         }
     }
@@ -200,7 +231,10 @@ class RegisterActivity : ComponentActivity() {
         isPasswordField: Boolean = false,
         passwordVisibilityState: MutableState<Boolean> = mutableStateOf(false),
         isNicknameField: Boolean = false,
-        isNicknameUseableState: MutableState<Boolean?> = mutableStateOf(null)
+        isNicknameUseableState: MutableState<Boolean?> = mutableStateOf(null),
+        focusRequester: FocusRequester,
+        imeAction: ImeAction = ImeAction.Next,
+        keyboardActions: () -> Unit
     ) {
         val context = LocalContext.current
         val vm: JoinViewModel = viewModel()
@@ -225,7 +259,9 @@ class RegisterActivity : ComponentActivity() {
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(50.dp)
+                    .background(color = Color.White, shape = shape)
+                    .focusRequester(focusRequester),
                 value = textField,
                 onValueChange = { newTextFieldValue ->
                     if (newTextFieldValue.text.length <= 13) {
@@ -233,16 +269,18 @@ class RegisterActivity : ComponentActivity() {
                     }
                 },
                 shape = shape,
+                keyboardOptions = KeyboardOptions(imeAction = imeAction),
+                keyboardActions = KeyboardActions { keyboardActions() },
                 singleLine = true,
                 maxLines = 1,
                 textStyle = TextStyle(fontSize = 15.sp),
                 visualTransformation = if (isPasswordField) {
                     if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation()
                 } else VisualTransformation.None,
-                colors = TextFieldDefaults.textFieldColors(
-                    disabledIndicatorColor = colorTextGray,
-                    focusedIndicatorColor = colors.primary,
-                    unfocusedIndicatorColor = colorTextGray,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    disabledBorderColor = colorTextGray,
+                    focusedBorderColor = colors.primary,
+                    unfocusedBorderColor = colorTextGray,
                     backgroundColor = Color.White,
                     textColor = Color.Black
                 ),
