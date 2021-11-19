@@ -7,7 +7,7 @@
  * Please see: https://github.com/DND-hackathon/HealthyHoneyTving-Android/blob/dev/LICENSE.
  */
 
-package dnd.hackathon.second.healthyhoneytving.activity.user
+package dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
