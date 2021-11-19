@@ -26,7 +26,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Categorie
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Divider
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Menu
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Topbar
-import dnd.hackathon.second.healthyhoneytving.activity.main.composable.feed.LazyFeed
+import dnd.hackathon.second.healthyhoneytving.activity.main.composable.LazyFeed
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 

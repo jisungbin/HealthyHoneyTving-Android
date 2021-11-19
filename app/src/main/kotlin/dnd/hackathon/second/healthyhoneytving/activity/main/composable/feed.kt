@@ -7,7 +7,7 @@
  * Please see: https://github.com/DND-hackathon/HealthyHoneyTving-Android/blob/dev/LICENSE.
  */
 
-package dnd.hackathon.second.healthyhoneytving.activity.main.composable.feed
+package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
 import androidx.compose.runtime.Composable
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
