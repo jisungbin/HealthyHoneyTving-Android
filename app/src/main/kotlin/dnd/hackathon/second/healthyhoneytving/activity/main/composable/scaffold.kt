@@ -10,7 +10,6 @@
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -84,10 +83,6 @@ fun BottomBar(modifier: Modifier) {
     val vm: MainViewModel = composableActivityViewModel()
     val mainTypeState by vm.mainType.collectAsState()
 
-    @Composable
-    fun calcTintAnimationState(mainType: String) =
-        animateColorAsState(if (mainType == mainTypeState) Color.Black else Color.LightGray)
-
     BottomAppBar(
         modifier = modifier,
         backgroundColor = Color.White,
@@ -112,7 +107,10 @@ fun BottomBar(modifier: Modifier) {
                     }),
                 iconRes = R.drawable.ic_round_media_24,
                 title = stringResource(R.string.activity_main_composable_scaffold_bottombar_media),
-                tint = calcTintAnimationState(MainType.Media).value
+                tint = calcColorAnimationState(
+                    input = MainType.Media,
+                    target = mainTypeState
+                ).value
             )
             FloatingActionButton(
                 modifier = Modifier.constrainAs(fab) {
@@ -146,7 +144,10 @@ fun BottomBar(modifier: Modifier) {
                     }),
                 iconRes = R.drawable.ic_round_healthy_24,
                 title = stringResource(R.string.activity_main_composable_scaffold_bottombar_healthy),
-                tint = calcTintAnimationState(MainType.Healthy).value
+                tint = calcColorAnimationState(
+                    input = MainType.Healthy,
+                    target = mainTypeState
+                ).value
             )
         }
     }

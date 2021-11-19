@@ -9,32 +9,29 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MainType
+import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
@@ -53,10 +50,6 @@ fun Categorie() {
         vm.updateSelectCategory(categories.first())
     }
 
-    @Composable
-    fun calcColorAnimationState(category: String) =
-        animateColorAsState(if (category == selectCategory) Color.Black else Color.LightGray)
-
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,7 +66,10 @@ fun Categorie() {
                         }),
                     text = category,
                     style = TextStyle(fontSize = 20.sp),
-                    color = calcColorAnimationState(category).value,
+                    color = calcColorAnimationState(
+                        input = category,
+                        target = categories
+                    ).value,
                     textAlign = TextAlign.Center
                 )
                 if (index < categories.lastIndex) {
@@ -86,36 +82,43 @@ fun Categorie() {
 
 @Composable
 fun Menu() {
-}
+    val vm: MainViewModel = composableActivityViewModel()
+    val menuTypeState by vm.menuType.collectAsState()
 
-@Suppress("RedundantExplicitType")
-@Composable
-fun HorizontalDivider(width: Dp = Dp.Unspecified, thickness: Dp = 2.dp) {
-    var modifier: Modifier = Modifier
-    modifier = if (width != Dp.Unspecified) {
-        modifier.width(width)
-    } else {
-        modifier.fillMaxWidth()
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            modifier = Modifier.noRippleClickable(onClick = {}), // TODO
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "ALL")
+            Icon(
+                painter = painterResource(R.drawable.ic_baseline_arrow_drop_down_24),
+                contentDescription = null
+            )
+        }
+        Row {
+            Icon(
+                painter = painterResource(R.drawable.ic_round_menu_grid_24),
+                contentDescription = null,
+                tint = calcColorAnimationState(
+                    input = MenuType.Grid,
+                    target = menuTypeState
+                ).value
+            )
+            Icon(
+                painter = painterResource(R.drawable.ic_round_menu_list_24),
+                contentDescription = null,
+                tint = calcColorAnimationState(
+                    input = MenuType.List,
+                    target = menuTypeState
+                ).value
+            )
+        }
     }
-    Box(
-        modifier = modifier
-            .height(thickness)
-            .background(color = Color.LightGray),
-    )
-}
-
-@Suppress("RedundantExplicitType")
-@Composable
-fun VerticalDivider(height: Dp = Dp.Unspecified, thickness: Dp = 2.dp) {
-    var modifier: Modifier = Modifier
-    modifier = if (height != Dp.Unspecified) {
-        modifier.height(height)
-    } else {
-        modifier.fillMaxHeight()
-    }
-    Box(
-        modifier = modifier
-            .width(thickness)
-            .background(color = Color.LightGray),
-    )
 }
