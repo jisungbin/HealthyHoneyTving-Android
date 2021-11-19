@@ -87,6 +87,7 @@ class JoinViewModel @Inject constructor(
                         )
                     }
                     if (loginResult) {
+                        postSideEffect(BaseMviSideEffect.Toast("환영합니다! \uD83E\uDD73"))
                         postSideEffect(MviJoinSideEffect.SetupAutoLogin(user))
                     }
                 } else {

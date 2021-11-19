@@ -61,7 +61,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
-import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffect
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
@@ -71,8 +70,6 @@ import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorError
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
-import dnd.hackathon.second.healthyhoneytving.util.constant.DataConstant
-import dnd.hackathon.second.healthyhoneytving.util.core.DataUtil
 import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.toException
@@ -371,11 +368,6 @@ class RegisterActivity : ComponentActivity() {
 
     private fun handleSideEffect(sideEffect: BaseMviSideEffect) {
         when (sideEffect) {
-            is MviJoinSideEffect.SetupAutoLogin -> DataUtil.save(
-                applicationContext,
-                DataConstant.User.Id,
-                sideEffect.user.id
-            )
             is BaseMviSideEffect.Toast -> toast(sideEffect.message)
         }
     }
