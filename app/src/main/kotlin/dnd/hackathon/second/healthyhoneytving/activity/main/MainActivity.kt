@@ -9,6 +9,24 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main
 
+import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 
-class MainActivity : ComponentActivity()
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContent {
+            MaterialTheme {
+                Content()
+            }
+        }
+    }
+
+    @Composable
+    private fun Content() {
+    }
+}
