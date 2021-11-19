@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:fullBackupOnly="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_round_logo_500"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthyHoneyTving"
