@@ -10,6 +10,7 @@
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -54,6 +56,7 @@ fun Categorie() {
 
     LazyRow(
         modifier = Modifier
+            .background(color = Color.White)
             .fillMaxWidth()
             .wrapContentHeight(),
         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 5.dp)
@@ -92,6 +95,7 @@ fun Menu() {
 
     Row(
         modifier = Modifier
+            .background(color = Color.White)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
             .wrapContentHeight(),

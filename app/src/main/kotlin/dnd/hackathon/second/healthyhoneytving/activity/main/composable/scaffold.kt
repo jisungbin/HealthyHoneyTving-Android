@@ -11,6 +11,7 @@ package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -49,6 +50,7 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 fun TopBar() {
     Row(
         modifier = Modifier
+            .background(color = Color.White)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
@@ -84,7 +86,7 @@ fun BottomBar(modifier: Modifier) {
     val mainTypeState by vm.mainType.collectAsState()
 
     BottomAppBar(
-        modifier = modifier,
+        modifier = modifier.background(color = Color.White),
         backgroundColor = Color.White,
         contentPadding = PaddingValues(0.dp)
     ) {
@@ -161,7 +163,7 @@ private fun BottomBarItem(
     tint: Color
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.background(color = Color.White),
         verticalArrangement = Arrangement.spacedBy(
             space = 2.dp,
             alignment = Alignment.CenterVertically
