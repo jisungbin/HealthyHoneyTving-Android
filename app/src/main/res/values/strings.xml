@@ -13,7 +13,9 @@
     <string name="activity_exception_occurred">티빙이가 예상치 못한 %s에 맞았어요 😢\n\n%s</string>
     <string name="activity_exception_button_retry_with_avoid">%s 피해 다시 시도해보기 🚀</string>
 
-    <string name="util_web_toast_non_install_browser">설치돼 있는 브라우저 앱이 없어요 😢</string>
+    <string name="activity_start_button_login">로그인</string>
+    <string name="activity_start_button_register">회원가입</string>
+
     <string name="activity_register_title">회원가입</string>
     <string name="activity_register_button_check_nickname_duplicate">중복 확인</string>
     <string name="activity_register_toast_already_using_nickname">해당 닉네임은 이미 사용중인 닉네임 이에요.</string>
@@ -21,4 +23,9 @@
     <string name="activity_register_password">비밀번호</string>
     <string name="activity_register_confirm_password">비밀번호 확인</string>
     <string name="activity_register_nickname">닉네임</string>
+
+    <string name="util_web_toast_non_install_browser">설치돼 있는 브라우저 앱이 없어요 😢</string>
+    <string name="activity_register_useable_nickname">사용할 수 있는 닉네임 입니다</string>
+    <string name="activity_register_already_using_nickname">이미 사용중인 닉네임 입니다</string>
+    <string name="activity_register_button_reigster">가입하기</string>
 </resources>

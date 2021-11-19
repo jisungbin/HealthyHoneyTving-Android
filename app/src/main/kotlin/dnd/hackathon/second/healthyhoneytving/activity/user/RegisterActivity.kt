@@ -72,6 +72,7 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import kotlinx.coroutines.launch
 
+// TODO: 가끔씩 클릭 이벤트가 아예 씹힘
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,10 +97,11 @@ class RegisterActivity : ComponentActivity() {
         val isNicknameUseableState = remember { mutableStateOf<Boolean?>(null) }
 
         if (isNicknameUseableState.value == true) {
-            nicknameFieldSubLabelState = "사용할 수 있는 닉네임 입니다"
+            nicknameFieldSubLabelState = stringResource(R.string.activity_register_useable_nickname)
             nicknameFieldSubLabalColorState = colors.primary
         } else if (isNicknameUseableState.value == false) {
-            nicknameFieldSubLabelState = "이미 사용중인 닉네임 입니다"
+            nicknameFieldSubLabelState =
+                stringResource(R.string.activity_register_already_using_nickname)
             nicknameFieldSubLabalColorState = colorError
         }
 
@@ -147,9 +149,14 @@ class RegisterActivity : ComponentActivity() {
                     width = Dimension.fillToConstraints
                     height = Dimension.value(45.dp)
                 },
-                onClick = { /*TODO*/ }
+                onClick = {
+
+                }
             ) {
-                Text(text = "가입하기", style = TextStyle(fontSize = 15.sp))
+                Text(
+                    text = stringResource(R.string.activity_register_button_reigster),
+                    style = TextStyle(fontSize = 15.sp)
+                )
             }
         }
     }
@@ -223,7 +230,7 @@ class RegisterActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun Field( // TODO: 가끔씩 포커스가 잡히지 않음
+    private fun Field(
         label: String,
         textFieldState: MutableState<TextFieldValue>,
         subLabel: String = "",

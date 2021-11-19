@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".activity.splash.SplashActivity"
+            android:name=".activity.start.StartActivity"
             android:exported="true">
 
             <intent-filter>
