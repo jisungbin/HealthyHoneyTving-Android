@@ -117,6 +117,25 @@ class RegisterActivity : ComponentActivity() {
             nicknameFieldSubLabalColorState = colorError
         }
 
+        fun register() {
+            val id = idFieldState.value.text
+            val password = passwordFieldState.value.text
+            val passwordConfirm = passwordConfirmFieldState.value.text
+            val nickname = nicknameFieldState.value.text
+            val isNicknameUseable = isNicknameUseableState.value
+            if (password == passwordConfirm) {
+                if (isNicknameUseable == null) {
+                    toast(getString(R.string.activity_register_toast_check_nickname_duplicate))
+                } else if (isNicknameUseable) {
+                    val user = User(nickname = nickname, id = id, password = password)
+                    vm.register(user)
+                }
+            } else {
+                passwordFieldSubLabelState.value =
+                    getString(R.string.activity_register_password_not_match_confirm)
+            }
+        }
+
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -151,7 +170,8 @@ class RegisterActivity : ComponentActivity() {
                 passwordFieldSubLabelState = passwordFieldSubLabelState,
                 nicknameFieldSubLabel = nicknameFieldSubLabelState,
                 nicknameFieldSubLabalColor = nicknameFieldSubLabalColorState,
-                isNicknameUseableState = isNicknameUseableState
+                isNicknameUseableState = isNicknameUseableState,
+                doneKeyboardAction = { register() }
             )
             Button(
                 modifier = Modifier.constrainAs(button) {
@@ -162,22 +182,7 @@ class RegisterActivity : ComponentActivity() {
                     height = Dimension.value(45.dp)
                 },
                 onClick = {
-                    val id = idFieldState.value.text
-                    val password = passwordFieldState.value.text
-                    val passwordConfirm = passwordConfirmFieldState.value.text
-                    val nickname = nicknameFieldState.value.text
-                    val isNicknameUseable = isNicknameUseableState.value
-                    if (password == passwordConfirm) {
-                        if (isNicknameUseable == null) {
-                            toast(getString(R.string.activity_register_toast_check_nickname_duplicate))
-                        } else if (isNicknameUseable) {
-                            val user = User(nickname = nickname, id = id, password = password)
-                            vm.register(user)
-                        }
-                    } else {
-                        passwordFieldSubLabelState.value =
-                            getString(R.string.activity_register_password_not_match_confirm)
-                    }
+                    register()
                 }
             ) {
                 Text(
@@ -199,7 +204,8 @@ class RegisterActivity : ComponentActivity() {
         passwordFieldSubLabelState: MutableState<String>,
         nicknameFieldSubLabel: MutableState<String>,
         nicknameFieldSubLabalColor: Color,
-        isNicknameUseableState: MutableState<Boolean?>
+        isNicknameUseableState: MutableState<Boolean?>,
+        doneKeyboardAction: () -> Unit
     ) {
         val passwordVisibilityState = remember { mutableStateOf(false) }
 
@@ -251,6 +257,7 @@ class RegisterActivity : ComponentActivity() {
                 focusRequester = nicknameFocus,
                 keyboardActions = {
                     focusManager.clearFocus()
+                    doneKeyboardAction()
                 }
             )
         }

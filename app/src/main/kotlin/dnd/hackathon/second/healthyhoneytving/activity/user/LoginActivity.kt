@@ -108,6 +108,12 @@ class LoginActivity : ComponentActivity() {
             )
         }
 
+        fun login() {
+            val id = idFieldState.value.text
+            val password = passwordFieldState.value.text
+            vm.login(id, password)
+        }
+
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
@@ -137,7 +143,8 @@ class LoginActivity : ComponentActivity() {
                 },
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
-                passwordFieldSubLabelState = passwordFieldSubLabelState
+                passwordFieldSubLabelState = passwordFieldSubLabelState,
+                doneKeyboardAction = { login() }
             )
             Button(
                 modifier = Modifier.constrainAs(button) {
@@ -148,9 +155,7 @@ class LoginActivity : ComponentActivity() {
                     height = Dimension.value(45.dp)
                 },
                 onClick = {
-                    val id = idFieldState.value.text
-                    val password = passwordFieldState.value.text
-                    vm.login(id, password)
+                    login()
                 }
             ) {
                 Text(
@@ -168,6 +173,7 @@ class LoginActivity : ComponentActivity() {
         idFieldState: MutableState<TextFieldValue>,
         passwordFieldState: MutableState<TextFieldValue>,
         passwordFieldSubLabelState: MutableState<String>,
+        doneKeyboardAction: () -> Unit
     ) {
         val focusManager = LocalFocusManager.current
         val (idFocus, passwordFocus) = FocusRequester.createRefs()
@@ -193,6 +199,7 @@ class LoginActivity : ComponentActivity() {
                 focusRequester = passwordFocus,
                 keyboardActions = {
                     focusManager.clearFocus()
+                    doneKeyboardAction()
                 }
             )
         }
