@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">건강한 꿀잼티빙</string>
 
+    <string name="activity_exception_occurred">티빙이가 예상치 못한 %s에 맞았어요 😢\n\n%s</string>
     <string name="activity_exception_button_retry_with_avoid">%s 피해 다시 시도해보기 🚀</string>
 
     <string name="util_web_toast_non_install_browser">설치돼 있는 브라우저 앱이 없어요 😢</string>

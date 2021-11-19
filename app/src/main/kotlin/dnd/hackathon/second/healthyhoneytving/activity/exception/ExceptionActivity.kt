@@ -73,7 +73,11 @@ class ExceptionActivity : ErratumExceptionActivity() {
                 composition = composition,
             )
             Text(
-                text = "깃메봇이가 예상치 못한 ${content}에 맞았어요 \uD83D\uDE22\n\n$exceptionString",
+                text = stringResource(
+                    R.string.activity_exception_occurred,
+                    content,
+                    exceptionString!!
+                ),
                 color = Color.Black,
                 textAlign = TextAlign.Center
             )
