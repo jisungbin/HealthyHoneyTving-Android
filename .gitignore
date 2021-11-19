@@ -4,5 +4,6 @@ local.properties
 /build
 /app/build
 /app/release
+/app/google-services.json
 /buildSrc/.gradle/
 /buildSrc/build/

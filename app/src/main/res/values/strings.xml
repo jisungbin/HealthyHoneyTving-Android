@@ -1,3 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ HealthyHoneyTving © DND 해커톤 2조. all rights reserved.
+  ~ HealthyHoneyTving license is under the MIT.
+  ~
+  ~ [strings.xml] created by Ji Sungbin on 21. 11. 20. 오전 12:22
+  ~
+  ~ Please see: https://github.com/DND-hackathon/HealthyHoneyTving-Android/blob/dev/LICENSE.
+  -->
+
 <resources>
-    <string name="app_name">ComposeTemplate</string>
+    <string name="app_name">건강한 꿀잼티빙</string>
+
+    <string name="activity_exception_occurred">티빙이가 예상치 못한 %s에 맞았어요 😢\n\n%s</string>
+    <string name="activity_exception_button_retry_with_avoid">%s 피해 다시 시도해보기 🚀</string>
+
+    <string name="activity_start_button_login">로그인</string>
+    <string name="activity_start_button_register">회원가입</string>
+
+    <string name="activity_register_title">회원가입</string>
+    <string name="activity_register_button_check_nickname_duplicate">중복 확인</string>
+    <string name="activity_register_id">아이디</string>
+    <string name="activity_register_password">비밀번호</string>
+    <string name="activity_register_confirm_password">비밀번호 확인</string>
+    <string name="activity_register_nickname">닉네임</string>
+    <string name="activity_register_useable_nickname">사용할 수 있는 닉네임이에요</string>
+    <string name="activity_register_already_using_nickname">이미 사용중인 닉네임이요</string>
+    <string name="activity_register_button_reigster">가입하기</string>
+    <string name="activity_register_password_not_match_confirm">비밀번호가 일치하지 않아요</string>
+
+    <string name="util_web_toast_non_install_browser">설치돼 있는 브라우저 앱이 없어요 😢</string>
+    <string name="activity_register_toast_check_nickname_duplicate">먼저 닉네임 중복 확인을 해 주세요!</string>
+    <string name="activity_login_not_match_password">비밀번호가 일치하지 않아요</string>
+
 </resources>
