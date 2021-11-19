@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ HealthyHoneyTving © DND 해커톤 2조. all rights reserved.
+  ~ HealthyHoneyTving license is under the MIT.
+  ~
+  ~ [colors.xml] created by Ji Sungbin on 21. 11. 20. 오전 12:22
+  ~
+  ~ Please see: https://github.com/DND-hackathon/HealthyHoneyTving-Android/blob/dev/LICENSE.
+  -->
+
 <resources>
     <color name="colorPrimary">#2196f3</color>
     <color name="colorPrimaryDark">#0069c0</color>
