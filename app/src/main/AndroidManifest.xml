@@ -2,12 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dnd.hackathon.second.healthyhoneytving">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:fullBackupOnly="true"
         android:icon="@drawable/ic_launcher_background"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HealthyHoneyTving" />
+        android:theme="@style/Theme.HealthyHoneyTving"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
 
 </manifest>
