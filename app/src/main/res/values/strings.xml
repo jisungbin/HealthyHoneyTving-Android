@@ -15,4 +15,6 @@
 
     <string name="util_web_toast_non_install_browser">설치돼 있는 브라우저 앱이 없어요 😢</string>
     <string name="activity_register_title">회원가입</string>
+    <string name="activity_register_button_check_nickname_duplicate">중복 확인</string>
+    <string name="activity_register_toast_already_using_nickname">해당 닉네임은 이미 사용중인 닉네임 이에요.</string>
 </resources>

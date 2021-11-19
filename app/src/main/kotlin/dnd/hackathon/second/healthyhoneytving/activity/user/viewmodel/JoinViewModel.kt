@@ -97,6 +97,19 @@ class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviToastSideE
         )
     }
 
+    suspend fun findUserByNickname(nickname: String) =
+        suspendCancellableCoroutine<Result<List<User>>> { continuation ->
+            firestoreUsers.whereEqualTo("nickname", nickname).get()
+                .addOnSuccessListener { querySnapshot ->
+                    val foundUsers =
+                        querySnapshot.documents.mapNotNull { it.toObject(User::class.java) }
+                    continuation.resume(Result.success(foundUsers))
+                }
+                .addOnFailureListener { exception ->
+                    continuation.resume(Result.failure(exception))
+                }
+        }
+
     private suspend fun findUserById(id: String) =
         suspendCancellableCoroutine<Result<List<User>>> { continuation ->
             firestoreUsers.whereEqualTo("id", id).get()

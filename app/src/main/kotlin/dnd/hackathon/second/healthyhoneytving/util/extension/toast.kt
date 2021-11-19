@@ -22,3 +22,11 @@ fun Activity.toast(message: String, length: Int = Toast.LENGTH_SHORT) {
 fun toast(context: Context, message: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(context, message, length).show()
 }
+
+fun errorToast(context: Context, exception: Exception) {
+    Toast.makeText(
+        context,
+        "실행중에 에러가 발생했어요 \uD83D\uDE22\n\n${exception.message}",
+        Toast.LENGTH_LONG
+    ).show()
+}
