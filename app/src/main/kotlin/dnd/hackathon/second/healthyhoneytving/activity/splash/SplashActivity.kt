@@ -7,7 +7,7 @@
  * Please see: https://github.com/DND-hackathon/HealthyHoneyTving-Android/blob/dev/LICENSE.
  */
 
-package dnd.hackathon.second.healthyhoneytving.activity
+package dnd.hackathon.second.healthyhoneytving.activity.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
