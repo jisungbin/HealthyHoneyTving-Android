@@ -12,6 +12,7 @@ package dnd.hackathon.second.healthyhoneytving.di.module
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import dnd.hackathon.second.healthyhoneytving.util.extension.jacksonMapper
 import okhttp3.Interceptor
@@ -22,7 +23,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 // TODO
 @Module
-@InstallIn(ViewModelScoped::class)
+@InstallIn(ViewModelComponent::class)
 object RetrofitModule {
     private const val BaseUrl = "" // TODO
 
