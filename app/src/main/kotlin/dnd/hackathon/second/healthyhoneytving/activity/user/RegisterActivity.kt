@@ -12,19 +12,21 @@ package dnd.hackathon.second.healthyhoneytving.activity.user
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -48,6 +50,8 @@ import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
+import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
+import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorError
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
@@ -61,6 +65,7 @@ class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        SystemUiController(window).setSystemBarsColor(colorBackgroundGray)
         setContent {
             MaterialTheme {
                 Content()
@@ -80,8 +85,9 @@ class RegisterActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(color = colorBackgroundGray)
                 .padding(30.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Toolbar(title = stringResource(R.string.activity_register_title))
             Fields(
@@ -93,6 +99,7 @@ class RegisterActivity : ComponentActivity() {
                 isNicknameUseableState = isNicknameUseableState
             )
             Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
+                Text(text = "가입하기")
             }
         }
     }
@@ -161,8 +168,10 @@ class RegisterActivity : ComponentActivity() {
                 Text(text = label, color = colorTextGray, fontSize = 13.sp)
                 Text(text = subLabel, color = subLabelColor, fontSize = 10.sp)
             }
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 value = textFieldState.value,
                 onValueChange = { textFieldState.value = it },
                 shape = shape,
@@ -186,25 +195,31 @@ class RegisterActivity : ComponentActivity() {
                             )
                         }
                         isNicknameField -> {
-                            Button(onClick = {
-                                coroutineScope.launch {
-                                    vm.findUserByNickname(textFieldState.value.text).doWhen(
-                                        onSuccess = { users ->
-                                            isNicknameUseableState.value = users.isEmpty()
-                                            if (!isNicknameUseableState.value!!) {
-                                                toast(
-                                                    context,
-                                                    context.getString(R.string.activity_register_toast_already_using_nickname)
-                                                )
+                            Button(
+                                modifier = Modifier.padding(5.dp),
+                                onClick = {
+                                    coroutineScope.launch {
+                                        vm.findUserByNickname(textFieldState.value.text).doWhen(
+                                            onSuccess = { users ->
+                                                isNicknameUseableState.value = users.isEmpty()
+                                                if (!isNicknameUseableState.value!!) {
+                                                    toast(
+                                                        context,
+                                                        context.getString(R.string.activity_register_toast_already_using_nickname)
+                                                    )
+                                                }
+                                            },
+                                            onFailure = { throwable ->
+                                                errorToast(context, throwable.toException())
                                             }
-                                        },
-                                        onFailure = { throwable ->
-                                            errorToast(context, throwable.toException())
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
-                            }) {
-                                Text(text = stringResource(R.string.activity_register_button_check_nickname_duplicate))
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.activity_register_button_check_nickname_duplicate),
+                                    fontSize = 10.sp
+                                )
                             }
                         }
                     }
