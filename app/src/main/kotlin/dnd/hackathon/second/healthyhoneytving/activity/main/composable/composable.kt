@@ -2,12 +2,12 @@
  * HealthyHoneyTving © DND 해커톤 2조. all rights reserved.
  * HealthyHoneyTving license is under the MIT.
  *
- * [topbar.kt] created by Ji Sungbin on 21. 11. 20. 오전 5:40
+ * [composable.kt] created by Ji Sungbin on 21. 11. 20. 오전 6:13
  *  
  * Please see: https://github.com/DND-hackathon/HealthyHoneyTving-Android/blob/dev/LICENSE.
  */
 
-package dnd.hackathon.second.healthyhoneytving.activity.main.common
+package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,8 +23,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
+
+@Composable
+fun Categorie() {
+}
+
+@Composable
+fun Menu() {
+}
+
+@Composable
+fun Divider(thickness: Dp = 0.5.dp) {
+    androidx.compose.material.Divider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        color = colorBackgroundGray,
+        thickness = thickness
+    )
+}
 
 @Composable
 fun Topbar(modifier: Modifier) {
@@ -37,7 +58,10 @@ fun Topbar(modifier: Modifier) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-            Image(painter = painterResource(R.drawable.ic_round_logo_24), contentDescription = null)
+            Image(
+                painter = painterResource(R.drawable.ic_round_logo_24),
+                contentDescription = null
+            )
             Text(text = stringResource(R.string.app_name), fontWeight = FontWeight.Bold)
         }
         Icon(
