@@ -12,6 +12,7 @@ package dnd.hackathon.second.healthyhoneytving.activity.user
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -56,28 +57,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
+import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffect
+import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
+import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorError
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
+import dnd.hackathon.second.healthyhoneytving.util.constant.DataConstant
+import dnd.hackathon.second.healthyhoneytving.util.core.DataUtil
 import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.viewmodel.observe
 
 // TODO: 가끔씩 클릭 이벤트가 아예 씹힘
 class RegisterActivity : ComponentActivity() {
+
+    private val vm: JoinViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        vm.observe(lifecycleOwner = this, state = ::handleState, sideEffect = ::handleSideEffect)
         SystemUiController(window).setSystemBarsColor(colorBackgroundGray)
         setContent {
             MaterialTheme {
@@ -88,7 +98,6 @@ class RegisterActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        val vm: JoinViewModel = viewModel()
         val idFieldState = remember { mutableStateOf(TextFieldValue()) }
         val passwordFieldState = remember { mutableStateOf(TextFieldValue()) }
         val passwordConfirmFieldState = remember { mutableStateOf(TextFieldValue()) }
@@ -262,7 +271,6 @@ class RegisterActivity : ComponentActivity() {
         keyboardActions: () -> Unit
     ) {
         val context = LocalContext.current
-        val vm: JoinViewModel = viewModel()
         val shape = RoundedCornerShape(5.dp)
         val coroutineScope = rememberCoroutineScope()
 
@@ -349,6 +357,27 @@ class RegisterActivity : ComponentActivity() {
                     }
                 }
             )
+        }
+    }
+
+    private fun handleSideEffect(sideEffect: BaseMviSideEffect) {
+        when (sideEffect) {
+            is MviJoinSideEffect.SetupAutoLogin -> DataUtil.save(
+                applicationContext,
+                DataConstant.User.Id,
+                sideEffect.user.id
+            )
+            is BaseMviSideEffect.Toast -> toast(sideEffect.message)
+        }
+    }
+
+    private fun handleState(state: MviJoinState) {
+        if (!state.isException()) {
+            if (state.loaded && state.registerResult) {
+                // TODO: 가입 성공
+            }
+        } else {
+            errorToast(this, state.exception!!)
         }
     }
 }

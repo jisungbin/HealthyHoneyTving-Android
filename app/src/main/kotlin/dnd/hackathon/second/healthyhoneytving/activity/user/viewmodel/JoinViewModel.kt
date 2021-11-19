@@ -28,6 +28,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import kotlin.coroutines.resume
 
+// TODO: apply DI
 class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviSideEffect> {
 
     private val firestoreUsers = Firebase.firestore.collection("users")
