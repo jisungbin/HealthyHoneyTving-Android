@@ -59,7 +59,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
-import dnd.hackathon.second.healthyhoneytving.activity.user.composable.Topbar
+import dnd.hackathon.second.healthyhoneytving.activity.user.composable.TopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
@@ -143,7 +143,7 @@ class RegisterActivity : ComponentActivity() {
         ) {
             val (topbar, content, button) = createRefs()
 
-            Topbar(
+            TopBar(
                 modifier = Modifier.constrainAs(topbar) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)

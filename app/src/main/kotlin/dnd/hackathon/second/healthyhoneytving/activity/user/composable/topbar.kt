@@ -23,7 +23,7 @@ import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 
 @Composable
-fun Topbar(modifier: Modifier, title: String) {
+fun TopBar(modifier: Modifier, title: String) {
     val activity = getActivity()
     Column(modifier = modifier) {
         Icon(
