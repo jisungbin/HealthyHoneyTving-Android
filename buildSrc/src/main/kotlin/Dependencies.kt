@@ -18,9 +18,10 @@ object Versions {
 
     object Essential {
         const val Kotlin = "1.5.31"
+        const val CoreKtx = "1.7.0"
         const val Coroutines = "1.5.2"
         const val Gradle = "7.1.0-beta03"
-        const val CoreKtx = "1.7.0"
+        const val GoogleService = "4.3.10"
     }
 
     object Compose {
