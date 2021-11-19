@@ -26,7 +26,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 @Module
 @InstallIn(ViewModelComponent::class)
 object RetrofitModule {
-    private const val BaseUrl = "" // TODO
+    private const val BaseUrl = "https://www.naver.com" // TODO
 
     private fun getInterceptor(vararg interceptors: Interceptor): OkHttpClient {
         val builder = OkHttpClient.Builder()

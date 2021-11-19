@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.BottomAppBar
@@ -68,7 +67,7 @@ fun TopBar(modifier: Modifier) {
 }
 
 @Composable
-fun BottomBar() {
+fun BottomBar(modifier: Modifier) {
     val vm: MainViewModel = composableActivityViewModel()
     val mainTypeState = vm.mainType.collectAsState()
 
@@ -77,9 +76,7 @@ fun BottomBar() {
         animateColorAsState(if (mainType == mainTypeState.value) Color.Black else colorBackgroundGray)
 
     BottomAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp),
+        modifier = modifier,
         backgroundColor = Color.White,
         contentPadding = PaddingValues(0.dp)
     ) {

@@ -16,21 +16,21 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
+import dnd.hackathon.second.healthyhoneytving.activity.main.composable.BottomBar
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Categorie
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Divider
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.LazyFeed
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Menu
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.TopBar
-import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
+import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        SystemUiController(window).setSystemBarsColor(Color.White)
         setContent {
             MaterialTheme {
                 Content()
@@ -49,16 +50,38 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        var menuType by remember { mutableStateOf(MenuType.List) }
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+            val (content, bottomBar) = createRefs()
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            TopBar(modifier = Modifier)
-            Divider()
-            Categorie()
-            Divider()
-            Menu()
-            Divider(thickness = 2.dp)
-            LazyFeed()
+            Column(
+                modifier = Modifier.constrainAs(content) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(bottomBar.top)
+
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                }
+            ) {
+                TopBar(modifier = Modifier)
+                Divider()
+                Categorie()
+                Divider()
+                Menu()
+                Divider(thickness = 2.dp)
+                LazyFeed()
+            }
+            BottomBar(
+                modifier = Modifier.constrainAs(bottomBar) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+
+                    width = Dimension.fillToConstraints
+                    height = Dimension.value(60.dp)
+                }
+            )
         }
     }
 }
