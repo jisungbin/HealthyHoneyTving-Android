@@ -21,6 +21,9 @@ import dnd.hackathon.second.healthyhoneytving.R
 
 val defaultFontFamily = FontFamily(Font(R.font.notosanskr))
 
+val colorBackgroundGray = Color(0xFFF7F8F9)
+val colorTextGray = Color(0xFFC5C8CE)
+
 val colorError = Color(0xFFF86D64)
 
 val colors = lightColors().copy(
