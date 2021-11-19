@@ -84,7 +84,14 @@ class RegisterActivity : ComponentActivity() {
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             Toolbar(title = stringResource(R.string.activity_register_title))
-            Fields()
+            Fields(
+                idFieldState = idFieldState,
+                passwordFieldState = passwordFieldState,
+                passwordConfirmFieldState = passwordConfirmFieldState,
+                nicknameFieldState = nicknameFieldState,
+                subLabel = subLabelState.value,
+                isNicknameUseableState = isNicknameUseableState
+            )
             Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
             }
         }
@@ -96,7 +103,7 @@ class RegisterActivity : ComponentActivity() {
         passwordFieldState: MutableState<TextFieldValue>,
         passwordConfirmFieldState: MutableState<TextFieldValue>,
         nicknameFieldState: MutableState<TextFieldValue>,
-        subLabelState: MutableState<String>,
+        subLabel: String,
         isNicknameUseableState: MutableState<Boolean?>
     ) {
         Column(
@@ -113,13 +120,13 @@ class RegisterActivity : ComponentActivity() {
                 label = "비밀번호 확인",
                 textFieldState = passwordConfirmFieldState,
                 isPasswordField = true,
-                subLabel = subLabelState.value,
+                subLabel = subLabel,
                 subLabelColor = colorError
             )
             Field(
                 label = "닉네임",
                 textFieldState = nicknameFieldState,
-                subLabel = subLabelState.value,
+                subLabel = subLabel,
                 subLabelColor = colorError,
                 isNicknameField = true,
                 isNicknameUseableState = isNicknameUseableState

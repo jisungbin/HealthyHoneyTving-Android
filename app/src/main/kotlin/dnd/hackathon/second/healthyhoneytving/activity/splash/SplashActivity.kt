@@ -10,6 +10,7 @@
 package dnd.hackathon.second.healthyhoneytving.activity.splash
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.user.RegisterActivity
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colors
@@ -80,6 +82,11 @@ class SplashActivity : ComponentActivity() {
                 rotate = 0F
                 offsetX = (-90).dp
                 showLabel = true
+            }
+
+            doDelayed(2000L) {
+                finish()
+                startActivity(Intent(this@SplashActivity, RegisterActivity::class.java))
             }
         }
 
