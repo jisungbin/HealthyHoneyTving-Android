@@ -64,7 +64,6 @@ object Versions {
 
 object Dependencies {
     const val Orbit = "org.orbit-mvi:orbit-viewmodel:${Versions.Orbit}"
-    const val browser = "androidx.browser:browser:${Versions.Ui.Browser}"
     const val LandscapistCoil =
         "com.github.skydoves:landscapist-coil:${Versions.Compose.LandscapistCoil}"
 
@@ -97,6 +96,7 @@ object Dependencies {
     )
 
     val Util = listOf(
+        "androidx.browser:browser:${Versions.Ui.Browser}",
         "io.github.jisungbin:erratum:${Versions.Util.Erratum}",
         "io.github.jisungbin:logeukes:${Versions.Util.Logeukes}",
     )

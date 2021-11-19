@@ -68,13 +68,6 @@ dependencies {
 
     implementation(platform(Dependencies.FirebaseBom))
 
-    implementation(project(":core"))
-    implementation(project(":common"))
-    implementation(project(":data-kaven"))
-    implementation(project(":data-github"))
-    implementation(project(":domain-kaven"))
-    implementation(project(":domain-github"))
-
     Dependencies.Ui.forEach(::implementation)
     Dependencies.Util.forEach(::implementation)
     Dependencies.Jackson.forEach(::implementation)
