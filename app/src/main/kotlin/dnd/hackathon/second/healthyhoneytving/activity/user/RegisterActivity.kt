@@ -163,7 +163,7 @@ class RegisterActivity : ComponentActivity() {
 
         Column(
             modifier = modifier,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             Field(label = "아이디", textFieldState = idFieldState)
             Field(
@@ -227,7 +227,11 @@ class RegisterActivity : ComponentActivity() {
                     .fillMaxWidth()
                     .height(50.dp),
                 value = textField,
-                onValueChange = { textFieldState.value = it },
+                onValueChange = { newTextFieldValue ->
+                    if (newTextFieldValue.text.length <= 13) {
+                        textFieldState.value = newTextFieldValue
+                    }
+                },
                 shape = shape,
                 singleLine = true,
                 maxLines = 1,
