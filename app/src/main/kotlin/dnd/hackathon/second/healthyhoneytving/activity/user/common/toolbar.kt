@@ -11,8 +11,6 @@ package dnd.hackathon.second.healthyhoneytving.activity.user.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,13 +23,9 @@ import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 
 @Composable
-fun Toolbar(title: String) {
+fun Toolbar(modifier: Modifier, title: String) {
     val activity = getActivity()
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    ) {
+    Column(modifier = modifier) {
         Icon(
             modifier = Modifier.clickable {
                 activity.finish()

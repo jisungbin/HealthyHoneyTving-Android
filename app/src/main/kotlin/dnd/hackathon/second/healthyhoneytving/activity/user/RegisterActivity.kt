@@ -35,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -46,6 +47,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
@@ -93,15 +96,33 @@ class RegisterActivity : ComponentActivity() {
             nicknameFieldSubLabalColorState = colorError
         }
 
-        Column(
+        ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorBackgroundGray)
-                .padding(30.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(30.dp)
         ) {
-            Toolbar(title = stringResource(R.string.activity_register_title))
+            val (topbar, content, button) = createRefs()
+
+            Toolbar(
+                modifier = Modifier.constrainAs(topbar) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    height = Dimension.wrapContent
+                    width = Dimension.fillToConstraints
+                },
+                title = stringResource(R.string.activity_register_title)
+            )
             Fields(
+                modifier = Modifier.constrainAs(content) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(topbar.bottom, 10.dp)
+                    bottom.linkTo(button.top, 10.dp)
+                    height = Dimension.fillToConstraints
+                    width = Dimension.fillToConstraints
+                },
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
                 passwordConfirmFieldState = passwordConfirmFieldState,
@@ -111,14 +132,24 @@ class RegisterActivity : ComponentActivity() {
                 nicknameFieldSubLabalColor = nicknameFieldSubLabalColorState,
                 isNicknameUseableState = isNicknameUseableState
             )
-            Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                Text(text = "가입하기")
+            Button(
+                modifier = Modifier.constrainAs(button) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.value(45.dp)
+                },
+                onClick = { /*TODO*/ }
+            ) {
+                Text(text = "가입하기", style = TextStyle(fontSize = 15.sp))
             }
         }
     }
 
     @Composable
     private fun Fields(
+        modifier: Modifier,
         idFieldState: MutableState<TextFieldValue>,
         passwordFieldState: MutableState<TextFieldValue>,
         passwordConfirmFieldState: MutableState<TextFieldValue>,
@@ -131,7 +162,7 @@ class RegisterActivity : ComponentActivity() {
         val passwordVisibilityState = remember { mutableStateOf(false) }
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Field(label = "아이디", textFieldState = idFieldState)
@@ -182,12 +213,14 @@ class RegisterActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
-            verticalArrangement = Arrangement.spacedBy(5.dp)
+                .wrapContentHeight()
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(text = label, color = colorTextGray, fontSize = 13.sp)
-                Text(text = subLabel, color = subLabelColor, fontSize = 10.sp)
+                Text(text = subLabel, color = subLabelColor, fontSize = 11.sp)
             }
             OutlinedTextField(
                 modifier = Modifier
