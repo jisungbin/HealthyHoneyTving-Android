@@ -59,6 +59,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
+import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
@@ -87,20 +88,22 @@ class RegisterActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
+        val vm: JoinViewModel = viewModel()
         val idFieldState = remember { mutableStateOf(TextFieldValue()) }
         val passwordFieldState = remember { mutableStateOf(TextFieldValue()) }
         val passwordConfirmFieldState = remember { mutableStateOf(TextFieldValue()) }
         val nicknameFieldState = remember { mutableStateOf(TextFieldValue()) }
-        var passwordFieldSubLabelState by remember { mutableStateOf("") }
-        var nicknameFieldSubLabelState by remember { mutableStateOf("") }
+        var passwordFieldSubLabelState = remember { mutableStateOf("") }
+        var nicknameFieldSubLabelState = remember { mutableStateOf("") }
         var nicknameFieldSubLabalColorState by remember { mutableStateOf(Color.Unspecified) }
         val isNicknameUseableState = remember { mutableStateOf<Boolean?>(null) }
 
         if (isNicknameUseableState.value == true) {
-            nicknameFieldSubLabelState = stringResource(R.string.activity_register_useable_nickname)
+            nicknameFieldSubLabelState.value =
+                stringResource(R.string.activity_register_useable_nickname)
             nicknameFieldSubLabalColorState = colors.primary
         } else if (isNicknameUseableState.value == false) {
-            nicknameFieldSubLabelState =
+            nicknameFieldSubLabelState.value =
                 stringResource(R.string.activity_register_already_using_nickname)
             nicknameFieldSubLabalColorState = colorError
         }
@@ -136,7 +139,7 @@ class RegisterActivity : ComponentActivity() {
                 passwordFieldState = passwordFieldState,
                 passwordConfirmFieldState = passwordConfirmFieldState,
                 nicknameFieldState = nicknameFieldState,
-                passwordFieldSubLabel = passwordFieldSubLabelState,
+                passwordFieldSubLabelState = passwordFieldSubLabelState,
                 nicknameFieldSubLabel = nicknameFieldSubLabelState,
                 nicknameFieldSubLabalColor = nicknameFieldSubLabalColorState,
                 isNicknameUseableState = isNicknameUseableState
@@ -150,7 +153,22 @@ class RegisterActivity : ComponentActivity() {
                     height = Dimension.value(45.dp)
                 },
                 onClick = {
-
+                    val id = idFieldState.value.text
+                    val password = passwordFieldState.value.text
+                    val passwordConfirm = passwordConfirmFieldState.value.text
+                    val nickname = nicknameFieldState.value.text
+                    val isNicknameUseable = isNicknameUseableState.value
+                    if (password == passwordConfirm) {
+                        if (isNicknameUseable == null) {
+                            toast(getString(R.string.activity_register_toast_check_nickname_duplicate))
+                        } else if (isNicknameUseable) {
+                            val user = User(nickname = nickname, id = id, password = password)
+                            vm.register(user)
+                        }
+                    } else {
+                        passwordFieldSubLabelState.value =
+                            getString(R.string.activity_register_password_not_match_confirm)
+                    }
                 }
             ) {
                 Text(
@@ -169,8 +187,8 @@ class RegisterActivity : ComponentActivity() {
         passwordFieldState: MutableState<TextFieldValue>,
         passwordConfirmFieldState: MutableState<TextFieldValue>,
         nicknameFieldState: MutableState<TextFieldValue>,
-        passwordFieldSubLabel: String,
-        nicknameFieldSubLabel: String,
+        passwordFieldSubLabelState: MutableState<String>,
+        nicknameFieldSubLabel: MutableState<String>,
         nicknameFieldSubLabalColor: Color,
         isNicknameUseableState: MutableState<Boolean?>
     ) {
@@ -206,7 +224,7 @@ class RegisterActivity : ComponentActivity() {
                 textFieldState = passwordConfirmFieldState,
                 isPasswordField = true,
                 passwordVisibilityState = passwordVisibilityState,
-                subLabel = passwordFieldSubLabel,
+                subLabelState = passwordFieldSubLabelState,
                 subLabelColor = colorError,
                 focusRequester = passwordConfirmFocus,
                 keyboardActions = {
@@ -216,7 +234,7 @@ class RegisterActivity : ComponentActivity() {
             Field(
                 label = stringResource(R.string.activity_register_nickname),
                 textFieldState = nicknameFieldState,
-                subLabel = nicknameFieldSubLabel,
+                subLabelState = nicknameFieldSubLabel,
                 subLabelColor = nicknameFieldSubLabalColor,
                 isNicknameField = true,
                 isNicknameUseableState = isNicknameUseableState,
@@ -233,7 +251,7 @@ class RegisterActivity : ComponentActivity() {
     private fun Field(
         label: String,
         textFieldState: MutableState<TextFieldValue>,
-        subLabel: String = "",
+        subLabelState: MutableState<String> = mutableStateOf(""),
         subLabelColor: Color = Color.Unspecified,
         isPasswordField: Boolean = false,
         passwordVisibilityState: MutableState<Boolean> = mutableStateOf(false),
@@ -261,7 +279,7 @@ class RegisterActivity : ComponentActivity() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = label, color = colorTextGray, fontSize = 13.sp)
-                Text(text = subLabel, color = subLabelColor, fontSize = 11.sp)
+                Text(text = subLabelState.value, color = subLabelColor, fontSize = 11.sp)
             }
             OutlinedTextField(
                 modifier = Modifier
@@ -311,10 +329,8 @@ class RegisterActivity : ComponentActivity() {
                                             onSuccess = { users ->
                                                 isNicknameUseableState.value = users.isEmpty()
                                                 if (!isNicknameUseableState.value!!) {
-                                                    toast(
-                                                        context,
-                                                        context.getString(R.string.activity_register_toast_already_using_nickname)
-                                                    )
+                                                    subLabelState.value =
+                                                        getString(R.string.activity_register_already_using_nickname)
                                                 }
                                             },
                                             onFailure = { throwable ->

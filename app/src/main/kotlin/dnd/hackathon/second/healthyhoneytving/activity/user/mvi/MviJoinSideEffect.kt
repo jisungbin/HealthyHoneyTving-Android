@@ -10,8 +10,8 @@
 package dnd.hackathon.second.healthyhoneytving.activity.user.mvi
 
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
-import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviToastSideEffect
+import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 
-sealed class MviJoinSideEffect : BaseMviToastSideEffect {
+sealed class MviJoinSideEffect : BaseMviSideEffect {
     data class SetupAutoLogin(val user: User) : MviJoinSideEffect()
 }

@@ -16,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffect
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
-import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviToastSideEffect
+import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -28,10 +28,10 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import kotlin.coroutines.resume
 
-class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviToastSideEffect> {
+class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviSideEffect> {
 
     private val firestoreUsers = Firebase.firestore.collection("users")
-    override val container = container<MviJoinState, BaseMviToastSideEffect>(MviJoinState())
+    override val container = container<MviJoinState, BaseMviSideEffect>(MviJoinState())
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun register(user: User) = intent {
@@ -48,7 +48,7 @@ class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviToastSideE
                                         exception = null
                                     )
                                 }
-                                postSideEffect(BaseMviToastSideEffect.Toast("가입이 완료되었어요."))
+                                postSideEffect(BaseMviSideEffect.Toast("가입이 완료되었어요."))
                             }
                         }.addOnFailureListener { exception ->
                             viewModelScope.launch {
@@ -58,7 +58,7 @@ class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviToastSideE
                             }
                         }
                 } else {
-                    postSideEffect(BaseMviToastSideEffect.Toast("이미 ${user.id}로 가입된 아이디가 있어요."))
+                    postSideEffect(BaseMviSideEffect.Toast("이미 ${user.id}로 가입된 아이디가 있어요."))
                 }
             },
             onFailure = { exception ->
@@ -86,7 +86,7 @@ class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviToastSideE
                         postSideEffect(MviJoinSideEffect.SetupAutoLogin(user))
                     }
                 } else {
-                    postSideEffect(BaseMviToastSideEffect.Toast("${id}로 가입된 아이디가 없어요."))
+                    postSideEffect(BaseMviSideEffect.Toast("${id}로 가입된 아이디가 없어요."))
                 }
             },
             onFailure = { exception ->
