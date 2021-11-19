@@ -97,7 +97,7 @@ class StartActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        val autoLoginId = DataUtil.read(applicationContext, DataConstant.User.Id, null)
+        val autoLoginId = DataUtil.read(applicationContext, DataConstant.UserId, null)
 
         var rotate by remember { mutableStateOf(90f) }
         var iconOffsetX by remember { mutableStateOf(0.dp) }
