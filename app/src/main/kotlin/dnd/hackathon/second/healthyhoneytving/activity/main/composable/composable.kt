@@ -90,14 +90,16 @@ fun Menu() {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = Modifier.noRippleClickable(onClick = {}), // TODO
             horizontalArrangement = Arrangement.spacedBy(
                 space = 2.dp,
                 alignment = Alignment.CenterHorizontally
-            )
+            ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "ALL")
             Icon(
@@ -107,12 +109,13 @@ fun Menu() {
         }
         Row(
             horizontalArrangement = Arrangement.spacedBy(
-                space = 2.dp,
+                space = 10.dp,
                 alignment = Alignment.CenterHorizontally
-            )
+            ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier,
+                modifier = Modifier.noRippleClickable(onClick = { vm.updateMenuType(MenuType.Grid) }),
                 painter = painterResource(R.drawable.ic_round_menu_grid_24),
                 contentDescription = null,
                 tint = calcColorAnimationState(
@@ -121,7 +124,7 @@ fun Menu() {
                 ).value
             )
             Icon(
-                modifier = Modifier,
+                modifier = Modifier.noRippleClickable(onClick = { vm.updateMenuType(MenuType.List) }),
                 painter = painterResource(R.drawable.ic_round_menu_list_24),
                 contentDescription = null,
                 tint = calcColorAnimationState(
