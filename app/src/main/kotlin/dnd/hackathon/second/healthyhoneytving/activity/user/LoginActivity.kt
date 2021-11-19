@@ -297,7 +297,7 @@ class LoginActivity : ComponentActivity() {
         if (!state.isException()) {
             if (state.loaded) {
                 if (state.loginResult) {
-                    finish()
+                    finishAndRemoveTask()
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     updatePasswordFieldSubLabelMessage()

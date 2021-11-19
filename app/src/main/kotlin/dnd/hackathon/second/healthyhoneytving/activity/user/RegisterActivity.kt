@@ -375,7 +375,7 @@ class RegisterActivity : ComponentActivity() {
     private fun handleState(state: MviJoinState) {
         if (!state.isException()) {
             if (state.loaded && state.registerResult) {
-                // TODO: 가입 성공
+                finish()
             }
         } else {
             errorToast(this, state.exception!!)
