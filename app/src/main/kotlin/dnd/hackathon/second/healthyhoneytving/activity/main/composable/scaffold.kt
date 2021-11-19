@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.BottomAppBar
 import androidx.compose.material.FloatingActionButton
@@ -27,6 +28,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,18 +47,22 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityV
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 
 @Composable
-fun TopBar(modifier: Modifier) {
+fun TopBar() {
     Row(
-        modifier = modifier
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(16.dp),
+            .wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Image(
-                painter = painterResource(R.drawable.ic_round_logo_24),
+                modifier = Modifier.size(30.dp),
+                painter = painterResource(R.drawable.ic_round_logo_transparent_24),
                 contentDescription = null
             )
             Text(text = stringResource(R.string.app_name), fontWeight = FontWeight.Bold)
@@ -72,11 +78,11 @@ fun TopBar(modifier: Modifier) {
 @Composable
 fun BottomBar(modifier: Modifier) {
     val vm: MainViewModel = composableActivityViewModel()
-    val mainTypeState = vm.mainType.collectAsState()
+    val mainTypeState by vm.mainType.collectAsState()
 
     @Composable
-    fun calcTintStateAnimation(mainType: String) =
-        animateColorAsState(if (mainType == mainTypeState.value) Color.Black else Color.LightGray)
+    fun calcTintAnimationState(mainType: String) =
+        animateColorAsState(if (mainType == mainTypeState) Color.Black else Color.LightGray)
 
     BottomAppBar(
         modifier = modifier,
@@ -101,8 +107,8 @@ fun BottomBar(modifier: Modifier) {
                         vm.updateMainType(MainType.Media)
                     }),
                 iconRes = R.drawable.ic_round_media_24,
-                title = "미디어",
-                tint = calcTintStateAnimation(MainType.Media).value
+                title = stringResource(R.string.activity_main_composable_scaffold_bottombar_media),
+                tint = calcTintAnimationState(MainType.Media).value
             )
             FloatingActionButton(
                 modifier = Modifier.constrainAs(fab) {
@@ -135,8 +141,8 @@ fun BottomBar(modifier: Modifier) {
                         vm.updateMainType(MainType.Healthy)
                     }),
                 iconRes = R.drawable.ic_round_healthy_24,
-                title = "건강",
-                tint = calcTintStateAnimation(MainType.Healthy).value
+                title = stringResource(R.string.activity_main_composable_scaffold_bottombar_healthy),
+                tint = calcTintAnimationState(MainType.Healthy).value
             )
         }
     }

@@ -26,11 +26,18 @@ class MainViewModel @Inject constructor(private val api: ApiService) : ViewModel
     private val _menuType = MutableStateFlow(MenuType.List)
     val menuType = _menuType.asStateFlow()
 
+    private val _selectCategory = MutableStateFlow("")
+    val selectCategory = _selectCategory.asStateFlow()
+
     fun updateMainType(type: String) {
         _mainType.value = type
     }
 
     fun updateMenuType(type: MenuType) {
         _menuType.value = type
+    }
+
+    fun updateSelectCategory(category: String) {
+        _selectCategory.value = category
     }
 }

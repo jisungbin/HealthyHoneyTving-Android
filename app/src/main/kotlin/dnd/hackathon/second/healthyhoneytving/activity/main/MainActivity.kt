@@ -13,6 +13,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.BottomBar
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Categorie
-import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Divider
+import dnd.hackathon.second.healthyhoneytving.activity.main.composable.HorizontalDivider
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.LazyFeed
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Menu
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.TopBar
@@ -50,7 +51,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+        ConstraintLayout(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
+        ) {
             val (content, bottomBar) = createRefs()
 
             Column(
@@ -64,12 +69,12 @@ class MainActivity : ComponentActivity() {
                     height = Dimension.fillToConstraints
                 }
             ) {
-                TopBar(modifier = Modifier)
-                Divider()
+                TopBar()
+                HorizontalDivider()
                 Categorie()
-                Divider()
+                HorizontalDivider()
                 Menu()
-                Divider(thickness = 2.dp)
+                HorizontalDivider(thickness = 2.dp)
                 LazyFeed()
             }
             BottomBar(
