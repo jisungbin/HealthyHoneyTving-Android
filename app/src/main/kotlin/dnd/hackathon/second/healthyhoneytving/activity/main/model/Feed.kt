@@ -9,10 +9,12 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.model
 
-
-// 링크 정보 {링크, 하위 태그 배열, 유저 UID, 제목, 좋아요, 싫어요, 링크UID}
 data class Feed(
-    val content: String,
-    val tags: List<String>,
-
+    val content: String = "",
+    val tags: List<String> = emptyList(),
+    val titke: String = "",
+    val like: Int = 0,
+    val hate: Int = 0,
+    val ownerUid: String = "",
+    val feedUid: String = ""
 )
