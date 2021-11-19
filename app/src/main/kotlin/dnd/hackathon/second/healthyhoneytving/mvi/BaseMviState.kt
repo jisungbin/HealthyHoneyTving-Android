@@ -9,7 +9,7 @@
 
 package dnd.hackathon.second.healthyhoneytving.mvi
 
-interface MviBaseState {
+interface BaseMviState {
     val loaded: Boolean
     val exception: Exception?
 

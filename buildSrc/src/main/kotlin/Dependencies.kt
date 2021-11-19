@@ -39,6 +39,7 @@ object Versions {
         const val Logeukes = "1.0.1"
         const val Jackson = "2.13.0"
         const val LeakCanary = "2.7"
+        const val SecurityCrypto = "1.0.0"
         const val CheckDependencyUpdates = "1.5.0"
     }
 
@@ -78,6 +79,7 @@ object Dependencies {
     )
 
     val Ui = listOf(
+        "androidx.browser:browser:${Versions.Ui.Browser}",
         "com.google.android.material:material:${Versions.Ui.Material}",
         "com.google.android.gms:play-services-oss-licenses:${Versions.OssLicense.Master}"
     )
@@ -96,9 +98,9 @@ object Dependencies {
     )
 
     val Util = listOf(
-        "androidx.browser:browser:${Versions.Ui.Browser}",
         "io.github.jisungbin:erratum:${Versions.Util.Erratum}",
         "io.github.jisungbin:logeukes:${Versions.Util.Logeukes}",
+        "androidx.security:security-crypto:${Versions.Util.SecurityCrypto}"
     )
 
     val Compose = listOf(
