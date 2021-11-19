@@ -11,7 +11,7 @@ package dnd.hackathon.second.healthyhoneytving.util.extension
 
 import kotlinx.coroutines.delay
 
-suspend fun doDelay(ms: Long, block: () -> Unit) {
+suspend fun doDelayed(ms: Long, block: suspend () -> Unit) {
     delay(ms)
     block()
 }
