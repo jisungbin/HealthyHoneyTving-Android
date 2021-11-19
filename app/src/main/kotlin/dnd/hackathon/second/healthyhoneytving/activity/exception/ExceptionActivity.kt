@@ -30,20 +30,27 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.CollectionReference
+import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreException
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.util.constant.ExceptionConstant
 import io.github.jisungbin.erratum.ErratumExceptionActivity
 import java.util.Date
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ExceptionActivity : ErratumExceptionActivity() {
+
+    @Inject
+    @FirestoreException
+    lateinit var firestoreException: CollectionReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Firebase.firestore
-            .collection("exception")
+        firestoreException
             .document(Date().toString())
             .set(mapOf("data" to exceptionString!!))
         SystemUiController(window).setSystemBarsColor(Color.White)

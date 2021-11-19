@@ -9,6 +9,7 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.user
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -56,7 +57,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
@@ -71,6 +74,8 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import org.orbitmvi.orbit.viewmodel.observe
 
+// TODO: 가끔씩 클릭 이벤트가 아예 씹힘
+@AndroidEntryPoint
 class LoginActivity : ComponentActivity() {
 
     private val vm: JoinViewModel by viewModels()
@@ -284,7 +289,8 @@ class LoginActivity : ComponentActivity() {
         if (!state.isException()) {
             if (state.loaded) {
                 if (state.loginResult) {
-                    // TODO: 로그인 성공
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     updatePasswordFieldSubLabelMessage()
                 }

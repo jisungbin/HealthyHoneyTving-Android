@@ -35,6 +35,8 @@
             android:name=".activity.main.MainActivity"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity android:name=".activity.exception.ExceptionActivity" />
+
     </application>
 
 

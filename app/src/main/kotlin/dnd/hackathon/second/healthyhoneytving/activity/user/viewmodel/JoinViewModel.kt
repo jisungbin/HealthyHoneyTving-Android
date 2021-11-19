@@ -11,11 +11,12 @@ package dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.CollectionReference
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffect
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
+import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreUser
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,12 +27,14 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 import kotlin.coroutines.resume
 
-// TODO: apply DI
-class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviSideEffect> {
+@HiltViewModel
+class JoinViewModel @Inject constructor(
+    @FirestoreUser private val firebaseUser: CollectionReference
+) : ViewModel(), ContainerHost<MviJoinState, BaseMviSideEffect> {
 
-    private val firestoreUsers = Firebase.firestore.collection("users")
     override val container = container<MviJoinState, BaseMviSideEffect>(MviJoinState())
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -39,7 +42,7 @@ class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviSideEffect
         findUserById(user.id).doWhen(
             onSuccess = { foundUsers ->
                 if (foundUsers.isEmpty()) {
-                    firestoreUsers.document(user.id).set(user)
+                    firebaseUser.document(user.id).set(user)
                         .addOnSuccessListener {
                             viewModelScope.launch {
                                 reduce {
@@ -100,7 +103,7 @@ class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviSideEffect
 
     suspend fun findUserByNickname(nickname: String) =
         suspendCancellableCoroutine<Result<List<User>>> { continuation ->
-            firestoreUsers.whereEqualTo("nickname", nickname).get()
+            firebaseUser.whereEqualTo("nickname", nickname).get()
                 .addOnSuccessListener { querySnapshot ->
                     val foundUsers =
                         querySnapshot.documents.mapNotNull { it.toObject(User::class.java) }
@@ -111,9 +114,9 @@ class JoinViewModel : ViewModel(), ContainerHost<MviJoinState, BaseMviSideEffect
                 }
         }
 
-    private suspend fun findUserById(id: String) =
+    suspend fun findUserById(id: String) =
         suspendCancellableCoroutine<Result<List<User>>> { continuation ->
-            firestoreUsers.whereEqualTo("id", id).get()
+            firebaseUser.whereEqualTo("id", id).get()
                 .addOnSuccessListener { querySnapshot ->
                     val foundUsers =
                         querySnapshot.documents.mapNotNull { it.toObject(User::class.java) }

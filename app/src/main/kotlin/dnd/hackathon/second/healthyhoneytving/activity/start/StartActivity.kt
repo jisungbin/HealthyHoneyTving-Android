@@ -14,6 +14,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -51,21 +52,32 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.BuildConfig
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.LoginActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.RegisterActivity
+import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
+import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.UserStore
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.constant.DataConstant
 import dnd.hackathon.second.healthyhoneytving.util.core.DataUtil
 import dnd.hackathon.second.healthyhoneytving.util.extension.doDelayed
+import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
+import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
+import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import java.util.Calendar
 
 @SuppressLint("CustomSplashScreen")
+@AndroidEntryPoint
 class StartActivity : ComponentActivity() {
+
+    private val vm: JoinViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -85,7 +97,6 @@ class StartActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        // TODO: 자동 로그인 구현
         val autoLoginId = DataUtil.read(applicationContext, DataConstant.User.Id, null)
 
         var rotate by remember { mutableStateOf(90f) }
@@ -116,8 +127,21 @@ class StartActivity : ComponentActivity() {
             }
 
             doDelayed(2000L) {
-                titleOffsetY = (-150).dp
-                showButtons = true
+                if (autoLoginId == null) {
+                    titleOffsetY = (-150).dp
+                    showButtons = true
+                } else {
+                    vm.findUserById(autoLoginId).doWhen(
+                        onSuccess = { users ->
+                            UserStore.me = users.first()
+                            finish()
+                            startActivity(Intent(this@StartActivity, MainActivity::class.java))
+                        },
+                        onFailure = { throwable ->
+                            errorToast(this@StartActivity, throwable.toException())
+                        }
+                    )
+                }
             }
         }
 

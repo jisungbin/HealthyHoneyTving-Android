@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
@@ -80,6 +81,7 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.viewmodel.observe
 
 // TODO: 가끔씩 클릭 이벤트가 아예 씹힘
+@AndroidEntryPoint
 class RegisterActivity : ComponentActivity() {
 
     private val vm: JoinViewModel by viewModels()
