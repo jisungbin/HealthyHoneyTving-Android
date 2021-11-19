@@ -223,7 +223,7 @@ class RegisterActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun Field(
+    private fun Field( // TODO: 가끔씩 포커스가 잡히지 않음
         label: String,
         textFieldState: MutableState<TextFieldValue>,
         subLabel: String = "",
