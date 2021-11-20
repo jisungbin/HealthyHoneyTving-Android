@@ -40,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -196,7 +197,7 @@ class FeedDetailActivity : ComponentActivity() {
             shape = shape,
             placeholder = {
                 Text(
-                    text = "댓글 달기...",
+                    text = stringResource(R.string.activity_feed_detail_write_comment),
                     style = TextStyle(fontSize = 15.sp),
                     color = colorTextGray
                 )
@@ -211,7 +212,7 @@ class FeedDetailActivity : ComponentActivity() {
             trailingIcon = {
                 Text(
                     modifier = Modifier.noRippleClickable(onClick = {}),
-                    text = "게시",
+                    text = stringResource(R.string.activity_feed_detail_commented),
                     color = colors.primary,
                     style = TextStyle(fontSize = 15.sp),
                 )
@@ -226,8 +227,15 @@ class FeedDetailActivity : ComponentActivity() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "이 미디어 어때요?", color = Color.Black, style = TextStyle(fontSize = 15.sp))
-            Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
+            Text(
+                text = stringResource(R.string.activity_feed_detail_vote),
+                color = Color.Black,
+                style = TextStyle(fontSize = 18.sp)
+            )
+            Row(
+                modifier = Modifier.padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
                 Icon(
                     modifier = Modifier.noRippleClickable(onClick = {}), // TODO
                     painter = painterResource(R.drawable.ic_outlined_like_24),
