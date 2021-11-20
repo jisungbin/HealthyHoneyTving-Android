@@ -9,6 +9,7 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
 import kotlin.random.Random
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyFeed() {
     LazyColumn(
@@ -47,15 +49,15 @@ fun LazyFeed() {
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(TestUtil.Feeds) { feed ->
-            Feed(feed)
+            Feed(modifier = Modifier.animateItemPlacement(), feed = feed)
         }
     }
 }
 
 @Composable
-private fun Feed(feed: Feed) {
+private fun Feed(modifier: Modifier, feed: Feed) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(color = Color.White)
             .fillMaxWidth()
             .wrapContentHeight(),
@@ -95,30 +97,45 @@ private fun Feed(feed: Feed) {
                 .background(color = colors.secondary)
         )
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Start
         ) {
-            Row(modifier = Modifier.noRippleClickable(onClick = {})) { // TODO
+            Row(
+                modifier = Modifier.noRippleClickable(onClick = {}),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
+            ) { // TODO
                 Icon(
                     painter = painterResource(R.drawable.ic_round_favorite_border_24),
                     contentDescription = null
                 )
-                Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
+                Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 15.sp))
             }
             Row(
                 modifier = Modifier
                     .noRippleClickable(onClick = {})
-                    .padding(start = 10.dp)
+                    .padding(start = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
             ) { // TODO
                 Icon(
                     painter = painterResource(R.drawable.ic_round_commnet_24),
                     contentDescription = null
                 )
-                Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
+                Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 15.sp))
             }
         }
         Text(
+            modifier = Modifier.padding(horizontal = 16.dp),
             text = /*feed.description*/ TestUtil.generateRandomString(100),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis
