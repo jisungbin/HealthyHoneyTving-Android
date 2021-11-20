@@ -92,7 +92,8 @@ fun BottomBar(modifier: Modifier) {
     BottomAppBar(
         modifier = modifier.background(color = Color.White),
         backgroundColor = Color.White,
-        contentPadding = PaddingValues(0.dp)
+        contentPadding = PaddingValues(0.dp),
+        elevation = 16.dp
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (media, fab, healthy) = createRefs()

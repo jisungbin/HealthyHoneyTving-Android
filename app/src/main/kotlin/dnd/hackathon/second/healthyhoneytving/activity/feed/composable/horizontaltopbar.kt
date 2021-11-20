@@ -12,6 +12,7 @@ package dnd.hackathon.second.healthyhoneytving.activity.feed.composable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
+import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 
 @Composable
 fun HorizontalTopBar(modifier: Modifier, title: String) {
@@ -47,6 +49,37 @@ fun HorizontalTopBar(modifier: Modifier, title: String) {
             color = Color.Black,
             fontWeight = FontWeight.Bold,
             style = TextStyle(fontSize = 25.sp)
+        )
+    }
+}
+
+@Composable
+fun HorizontalTopBarCenter(modifier: Modifier, title: String) {
+    val activity = getActivity()
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier
+                .clickable {
+                    activity.finish()
+                }
+                .size(24.dp),
+            painter = painterResource(R.drawable.ic_round_arrow_back_24),
+            contentDescription = null
+        )
+        Text(
+            text = title,
+            color = Color.Black,
+            style = TextStyle(fontSize = 15.sp)
+        )
+        Icon(
+            modifier = Modifier.noRippleClickable(onClick = {}), // TODO
+            painter = painterResource(R.drawable.ic_round_menu_dot_24),
+            contentDescription = null
         )
     }
 }
