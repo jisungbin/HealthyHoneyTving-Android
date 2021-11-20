@@ -23,9 +23,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -152,14 +154,16 @@ class RegisterActivity : ComponentActivity() {
                 title = stringResource(R.string.activity_register_title)
             )
             Fields(
-                modifier = Modifier.constrainAs(content) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(topbar.bottom, 10.dp)
-                    bottom.linkTo(button.top, 10.dp)
-                    height = Dimension.fillToConstraints
-                    width = Dimension.fillToConstraints
-                },
+                modifier = Modifier
+                    .constrainAs(content) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(topbar.bottom, 10.dp)
+                        bottom.linkTo(button.top, 10.dp)
+                        height = Dimension.fillToConstraints
+                        width = Dimension.fillToConstraints
+                    }
+                    .verticalScroll(rememberScrollState()),
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
                 passwordConfirmFieldState = passwordConfirmFieldState,
@@ -286,14 +290,19 @@ class RegisterActivity : ComponentActivity() {
                 .wrapContentHeight()
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = label, color = colorTextGray, fontSize = 13.sp)
-                Text(text = subLabelState.value, color = subLabelColor, fontSize = 11.sp)
+                Text(text = label, color = colorTextGray, style = TextStyle(fontSize = 13.sp))
+                Text(
+                    text = subLabelState.value,
+                    color = subLabelColor,
+                    style = TextStyle(fontSize = 11.sp)
+                )
             }
             OutlinedTextField(
                 modifier = Modifier
+                    .padding(top = 5.dp)
                     .fillMaxWidth()
                     .height(50.dp)
                     .background(color = Color.White, shape = shape)

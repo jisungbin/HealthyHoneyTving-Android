@@ -38,7 +38,7 @@
 
         <activity android:name=".activity.exception.ExceptionActivity" />
 
-        <activity android:name=".activity.feed.FeedCreateActivity" />
+        <activity android:name=".activity.feed.FeedUploadActivity" />
 
         <activity android:name=".activity.feed.FeedDetailActivity" />
 

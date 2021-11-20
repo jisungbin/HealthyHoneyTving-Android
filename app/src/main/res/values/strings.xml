@@ -32,5 +32,7 @@
     <string name="activity_login_not_match_password">비밀번호가 일치하지 않아요</string>
     <string name="activity_main_composable_scaffold_bottombar_media">미디어</string>
     <string name="activity_main_composable_scaffold_bottombar_healthy">건강</string>
+    <string name="activity_feed_upload_title">업로드</string>
+    <string name="activity_feed_upload_toast_success_upload">업로드 성공!</string>
 
 </resources>

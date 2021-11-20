@@ -68,7 +68,6 @@ import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
-import dnd.hackathon.second.healthyhoneytving.theme.colorError
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.constant.DataConstant
@@ -233,14 +232,15 @@ class LoginActivity : ComponentActivity() {
                 .wrapContentHeight()
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = label, color = colorTextGray, fontSize = 13.sp)
-                Text(text = subLabelState.value, color = colorError, fontSize = 11.sp)
+                Text(text = label, color = colorTextGray, style = TextStyle(fontSize = 13.sp))
+                Text(text = subLabelState.value, style = TextStyle(fontSize = 11.sp))
             }
             OutlinedTextField(
                 modifier = Modifier
+                    .padding(top = 5.dp)
                     .fillMaxWidth()
                     .height(50.dp)
                     .background(color = Color.White, shape = shape)
