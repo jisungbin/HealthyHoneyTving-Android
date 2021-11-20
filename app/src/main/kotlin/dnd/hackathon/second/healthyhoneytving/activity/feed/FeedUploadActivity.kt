@@ -25,11 +25,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -98,7 +96,6 @@ class FeedUploadActivity : ComponentActivity() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorBackgroundGray)
-                .verticalScroll(rememberScrollState())
                 .padding(30.dp),
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
@@ -128,7 +125,7 @@ class FeedUploadActivity : ComponentActivity() {
                     )
                     // TODO: upload
                 } else {
-                    toast(context, "모두 다 입력해 주세요")
+                    toast(context, getString(R.string.activity_feed_upload_toast_input_all_fields))
                 }
             }
 
@@ -136,7 +133,7 @@ class FeedUploadActivity : ComponentActivity() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                title = stringResource(R.string.activity_feed_upload_title)
+                title = stringResource(R.string.activity_feed_upload)
             )
             Fields(
                 modifier = Modifier
@@ -157,7 +154,7 @@ class FeedUploadActivity : ComponentActivity() {
                 }
             ) {
                 Text(
-                    text = stringResource(R.string.activity_feed_upload_title),
+                    text = stringResource(R.string.activity_feed_upload),
                     style = TextStyle(fontSize = 15.sp)
                 )
             }
@@ -182,7 +179,7 @@ class FeedUploadActivity : ComponentActivity() {
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             Field(
-                label = "미디어 링크",
+                label = stringResource(R.string.activity_feed_upload_media_link),
                 textFieldState = linkFieldState,
                 focusRequester = linkFocus,
                 keyboardActions = {
@@ -190,7 +187,7 @@ class FeedUploadActivity : ComponentActivity() {
                 }
             )
             Field(
-                label = "관련 태그 (#으로 구분)",
+                label = stringResource(R.string.activity_feed_upload_tags),
                 textFieldState = tagFieldState,
                 focusRequester = tagFocus,
                 keyboardActions = {
@@ -198,7 +195,7 @@ class FeedUploadActivity : ComponentActivity() {
                 }
             )
             Field(
-                label = "제목",
+                label = stringResource(R.string.activity_feed_upload_title),
                 textFieldState = titleFieldState,
                 focusRequester = titleFocus,
                 keyboardActions = {
@@ -206,7 +203,7 @@ class FeedUploadActivity : ComponentActivity() {
                 }
             )
             Field(
-                label = "간단한 설명",
+                label = stringResource(R.string.activity_feed_upload_description),
                 textFieldState = descriptionFieldState,
                 imeAction = ImeAction.Done,
                 focusRequester = descriptionFocus,
