@@ -11,7 +11,6 @@ package dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dnd.hackathon.second.healthyhoneytving.activity.main.business.ApiService
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MainType
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val api: ApiService) : ViewModel() {
+class MainViewModel @Inject constructor() : ViewModel() {
     private val _mainType = MutableStateFlow(MainType.Media)
     val mainType = _mainType.asStateFlow()
 
