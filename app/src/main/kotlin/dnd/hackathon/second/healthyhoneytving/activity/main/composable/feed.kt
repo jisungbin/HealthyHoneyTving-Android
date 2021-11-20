@@ -12,22 +12,28 @@ package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +43,11 @@ import androidx.compose.ui.unit.sp
 import com.skydoves.landscapist.coil.CoilImage
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
+import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
+import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
+import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
 import kotlin.random.Random
@@ -45,18 +55,34 @@ import kotlin.random.Random
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyFeed() {
+    val vm: MainViewModel = composableActivityViewModel()
+    val menuTypeState by vm.menuType.collectAsState()
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(TestUtil.Feeds) { feed ->
-            Feed(modifier = Modifier.animateItemPlacement(), feed = feed)
+            if (menuTypeState == MenuType.List) {
+                FeedListItem(modifier = Modifier.animateItemPlacement(), feed = feed)
+            } else {
+                FeedGridItem(
+                    modifier = Modifier
+                        .animateItemPlacement()
+                        .width(screenWidth / 2 - 100.dp)
+                        .wrapContentHeight(),
+                    feed = feed
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun Feed(modifier: Modifier, feed: Feed) {
+private fun FeedListItem(modifier: Modifier, feed: Feed) {
     Column(
         modifier = modifier
             .background(color = Color.White)
@@ -101,7 +127,7 @@ private fun Feed(modifier: Modifier, feed: Feed) {
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.spacedBy(space = 20.dp, alignment = Alignment.Start)
         ) {
             Row(
                 modifier = Modifier.noRippleClickable(onClick = {}),
@@ -118,9 +144,7 @@ private fun Feed(modifier: Modifier, feed: Feed) {
                 Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 15.sp))
             }
             Row(
-                modifier = Modifier
-                    .noRippleClickable(onClick = {})
-                    .padding(start = 20.dp),
+                modifier = Modifier.noRippleClickable(onClick = {}),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(
                     space = 5.dp,
@@ -143,5 +167,66 @@ private fun Feed(modifier: Modifier, feed: Feed) {
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Start
         )
+    }
+}
+
+@Composable
+private fun FeedGridItem(modifier: Modifier, feed: Feed) {
+    Column(modifier = modifier) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+        ) {
+            CoilImage(
+                modifier = Modifier.fillMaxSize(),
+                imageModel = feed.previewImageUrl,
+                contentScale = ContentScale.FillBounds
+            )
+            Text(modifier = Modifier.padding(4.dp), text = DataStore.me.nickname)
+        }
+        Row(
+            modifier = Modifier
+                .padding(4.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Row(
+                modifier = Modifier.noRippleClickable(onClick = {}),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
+            ) { // TODO
+                Icon(
+                    painter = painterResource(R.drawable.ic_round_favorite_border_24),
+                    contentDescription = null
+                )
+                Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
+            }
+            Row(
+                modifier = Modifier
+                    .noRippleClickable(onClick = {})
+                    .padding(start = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
+            ) { // TODO
+                Icon(
+                    painter = painterResource(R.drawable.ic_round_commnet_24),
+                    contentDescription = null
+                )
+                Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
+            }
+            Icon(
+                modifier = Modifier.noRippleClickable(onClick = {}), // TODO
+                painter = painterResource(R.drawable.ic_round_menu_dot_24),
+                contentDescription = null
+            )
+        }
     }
 }

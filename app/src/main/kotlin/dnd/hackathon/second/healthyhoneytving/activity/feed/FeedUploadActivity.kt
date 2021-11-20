@@ -279,7 +279,6 @@ class FeedUploadActivity : ComponentActivity() {
         keyboardActions: () -> Unit
     ) {
         val shape = RoundedCornerShape(5.dp)
-
         val textField = textFieldState.value
 
         Column(
