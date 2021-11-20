@@ -9,6 +9,12 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,9 +26,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -33,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -52,30 +59,42 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
 import kotlin.random.Random
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun LazyFeed() {
     val vm: MainViewModel = composableActivityViewModel()
     val menuTypeState by vm.menuType.collectAsState()
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    AnimatedContent(
+        targetState = menuTypeState,
+        transitionSpec = {
+            fadeIn(animationSpec = tween(500)) with fadeOut(animationSpec = tween(500))
+        }
     ) {
-        items(TestUtil.Feeds) { feed ->
-            if (menuTypeState == MenuType.List) {
-                FeedListItem(modifier = Modifier.animateItemPlacement(), feed = feed)
-            } else {
-                FeedGridItem(
-                    modifier = Modifier
-                        .animateItemPlacement()
-                        .width(screenWidth / 2 - 100.dp)
-                        .wrapContentHeight(),
-                    feed = feed
-                )
+        if (menuTypeState == MenuType.List) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(TestUtil.Feeds) { feed ->
+                    FeedListItem(modifier = Modifier.animateItemPlacement(), feed = feed)
+                }
+            }
+        } else {
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2), modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(TestUtil.Feeds) { feed ->
+                    FeedGridItem(
+                        modifier = Modifier
+                            .animateItemPlacement()
+                            .wrapContentSize(),
+                        feed = feed
+                    )
+                }
             }
         }
     }
@@ -183,7 +202,7 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
                 imageModel = feed.previewImageUrl,
                 contentScale = ContentScale.FillBounds
             )
-            Text(modifier = Modifier.padding(4.dp), text = DataStore.me.nickname)
+            Text(modifier = Modifier.padding(start = 4.dp), text = DataStore.me.nickname)
         }
         Row(
             modifier = Modifier
