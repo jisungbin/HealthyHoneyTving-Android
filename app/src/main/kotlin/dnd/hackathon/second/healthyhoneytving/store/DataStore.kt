@@ -37,5 +37,5 @@ object DataStore {
     fun getUsersFromId(id: String) = users.filter { user -> user.id == id }
     fun getFirstUserFromId(id: String) = users.first { user -> user.id == id }
 
-    fun getCountFromFeedUid(feedUid: Int) = counts.first { count -> count.feedUid == feedUid }
+    // fun getCountFromFeedUid(feedUid: Int) = counts.first { count -> count.feedUid == feedUid }
 }

@@ -29,12 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
-import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
@@ -54,35 +54,28 @@ fun LazyFeed() {
 
 @Composable
 private fun Feed(feed: Feed) {
-    @Composable
-    fun CommonRow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-        Row(
-            modifier = modifier,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(
-                space = 5.dp,
-                alignment = Alignment.CenterHorizontally
-            )
-        ) {
-            content()
-        }
-    }
-
     Column(
         modifier = Modifier
             .background(color = Color.White)
             .fillMaxWidth()
-            .wrapContentHeight()
+            .wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CommonRow {
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(
-                    space = 5.dp,
+                    space = 15.dp,
                     alignment = Alignment.CenterHorizontally
                 )
             ) {
-                Text(text = DataStore.getFirstUserFromId(feed.ownerUid).nickname)
+                Text(text = /*DataStore.getFirstUserFromId(feed.ownerUid).nickname*/ "안녕")
                 Text(
                     text = feed.createdAt.toTimeString(),
                     color = Color.LightGray,
@@ -101,15 +94,19 @@ private fun Feed(feed: Feed) {
                 .size(250.dp)
                 .background(color = colors.secondary)
         )
-        Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-            CommonRow(modifier = Modifier.noRippleClickable(onClick = {})) { // TODO
+        Row(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Row(modifier = Modifier.noRippleClickable(onClick = {})) { // TODO
                 Icon(
                     painter = painterResource(R.drawable.ic_round_favorite_border_24),
                     contentDescription = null
                 )
                 Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
             }
-            CommonRow(
+            Row(
                 modifier = Modifier
                     .noRippleClickable(onClick = {})
                     .padding(start = 10.dp)
@@ -121,6 +118,10 @@ private fun Feed(feed: Feed) {
                 Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
             }
         }
-        Text(text = feed.description)
+        Text(
+            text = /*feed.description*/ TestUtil.generateRandomString(100),
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

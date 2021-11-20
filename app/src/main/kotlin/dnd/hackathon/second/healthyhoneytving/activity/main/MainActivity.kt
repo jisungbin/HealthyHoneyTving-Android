@@ -77,7 +77,6 @@ class MainActivity : ComponentActivity() {
                 Categorie()
                 HorizontalDivider(thickness = 1.dp)
                 Menu()
-                Spacer(Modifier.height(3.dp))
                 LazyFeed()
             }
             BottomBar(

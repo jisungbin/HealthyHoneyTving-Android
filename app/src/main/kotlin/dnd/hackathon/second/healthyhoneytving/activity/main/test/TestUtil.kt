@@ -18,4 +18,6 @@ object TestUtil {
         val Healthy = listOf("식이요법", "스트레칭", "헬스")
         val Media = listOf("게임", "개그", "공포", "고양이")
     }
+
+    fun generateRandomString(length: Int) = List(length) { ('가'..'힣').random() }.joinToString("")
 }
