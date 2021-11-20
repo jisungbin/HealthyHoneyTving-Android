@@ -144,14 +144,15 @@ fun FeedListItem(modifier: Modifier, feed: Feed) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.spacedBy(
                     space = 15.dp,
                     alignment = Alignment.CenterHorizontally
                 )
             ) { // TODO
-                Text(text = DataStore.me.nickname, style = TextStyle(fontSize = 15.sp))
+                Text(text = DataStore.me.nickname, style = TextStyle(fontSize = 20.sp))
                 Text(
+                    modifier = Modifier.padding(bottom = 2.dp),
                     text = feed.createdAt.toTimeString(),
                     color = Color.LightGray,
                     style = TextStyle(fontSize = 13.sp)
@@ -219,8 +220,6 @@ fun FeedListItem(modifier: Modifier, feed: Feed) {
 
 @Composable
 private fun FeedGridItem(modifier: Modifier, feed: Feed) {
-    val nameShape = RoundedCornerShape(5.dp)
-
     Column(modifier = modifier) {
         CoilImage(
             modifier = Modifier
@@ -228,53 +227,53 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
                 .aspectRatio(1f),
             imageModel = feed.previewImageUrl,
             contentScale = ContentScale.FillBounds
-        ) l
+        )
+        Row(
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
             Row(
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .fillMaxWidth(),
+                modifier = Modifier.noRippleClickable(onClick = {}),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Row(
-                    modifier = Modifier.noRippleClickable(onClick = {}),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = 5.dp,
-                        alignment = Alignment.CenterHorizontally
-                    )
-                ) { // TODO
-                    Icon(
-                        painter = painterResource(R.drawable.ic_round_favorite_border_24),
-                        contentDescription = null
-                    )
-                    Text(
-                        text = Random.nextInt(0, 30).toString(),
-                        style = TextStyle(fontSize = 10.sp)
-                    )
-                }
-                Row(
-                    modifier = Modifier.noRippleClickable(onClick = {}),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = 5.dp,
-                        alignment = Alignment.CenterHorizontally
-                    )
-                ) { // TODO
-                    Icon(
-                        painter = painterResource(R.drawable.ic_round_commnet_24),
-                        contentDescription = null
-                    )
-                    Text(
-                        text = Random.nextInt(0, 30).toString(),
-                        style = TextStyle(fontSize = 10.sp)
-                    )
-                }
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
+            ) { // TODO
                 Icon(
-                    modifier = Modifier.noRippleClickable(onClick = {}), // TODO
-                    painter = painterResource(R.drawable.ic_round_menu_dot_24),
+                    painter = painterResource(R.drawable.ic_round_favorite_border_24),
                     contentDescription = null
                 )
+                Text(
+                    text = Random.nextInt(0, 30).toString(),
+                    style = TextStyle(fontSize = 10.sp)
+                )
             }
+            Row(
+                modifier = Modifier.noRippleClickable(onClick = {}),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
+            ) { // TODO
+                Icon(
+                    painter = painterResource(R.drawable.ic_round_commnet_24),
+                    contentDescription = null
+                )
+                Text(
+                    text = Random.nextInt(0, 30).toString(),
+                    style = TextStyle(fontSize = 10.sp)
+                )
+            }
+            Icon(
+                modifier = Modifier.noRippleClickable(onClick = {}), // TODO
+                painter = painterResource(R.drawable.ic_round_menu_dot_24),
+                contentDescription = null
+            )
+        }
     }
 }

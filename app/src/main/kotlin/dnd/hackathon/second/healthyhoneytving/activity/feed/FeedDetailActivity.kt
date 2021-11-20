@@ -14,6 +14,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.HorizontalTopBarCenter
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
+import dnd.hackathon.second.healthyhoneytving.activity.main.composable.FeedListItem
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
@@ -64,6 +66,13 @@ class FeedDetailActivity : ComponentActivity() {
                     .wrapContentHeight(),
                 feed = feed
             )
+        }
+    }
+
+    @Composable
+    private fun FeedItem(modifier: Modifier, feed: Feed) {
+        Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(30.dp)) {
+            FeedListItem(modifier = Modifier, feed = feed)
         }
     }
 }

@@ -67,7 +67,7 @@ fun HorizontalTopBarCenter(modifier: Modifier, title: String) {
                 .clickable {
                     activity.finish()
                 }
-                .size(24.dp),
+                .size(20.dp),
             painter = painterResource(R.drawable.ic_round_arrow_back_24),
             contentDescription = null
         )
