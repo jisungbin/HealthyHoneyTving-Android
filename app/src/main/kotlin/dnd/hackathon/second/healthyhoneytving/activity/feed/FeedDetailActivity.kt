@@ -238,6 +238,8 @@ class FeedDetailActivity : ComponentActivity() {
 
     @Composable
     private fun FeedVote(modifier: Modifier) {
+        var isGood by remember { mutableStateOf(true) }
+
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.Center,
@@ -253,14 +255,21 @@ class FeedDetailActivity : ComponentActivity() {
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
                 Icon(
-                    modifier = Modifier.noRippleClickable(onClick = {}), // TODO
-                    painter = painterResource(R.drawable.ic_outlined_like_24),
-                    contentDescription = null
+                    modifier = Modifier.noRippleClickable(onClick = { isGood = true }), // TODO
+                    painter = painterResource(
+                        if (isGood) R.drawable.ic_filled_like_24 else R.drawable.ic_outlined_like_24
+                    ),
+                    contentDescription = null,
+                    tint = colors.primary
                 )
                 Icon(
-                    modifier = Modifier.noRippleClickable(onClick = {}), // TODO
-                    painter = painterResource(R.drawable.ic_outlined_hate_24),
-                    contentDescription = null
+                    modifier =
+                    Modifier.noRippleClickable(onClick = { isGood = false }), // TODO
+                    painter = painterResource(
+                        if (!isGood) R.drawable.ic_filled_hate_24 else R.drawable.ic_outlined_hate_24
+                    ),
+                    contentDescription = null,
+                    tint = colors.primary
                 )
             }
         }
