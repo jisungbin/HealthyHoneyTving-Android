@@ -15,6 +15,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -64,6 +66,7 @@ import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
+import dnd.hackathon.second.healthyhoneytving.util.core.Web
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
@@ -101,6 +104,7 @@ class FeedDetailActivity : ComponentActivity() {
         val comments by DataStore.comments.collectAsState()
         val commentsFromFeedUid = comments.filter { comment -> comment.feedUid == feed.feedUid }
             .filter { comment -> comment.content.isNotBlank() }
+        val context = LocalContext.current
 
         LazyColumn(modifier = modifier) {
             stickyHeader {
@@ -118,7 +122,10 @@ class FeedDetailActivity : ComponentActivity() {
                 FeedListItem(
                     modifier = Modifier
                         .padding(bottom = 16.dp)
-                        .animateItemPlacement(),
+                        .animateItemPlacement()
+                        .clickable {
+                            Web.open(context = context, feed.link)
+                        },
                     feed = feed,
                     showDotMenu = false
                 )
