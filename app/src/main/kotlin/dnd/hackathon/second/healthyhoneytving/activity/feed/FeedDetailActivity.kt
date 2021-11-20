@@ -99,6 +99,7 @@ class FeedDetailActivity : ComponentActivity() {
     private fun Content(modifier: Modifier, feed: Feed) {
         val comments by DataStore.comments.collectAsState()
         val commentsFromFeedUid = comments.filter { comment -> comment.feedUid == feed.feedUid }
+            .filter { comment -> comment.content.isNotBlank() }
 
         LazyColumn(modifier = modifier) {
             stickyHeader {
@@ -274,7 +275,6 @@ class FeedDetailActivity : ComponentActivity() {
     private fun handleState(state: MviFeedUploadState) {
         if (!state.isException()) {
             if (state.loaded && state.uploadResult) {
-                finish()
                 toast(getString(R.string.activity_feed_detail_toast_commented))
             }
         } else {

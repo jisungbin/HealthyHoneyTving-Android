@@ -46,6 +46,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        /*NotificationUtil.showNormalNotification(
+            context = applicationContext,
+            id = 1000,
+            channelId = getString(R.string.app_name),
+            title = "내 소중한 건강!",
+            content = "스트레칭 하시는거 잊지 않으셨죠? :)",
+            isOnGoing = false,
+            showTimestamp = false,
+            icon = R.drawable.ic_round_logo_500
+        )*/
         SystemUiController(window).setSystemBarsColor(Color.White)
         setContent {
             LaunchedEffect(Unit) {
