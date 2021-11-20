@@ -10,13 +10,13 @@
 package dnd.hackathon.second.healthyhoneytving.store
 
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Comment
-import dnd.hackathon.second.healthyhoneytving.activity.main.model.Count
+import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 
 // TODO: 이게 맞는 방법인지는 항상 의문
 object DataStore {
     private val users: MutableList<User> = mutableListOf()
-    private val counts: MutableList<Count> = mutableListOf()
+    private val feeds: MutableList<Feed> = mutableListOf()
     private val comments: MutableList<Comment> = mutableListOf()
 
     var me = User()
@@ -25,8 +25,8 @@ object DataStore {
         this.users.addAll(users)
     }
 
-    fun updateCounts(counts: List<Count>) {
-        this.counts.addAll(counts)
+    fun updateFeeds(feeds: List<Feed>) {
+        this.feeds.addAll(feeds)
     }
 
     fun updateCommnets(comments: List<Comment>) {

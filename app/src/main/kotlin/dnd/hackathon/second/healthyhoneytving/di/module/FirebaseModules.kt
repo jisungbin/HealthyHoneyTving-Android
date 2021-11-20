@@ -20,6 +20,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.ViewModelScoped
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreException
+import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreFeed
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreUser
 
 @Module
@@ -29,6 +30,11 @@ object FirebaseModuleViewModel {
     @FirestoreUser
     @ViewModelScoped
     fun provideFirestoreUser(): CollectionReference = Firebase.firestore.collection("users")
+
+    @Provides
+    @FirestoreFeed
+    @ViewModelScoped
+    fun provideFirestoreFeed(): CollectionReference = Firebase.firestore.collection("feeds")
 }
 
 @Module

@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.BuildConfig
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.LoginActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.RegisterActivity
@@ -74,7 +75,8 @@ import java.util.Calendar
 @AndroidEntryPoint
 class StartActivity : ComponentActivity() {
 
-    private val vm: JoinViewModel by viewModels()
+    private val feedVm: FeedViewModel by viewModels()
+    private val joinVm: JoinViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,7 +124,13 @@ class StartActivity : ComponentActivity() {
                 rotate = 0F
                 iconOffsetX = (-90).dp
                 showLabel = true
-                vm.loadAllUsers().doWhen(
+                joinVm.loadAllUsers().doWhen(
+                    onSuccess = {},
+                    onFailure = { throwable ->
+                        throw throwable
+                    }
+                )
+                feedVm.loadAllFeeds().doWhen(
                     onSuccess = {},
                     onFailure = { throwable ->
                         throw throwable
@@ -130,7 +138,7 @@ class StartActivity : ComponentActivity() {
                 )
             }
 
-            doDelayed(1500L) {
+            doDelayed(500L) {
                 if (autoLoginId == null) {
                     titleOffsetY = (-150).dp
                     showButtons = true
