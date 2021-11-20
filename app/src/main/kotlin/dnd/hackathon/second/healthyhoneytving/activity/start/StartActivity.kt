@@ -67,8 +67,6 @@ import dnd.hackathon.second.healthyhoneytving.util.constant.DataConstant
 import dnd.hackathon.second.healthyhoneytving.util.core.DataUtil
 import dnd.hackathon.second.healthyhoneytving.util.extension.doDelayed
 import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
-import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
-import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import java.util.Calendar
 
@@ -124,23 +122,23 @@ class StartActivity : ComponentActivity() {
                 rotate = 0F
                 iconOffsetX = (-90).dp
                 showLabel = true
+                vm.loadAllUsers().doWhen(
+                    onSuccess = {},
+                    onFailure = { throwable ->
+                        throw throwable
+                    }
+                )
             }
 
-            doDelayed(2000L) {
+            doDelayed(1500L) {
                 if (autoLoginId == null) {
                     titleOffsetY = (-150).dp
                     showButtons = true
                 } else {
-                    vm.findUserById(autoLoginId).doWhen(
-                        onSuccess = { users ->
-                            UserStore.me = users.first()
-                            finish()
-                            startActivity(Intent(this@StartActivity, MainActivity::class.java))
-                        },
-                        onFailure = { throwable ->
-                            errorToast(this@StartActivity, throwable.toException())
-                        }
-                    )
+                    val me = UserStore.getFromId(autoLoginId).first()
+                    UserStore.me = me
+                    finish()
+                    startActivity(Intent(this@StartActivity, MainActivity::class.java))
                 }
             }
         }

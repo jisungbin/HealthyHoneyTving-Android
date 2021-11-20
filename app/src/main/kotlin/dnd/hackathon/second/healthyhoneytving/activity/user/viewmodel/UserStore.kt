@@ -22,5 +22,16 @@ import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 
 // TODO: 이게 맞는 방법인지는 항상 의문
 object UserStore {
+    @Suppress("ObjectPropertyName")
+    private val _users: MutableList<User> = mutableListOf()
+    val users get(): List<User> = _users
+
     var me = User()
+
+    fun updateUsers(users: List<User>) {
+        _users.addAll(users)
+    }
+
+    fun getFromNickname(nickname: String) = users.filter { user -> user.nickname == nickname }
+    fun getFromId(id: String) = users.filter { user -> user.id == id }
 }

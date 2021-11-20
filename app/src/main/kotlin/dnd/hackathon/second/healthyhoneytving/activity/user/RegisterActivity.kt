@@ -63,6 +63,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.user.composable.TopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
+import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.UserStore
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
@@ -70,9 +71,7 @@ import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorError
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
-import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
-import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.viewmodel.observe
@@ -339,18 +338,12 @@ class RegisterActivity : ComponentActivity() {
                                 modifier = Modifier.padding(5.dp),
                                 onClick = {
                                     coroutineScope.launch {
-                                        vm.findUserByNickname(textField.text).doWhen(
-                                            onSuccess = { users ->
-                                                isNicknameUseableState.value = users.isEmpty()
-                                                if (!isNicknameUseableState.value!!) {
-                                                    subLabelState.value =
-                                                        getString(R.string.activity_register_already_using_nickname)
-                                                }
-                                            },
-                                            onFailure = { throwable ->
-                                                errorToast(context, throwable.toException())
-                                            }
-                                        )
+                                        val users = UserStore.getFromNickname(textField.text)
+                                        isNicknameUseableState.value = users.isEmpty()
+                                        if (!isNicknameUseableState.value!!) {
+                                            subLabelState.value =
+                                                getString(R.string.activity_register_already_using_nickname)
+                                        }
                                     }
                                 }
                             ) {
