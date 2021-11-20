@@ -80,11 +80,9 @@ class FeedDetailActivity : ComponentActivity() {
                         .background(color = Color.White)
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    feed = DataStore.feeds.value.first {
-                        it.feedUid == intent.getStringExtra(
-                            IntentConstant.FeedId
-                        )!!.toInt()
-                    }
+                    feed = DataStore.getFirstFeedFromUid(
+                        intent.getIntExtra(IntentConstant.FeedId, 0)
+                    )
                 )
             } // TODO
         }

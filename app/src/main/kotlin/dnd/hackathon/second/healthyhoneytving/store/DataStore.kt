@@ -53,4 +53,6 @@ object DataStore {
     fun getUsersFromNickname(nickname: String) = _users.filter { user -> user.nickname == nickname }
     fun getUsersFromId(id: String) = _users.filter { user -> user.id == id }
     fun getFirstUserFromId(id: String) = _users.first { user -> user.id == id }
+
+    fun getFirstFeedFromUid(uid: Int) = feeds.value.first { feed -> feed.feedUid == uid }
 }
