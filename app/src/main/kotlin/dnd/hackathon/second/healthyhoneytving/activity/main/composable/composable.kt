@@ -46,7 +46,11 @@ fun Categorie() {
     val mainTypeState by vm.mainType.collectAsState()
     val selectCategory by vm.selectCategory.collectAsState()
     val feeds by DataStore.feeds.collectAsState()
-    val categories = feeds.filter { it.mainType == mainTypeState }.map { it.tags }.flatten()
+    val categories = feeds.asSequence()
+        .filter { it.mainType == mainTypeState }
+        .map { it.tags }.flatten()
+        .filter { it.isNotBlank() }.distinct()
+        .toList()
 
     if (selectCategory == "" && categories.isNotEmpty()) {
         vm.updateSelectCategory(categories.first())

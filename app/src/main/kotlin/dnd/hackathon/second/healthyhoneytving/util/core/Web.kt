@@ -33,5 +33,6 @@ object Web {
         }
     }
 
-    fun getYoutubeThumbnailAddress(videoId: String) = "https://img.youtube.com/vi/$videoId/0.jpg"
+    fun parseYoutubeThumbnailAddress(youtubeAddress: String) =
+        "https://img.youtube.com/vi/${youtubeAddress.split("watch?v=")[1]}/0.jpg"
 }
