@@ -131,14 +131,14 @@ fun LazyFeed() {
 }
 
 @Composable
-fun FeedListItem(modifier: Modifier, feed: Feed) {
+fun FeedListItem(modifier: Modifier, feed: Feed, showDotMenu: Boolean = true) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -158,11 +158,13 @@ fun FeedListItem(modifier: Modifier, feed: Feed) {
                     style = TextStyle(fontSize = 13.sp)
                 )
             }
-            Icon(
-                modifier = Modifier.noRippleClickable(onClick = {}), // TODO
-                painter = painterResource(R.drawable.ic_round_menu_dot_24),
-                contentDescription = null
-            )
+            if (showDotMenu) {
+                Icon(
+                    modifier = Modifier.noRippleClickable(onClick = {}), // TODO
+                    painter = painterResource(R.drawable.ic_round_menu_dot_24),
+                    contentDescription = null
+                )
+            }
         }
         CoilImage(
             modifier = Modifier.requiredHeightIn(max = 500.dp),
@@ -171,7 +173,7 @@ fun FeedListItem(modifier: Modifier, feed: Feed) {
         )
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = 20.dp, alignment = Alignment.Start)

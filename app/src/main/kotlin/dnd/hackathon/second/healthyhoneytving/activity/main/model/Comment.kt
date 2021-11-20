@@ -9,9 +9,13 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.model
 
+import java.util.Date
+import kotlin.random.Random
+
 data class Comment(
     val feedUid: Int = 0,
     val ownerUid: String = "",
+    val commentUid: Int = Random.nextInt(),
     val content: String = "",
-    val createdAt: Long = 0L
+    val createdAt: Long = Date().time
 )

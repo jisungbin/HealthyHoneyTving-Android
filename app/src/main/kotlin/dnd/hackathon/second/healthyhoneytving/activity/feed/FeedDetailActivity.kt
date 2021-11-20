@@ -72,7 +72,8 @@ class FeedDetailActivity : ComponentActivity() {
     @Composable
     private fun FeedItem(modifier: Modifier, feed: Feed) {
         Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(30.dp)) {
-            FeedListItem(modifier = Modifier, feed = feed)
+            FeedListItem(modifier = Modifier, feed = feed, showDotMenu = false)
+
         }
     }
 }
