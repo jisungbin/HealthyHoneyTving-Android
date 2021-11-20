@@ -12,28 +12,34 @@ package dnd.hackathon.second.healthyhoneytving.store
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Comment
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
+import dnd.hackathon.second.healthyhoneytving.util.operator.plusAssign
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 // TODO: 이게 맞는 방법인지는 항상 의문
 @Suppress("ObjectPropertyName")
 object DataStore {
     private val _users: MutableList<User> = mutableListOf()
-    private val _feeds: MutableList<Feed> = mutableListOf()
-    private val _comments: MutableList<Comment> = mutableListOf()
+    private val _feeds = MutableStateFlow(listOf<Feed>())
+    private val _comments = MutableStateFlow(listOf<Comment>())
 
-    val feeds: List<Feed> get() = _feeds
-
+    val feeds = _feeds.asStateFlow()
     var me = User()
+
+    fun updateUser(user: User) {
+        this._users.add(user)
+    }
 
     fun updateUsers(users: List<User>) {
         this._users.addAll(users)
     }
 
     fun updateFeeds(feeds: List<Feed>) {
-        this._feeds.addAll(feeds)
+        this._feeds += feeds
     }
 
     fun updateCommnets(comments: List<Comment>) {
-        this._comments.addAll(comments)
+        this._comments += comments
     }
 
     fun getUsersFromNickname(nickname: String) = _users.filter { user -> user.nickname == nickname }

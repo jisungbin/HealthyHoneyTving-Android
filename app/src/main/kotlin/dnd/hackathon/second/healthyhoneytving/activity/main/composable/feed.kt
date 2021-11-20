@@ -69,8 +69,9 @@ fun LazyFeed() {
     val mainTypeState by vm.mainType.collectAsState()
     val selectCategory by vm.selectCategory.collectAsState()
     val menuTypeState = vm.menuType.collectAsState()
-    val feeds =
-        DataStore.feeds.filter { it.mainType == mainTypeState && it.tags.contains(selectCategory) }
+    val feeds = DataStore.feeds.collectAsState().value.filter {
+        it.mainType == mainTypeState && it.tags.contains(selectCategory)
+    }
 
     Crossfade(
         modifier = Modifier.background(color = colorBackgroundGray),

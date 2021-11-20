@@ -45,10 +45,10 @@ fun Categorie() {
     val vm: MainViewModel = composableActivityViewModel()
     val mainTypeState by vm.mainType.collectAsState()
     val selectCategory by vm.selectCategory.collectAsState()
-    val categories =
-        DataStore.feeds.filter { it.mainType == mainTypeState }.map { it.tags }.flatten()
+    val feeds by DataStore.feeds.collectAsState()
+    val categories = feeds.filter { it.mainType == mainTypeState }.map { it.tags }.flatten()
 
-    if (selectCategory == "") {
+    if (selectCategory == "" && categories.isNotEmpty()) {
         vm.updateSelectCategory(categories.first())
     }
 

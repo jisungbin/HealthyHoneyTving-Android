@@ -51,6 +51,7 @@ class JoinViewModel @Inject constructor(
                                 exception = null
                             )
                         }
+                        DataStore.updateUser(user)
                         postSideEffect(BaseMviSideEffect.Toast("가입이 완료되었어요."))
                     }
                 }.addOnFailureListener { exception ->
