@@ -12,16 +12,19 @@ package dnd.hackathon.second.healthyhoneytving.activity.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
+import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.BottomBar
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Categorie
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.HorizontalDivider
@@ -31,14 +34,29 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.composable.TopBar
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
+import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
+import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
+import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val feedVm: FeedViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         SystemUiController(window).setSystemBarsColor(Color.White)
         setContent {
+            LaunchedEffect(Unit) {
+                feedVm.loadAllComments().doWhen(
+                    onSuccess = {},
+                    onFailure = { throwable ->
+                        errorToast(this@MainActivity, throwable.toException("댓글 로드 실패"))
+                    }
+                )
+            }
+
             MaterialTheme {
                 Content()
             }

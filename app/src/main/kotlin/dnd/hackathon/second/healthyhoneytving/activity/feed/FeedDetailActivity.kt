@@ -31,6 +31,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,18 +52,22 @@ import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.HorizontalTopBarCenter
+import dnd.hackathon.second.healthyhoneytving.activity.feed.mvi.MviFeedUploadState
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.FeedListItem
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Comment
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
-import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
+import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
+import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
+import dnd.hackathon.second.healthyhoneytving.util.extension.toast
+import org.orbitmvi.orbit.viewmodel.observe
 
 @AndroidEntryPoint
 class FeedDetailActivity : ComponentActivity() {
@@ -72,6 +77,7 @@ class FeedDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        vm.observe(lifecycleOwner = this, state = ::handleState, sideEffect = ::handleSideEffect)
         SystemUiController(window).setSystemBarsColor(Color.White)
         setContent {
             MaterialTheme {
@@ -84,13 +90,16 @@ class FeedDetailActivity : ComponentActivity() {
                         intent.getIntExtra(IntentConstant.FeedId, 0)
                     )
                 )
-            } // TODO
+            }
         }
     }
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun Content(modifier: Modifier, feed: Feed) {
+        val comments by DataStore.comments.collectAsState()
+        val commentsFromFeedUid = comments.filter { comment -> comment.feedUid == feed.feedUid }
+
         LazyColumn(modifier = modifier) {
             stickyHeader {
                 HorizontalTopBarCenter(
@@ -113,8 +122,7 @@ class FeedDetailActivity : ComponentActivity() {
                 )
             }
 
-            val comments = TestUtil.Comments
-            items(comments) { comment ->
+            items(commentsFromFeedUid) { comment ->
                 Column(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -144,7 +152,8 @@ class FeedDetailActivity : ComponentActivity() {
                             .height(50.dp)
                             .background(color = Color.White, shape = shape)
                             .animateItemPlacement(),
-                        shape = shape
+                        shape = shape,
+                        feed = feed
                     )
                     Spacer(modifier = Modifier.height(30.dp))
                 }
@@ -188,7 +197,7 @@ class FeedDetailActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun CommentField(modifier: Modifier, shape: Shape) {
+    private fun CommentField(modifier: Modifier, shape: Shape, feed: Feed) {
         var field by remember { mutableStateOf(TextFieldValue()) }
 
         OutlinedTextField(
@@ -214,7 +223,10 @@ class FeedDetailActivity : ComponentActivity() {
             ),
             trailingIcon = {
                 Text(
-                    modifier = Modifier.noRippleClickable(onClick = {}),
+                    modifier = Modifier.noRippleClickable(onClick = {
+                        val comment = Comment(feedUid = feed.feedUid, content = field.text)
+                        vm.uploadComment(feed = feed, comment = comment)
+                    }),
                     text = stringResource(R.string.activity_feed_detail_commented),
                     color = colors.primary,
                     style = TextStyle(fontSize = 15.sp),
@@ -250,6 +262,23 @@ class FeedDetailActivity : ComponentActivity() {
                     contentDescription = null
                 )
             }
+        }
+    }
+
+    private fun handleSideEffect(sideEffect: BaseMviSideEffect) {
+        when (sideEffect) {
+            is BaseMviSideEffect.Toast -> toast(sideEffect.message)
+        }
+    }
+
+    private fun handleState(state: MviFeedUploadState) {
+        if (!state.isException()) {
+            if (state.loaded && state.uploadResult) {
+                finish()
+                toast(getString(R.string.activity_feed_detail_toast_commented))
+            }
+        } else {
+            errorToast(this, state.exception!!)
         }
     }
 }

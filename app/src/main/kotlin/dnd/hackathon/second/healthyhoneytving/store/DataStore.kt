@@ -24,6 +24,7 @@ object DataStore {
     private val _comments = MutableStateFlow(listOf<Comment>())
 
     val feeds = _feeds.asStateFlow()
+    val comments = _comments.asStateFlow()
     var me = User()
 
     fun updateUser(user: User) {

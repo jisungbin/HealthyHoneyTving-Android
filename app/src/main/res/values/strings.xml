@@ -47,4 +47,5 @@
     <string name="activity_feed_detail_write_comment">댓글 달기…</string>
     <string name="activity_feed_detail_vote">이 미디어 어때요?</string>
     <string name="activity_feed_detail_commented">게시</string>
+    <string name="activity_feed_detail_toast_commented">댓글이 등록됐어요.</string>
 </resources>

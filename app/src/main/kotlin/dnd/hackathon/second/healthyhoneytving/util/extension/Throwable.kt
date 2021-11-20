@@ -9,4 +9,5 @@
 
 package dnd.hackathon.second.healthyhoneytving.util.extension
 
-fun Throwable.toException() = Exception(this)
+fun Throwable.toException(cause: String = "") =
+    Exception("${if (cause != "") "$cause\n\n" else ""}$this")

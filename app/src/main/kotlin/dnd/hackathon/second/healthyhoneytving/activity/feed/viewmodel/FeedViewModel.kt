@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.feed.mvi.MviFeedUploadState
+import dnd.hackathon.second.healthyhoneytving.activity.main.model.Comment
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreComment
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreFeed
@@ -60,9 +61,9 @@ class FeedViewModel @Inject constructor(
             }
     }
 
-    /*fun uploadComment(comment: Comment) = intent {
+    fun uploadComment(feed: Feed, comment: Comment) = intent {
         firestoreFeed.document(feed.feedUid.toString())
-            .set(feed)
+            .set(comment)
             .addOnSuccessListener {
                 viewModelScope.launch {
                     reduce {
@@ -72,6 +73,7 @@ class FeedViewModel @Inject constructor(
                             exception = null
                         )
                     }
+                    DataStore.updateCommnet(comment)
                 }
             }
             .addOnFailureListener { exception ->
@@ -81,13 +83,26 @@ class FeedViewModel @Inject constructor(
                     }
                 }
             }
-    }*/
+    }
 
     suspend fun loadAllFeeds() = suspendCancellableCoroutine<Result<Unit>> { continuation ->
         firestoreFeed.get()
             .addOnSuccessListener { querySnapshot ->
                 val feeds = querySnapshot.documents.mapNotNull { it.toObject(Feed::class.java) }
                 DataStore.updateFeeds(feeds)
+                continuation.resume(Result.success(Unit))
+            }
+            .addOnFailureListener { exception ->
+                continuation.resume(Result.failure(exception))
+            }
+    }
+
+    suspend fun loadAllComments() = suspendCancellableCoroutine<Result<Unit>> { continuation ->
+        firestoreFeed.get()
+            .addOnSuccessListener { querySnapshot ->
+                val comments =
+                    querySnapshot.documents.mapNotNull { it.toObject(Comment::class.java) }
+                DataStore.updateCommnets(comments)
                 continuation.resume(Result.success(Unit))
             }
             .addOnFailureListener { exception ->
