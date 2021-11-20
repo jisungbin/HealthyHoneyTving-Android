@@ -61,6 +61,7 @@ import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
+import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 
 @AndroidEntryPoint
@@ -79,9 +80,13 @@ class FeedDetailActivity : ComponentActivity() {
                         .background(color = Color.White)
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    feed = Feed() // TODO
+                    feed = DataStore.feeds.value.first {
+                        it.feedUid == intent.getStringExtra(
+                            IntentConstant.FeedId
+                        )!!.toInt()
+                    }
                 )
-            }
+            } // TODO
         }
     }
 
