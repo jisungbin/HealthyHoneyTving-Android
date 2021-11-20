@@ -15,7 +15,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -222,26 +221,13 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
     val nameShape = RoundedCornerShape(5.dp)
 
     Column(modifier = modifier) {
-        Box(
+        CoilImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)
-        ) {
-            CoilImage(
-                modifier = Modifier.fillMaxSize(),
-                imageModel = feed.previewImageUrl,
-                contentScale = ContentScale.FillBounds
-            )
-            Text(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .background(color = Color.White.copy(alpha = 0.8f), shape = nameShape)
-                    .clip(nameShape)
-                    .padding(4.dp),
-                text = DataStore.me.nickname,
-                style = TextStyle(fontSize = 15.sp)
-            )
-        }
+                .aspectRatio(1f),
+            imageModel = feed.previewImageUrl,
+            contentScale = ContentScale.FillBounds
+        )
         Row(
             modifier = Modifier
                 .padding(vertical = 8.dp)

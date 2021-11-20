@@ -2,7 +2,7 @@
  * HealthyHoneyTving © DND 해커톤 2조. all rights reserved.
  * HealthyHoneyTving license is under the MIT.
  *
- * [topbar.kt] created by Ji Sungbin on 21. 11. 20. 오전 12:35
+ * [horizontaltopbar.kt] created by Ji Sungbin on 21. 11. 20. 오전 12:35
  *  
  * Please see: https://github.com/DND-hackathon/HealthyHoneyTving-Android/blob/dev/LICENSE.
  */
@@ -27,8 +27,9 @@ import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 
 @Composable
-fun FeedTopBar(modifier: Modifier, title: String) {
+fun HorizontalTopBar(modifier: Modifier, title: String) {
     val activity = getActivity()
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(20.dp),

@@ -56,10 +56,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
-import dnd.hackathon.second.healthyhoneytving.activity.user.composable.UserTopBar
+import dnd.hackathon.second.healthyhoneytving.activity.user.composable.VerticalTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
@@ -141,7 +140,7 @@ class RegisterActivity : ComponentActivity() {
                 .verticalScroll(rememberScrollState())
                 .padding(30.dp)
         ) {
-            UserTopBar(
+            VerticalTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),

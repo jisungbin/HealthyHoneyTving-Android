@@ -60,7 +60,7 @@ import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
-import dnd.hackathon.second.healthyhoneytving.activity.user.composable.UserTopBar
+import dnd.hackathon.second.healthyhoneytving.activity.user.composable.VerticalTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffect
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
@@ -128,7 +128,7 @@ class LoginActivity : ComponentActivity() {
                 .verticalScroll(rememberScrollState())
                 .padding(30.dp)
         ) {
-            UserTopBar(
+            VerticalTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),

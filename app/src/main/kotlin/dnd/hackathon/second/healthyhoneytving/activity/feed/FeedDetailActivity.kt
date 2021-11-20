@@ -17,6 +17,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
@@ -31,14 +32,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.landscapist.coil.CoilImage
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.HorizontalTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
+import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
@@ -54,22 +56,34 @@ class FeedDetailActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                Content()
+                Content(TestUtil.Feeds.first())
             }
         }
     }
 
     @Composable
-    private fun Content() {
+    private fun Content(feed: Feed) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            HorizontalTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                title = feed.title
+            )
+            FeedItem(
+                modifier = Modifier
+                    .background(color = Color.White)
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                feed = feed
+            )
+        }
     }
 
     @Composable
-    private fun FeedListItem(modifier: Modifier, feed: Feed) {
+    private fun FeedItem(modifier: Modifier, feed: Feed) {
         Column(
-            modifier = modifier
-                .background(color = Color.White)
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier = modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -109,7 +123,10 @@ class FeedDetailActivity : ComponentActivity() {
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = 20.dp, alignment = Alignment.Start)
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 20.dp,
+                    alignment = Alignment.Start
+                )
             ) {
                 Row(
                     modifier = Modifier.noRippleClickable(onClick = {}),
@@ -123,7 +140,10 @@ class FeedDetailActivity : ComponentActivity() {
                         painter = painterResource(R.drawable.ic_round_favorite_border_24),
                         contentDescription = null
                     )
-                    Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 15.sp))
+                    Text(
+                        text = Random.nextInt(0, 30).toString(),
+                        style = TextStyle(fontSize = 15.sp)
+                    )
                 }
                 Row(
                     modifier = Modifier.noRippleClickable(onClick = {}),
@@ -137,7 +157,10 @@ class FeedDetailActivity : ComponentActivity() {
                         painter = painterResource(R.drawable.ic_round_commnet_24),
                         contentDescription = null
                     )
-                    Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 15.sp))
+                    Text(
+                        text = Random.nextInt(0, 30).toString(),
+                        style = TextStyle(fontSize = 15.sp)
+                    )
                 }
             }
             Text(

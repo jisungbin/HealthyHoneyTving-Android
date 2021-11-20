@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
-import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.FeedTopBar
+import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.HorizontalTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.feed.mvi.MviFeedUploadState
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.calcColorAnimationState
@@ -129,7 +129,7 @@ class FeedUploadActivity : ComponentActivity() {
                 }
             }
 
-            FeedTopBar(
+            HorizontalTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
