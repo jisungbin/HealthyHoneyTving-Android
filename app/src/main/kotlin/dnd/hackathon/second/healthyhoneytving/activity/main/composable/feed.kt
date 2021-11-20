@@ -32,6 +32,7 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +40,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -54,6 +56,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.store.DataStore
+import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
@@ -66,6 +69,7 @@ fun LazyFeed() {
     val menuTypeState by vm.menuType.collectAsState()
 
     AnimatedContent(
+        modifier = Modifier.background(color = colorBackgroundGray),
         targetState = menuTypeState,
         transitionSpec = {
             fadeIn(animationSpec = tween(500)) with fadeOut(animationSpec = tween(500))
@@ -87,11 +91,15 @@ fun LazyFeed() {
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+                val shape = RoundedCornerShape(5.dp)
+
                 items(TestUtil.Feeds) { feed ->
                     FeedGridItem(
                         modifier = Modifier
                             .animateItemPlacement()
-                            .wrapContentSize(),
+                            .wrapContentSize()
+                            .background(color = Color.White, shape = shape)
+                            .clip(shape),
                         feed = feed
                     )
                 }
@@ -202,12 +210,10 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
                 imageModel = feed.previewImageUrl,
                 contentScale = ContentScale.FillBounds
             )
-            Text(modifier = Modifier.padding(start = 4.dp), text = DataStore.me.nickname)
+            Text(modifier = Modifier.padding(start = 16.dp), text = DataStore.me.nickname)
         }
         Row(
-            modifier = Modifier
-                .padding(4.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
@@ -226,9 +232,7 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
                 Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
             }
             Row(
-                modifier = Modifier
-                    .noRippleClickable(onClick = {})
-                    .padding(start = 20.dp),
+                modifier = Modifier.noRippleClickable(onClick = {}),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(
                     space = 5.dp,
