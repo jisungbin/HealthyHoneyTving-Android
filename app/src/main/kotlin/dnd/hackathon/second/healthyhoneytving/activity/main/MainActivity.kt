@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
+import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.BottomBar
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Categorie
@@ -34,6 +35,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.composable.TopBar
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
+import dnd.hackathon.second.healthyhoneytving.util.core.NotificationUtil
 import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.toException
@@ -46,7 +48,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*NotificationUtil.showNormalNotification(
+        NotificationUtil.showNormalNotification(
             context = applicationContext,
             id = 1000,
             channelId = getString(R.string.app_name),
@@ -55,7 +57,7 @@ class MainActivity : ComponentActivity() {
             isOnGoing = false,
             showTimestamp = false,
             icon = R.drawable.ic_round_logo_500
-        )*/
+        )
         SystemUiController(window).setSystemBarsColor(Color.White)
         setContent {
             LaunchedEffect(Unit) {

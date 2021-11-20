@@ -11,5 +11,5 @@ package dnd.hackathon.second.healthyhoneytving.activity.main.model
 
 object MainType {
     const val Media = "MEDIA"
-    const val Healthy = "HEALTH"
+    const val Healthy = "HEALTHY"
 }
