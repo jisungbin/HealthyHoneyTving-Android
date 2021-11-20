@@ -15,7 +15,7 @@ data class Feed(
     val tags: List<String> = emptyList(),
     val link: String = "",
     val title: String = "",
-    val desscription: String = "",
+    val description: String = "",
     val previewImageUrl: String = "",
     val createdAt: Long = Date().time,
     val ownerUid: String = "",
