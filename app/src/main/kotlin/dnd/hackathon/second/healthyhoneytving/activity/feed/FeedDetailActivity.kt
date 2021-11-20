@@ -41,7 +41,9 @@ import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.Horizonta
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
+import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
 import kotlin.random.Random
@@ -54,6 +56,7 @@ class FeedDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        SystemUiController(window).setSystemBarsColor(Color.White)
         setContent {
             MaterialTheme {
                 Content(TestUtil.Feeds.first())
@@ -99,8 +102,8 @@ class FeedDetailActivity : ComponentActivity() {
                         space = 15.dp,
                         alignment = Alignment.CenterHorizontally
                     )
-                ) { // TODO
-                    Text(text = /*DataStore.getFirstUserFromId(feed.ownerUid).nickname*/ "안녕")
+                ) {
+                    Text(text = DataStore.me.nickname)
                     Text(
                         text = feed.createdAt.toTimeString(),
                         color = Color.LightGray,
