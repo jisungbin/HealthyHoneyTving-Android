@@ -15,7 +15,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,11 +25,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -40,8 +37,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -60,7 +59,9 @@ import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.FeedTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.feed.mvi.MviFeedUploadState
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
+import dnd.hackathon.second.healthyhoneytving.activity.main.composable.calcColorAnimationState
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.SnsType
+import dnd.hackathon.second.healthyhoneytving.activity.main.model.toKorean
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
@@ -68,6 +69,7 @@ import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
+import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 
 @AndroidEntryPoint
@@ -99,6 +101,7 @@ class FeedUploadActivity : ComponentActivity() {
             val linkFieldState = remember { mutableStateOf(TextFieldValue()) }
             val titleFieldState = remember { mutableStateOf(TextFieldValue()) }
             val descriptionFieldState = remember { mutableStateOf(TextFieldValue()) }
+            val selectSnsState = remember { mutableStateOf("") }
 
             fun upload() {
             }
@@ -122,11 +125,11 @@ class FeedUploadActivity : ComponentActivity() {
                         bottom.linkTo(button.top, 30.dp)
                         height = Dimension.fillToConstraints
                         width = Dimension.fillToConstraints
-                    }
-                    .verticalScroll(rememberScrollState()),
+                    },
                 linkFieldState = linkFieldState,
                 titleFieldState = titleFieldState,
                 descriptionFieldState = descriptionFieldState,
+                selectSnsState = selectSnsState
             )
             Button(
                 modifier = Modifier.constrainAs(button) {
@@ -155,6 +158,7 @@ class FeedUploadActivity : ComponentActivity() {
         linkFieldState: MutableState<TextFieldValue>,
         titleFieldState: MutableState<TextFieldValue>,
         descriptionFieldState: MutableState<TextFieldValue>,
+        selectSnsState: MutableState<String>
     ) {
         val focusManager = LocalFocusManager.current
         val (linkFocus, titleFocus, descriptionFocus) = FocusRequester.createRefs()
@@ -189,12 +193,13 @@ class FeedUploadActivity : ComponentActivity() {
                     focusManager.clearFocus()
                 }
             )
+            SnsPicker(selectSnsState = selectSnsState)
         }
     }
 
     @Composable
     private fun SnsPicker(selectSnsState: MutableState<String>) {
-        val shape = RoundedCornerShape(5.dp)
+        val shape = RoundedCornerShape(10.dp)
 
         Column(
             modifier = Modifier
@@ -207,12 +212,9 @@ class FeedUploadActivity : ComponentActivity() {
                     .padding(top = 5.dp)
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .background(color = Color.LightGray, shape = shape)
-                    .border(
-                        color = Color.LightGray,
-                        shape = shape,
-                        width = 1.dp
-                    ),
+                    .background(color = colorTextGray, shape = shape)
+                    .border(color = colorTextGray, shape = shape, width = 2.dp)
+                    .clip(shape),
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 items(SnsType.asList()) { snsName ->
@@ -220,16 +222,23 @@ class FeedUploadActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(Color.White)
-                            .clickable {
+                            .noRippleClickable(onClick = {
                                 selectSnsState.value = snsName
-                            }
-                            .padding(4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            })
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = snsName)
+                        Text(text = snsName.toKorean())
                         Icon(
                             painter = painterResource(R.drawable.ic_round_check_24),
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = calcColorAnimationState(
+                                input = selectSnsState.value,
+                                target = snsName,
+                                trueColor = colors.primary,
+                                falseColor = colorTextGray
+                            ).value
                         )
                     }
                 }

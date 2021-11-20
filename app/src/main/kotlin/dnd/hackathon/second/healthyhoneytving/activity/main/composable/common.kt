@@ -23,8 +23,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun <T> calcColorAnimationState(input: T, target: T) =
-    animateColorAsState(if (input == target) Color.Black else Color.LightGray)
+fun <T> calcColorAnimationState(
+    input: T,
+    target: T,
+    trueColor: Color = Color.Black,
+    falseColor: Color = Color.LightGray
+) = animateColorAsState(if (input == target) trueColor else falseColor)
 
 @Suppress("RedundantExplicitType")
 @Composable
