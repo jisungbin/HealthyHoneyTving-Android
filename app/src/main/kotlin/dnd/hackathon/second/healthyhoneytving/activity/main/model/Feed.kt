@@ -10,11 +10,13 @@
 package dnd.hackathon.second.healthyhoneytving.activity.main.model
 
 data class Feed(
-    val content: String = "",
     val tags: List<String> = emptyList(),
-    val titke: String = "",
+    val link: String = "",
+    val title: String = "",
+    val desscription: String,
+    val previewImageUrl: String = "",
     val like: Int = 0,
     val hate: Int = 0,
     val ownerUid: String = "",
-    val feedUid: String = ""
+    val feedUid: Int = 0
 )
