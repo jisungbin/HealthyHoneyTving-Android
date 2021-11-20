@@ -56,7 +56,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
@@ -135,35 +134,23 @@ class RegisterActivity : ComponentActivity() {
             }
         }
 
-        ConstraintLayout(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorBackgroundGray)
+                .verticalScroll(rememberScrollState())
                 .padding(30.dp)
         ) {
-            val (topbar, content, button) = createRefs()
-
             UserTopBar(
-                modifier = Modifier.constrainAs(topbar) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    height = Dimension.wrapContent
-                    width = Dimension.fillToConstraints
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 title = stringResource(R.string.activity_register_title)
             )
             Fields(
                 modifier = Modifier
-                    .constrainAs(content) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(topbar.bottom, 30.dp)
-                        bottom.linkTo(button.top, 30.dp)
-                        height = Dimension.fillToConstraints
-                        width = Dimension.fillToConstraints
-                    }
-                    .verticalScroll(rememberScrollState()),
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
                 passwordConfirmFieldState = passwordConfirmFieldState,
@@ -175,13 +162,9 @@ class RegisterActivity : ComponentActivity() {
                 keyboardDoneAction = { register() }
             )
             Button(
-                modifier = Modifier.constrainAs(button) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.value(45.dp)
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp),
                 onClick = {
                     register()
                 }

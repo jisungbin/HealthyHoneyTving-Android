@@ -24,9 +24,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -55,8 +57,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
@@ -121,46 +121,32 @@ class LoginActivity : ComponentActivity() {
             vm.login(id, password)
         }
 
-        ConstraintLayout(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorBackgroundGray)
+                .verticalScroll(rememberScrollState())
                 .padding(30.dp)
         ) {
-            val (topbar, content, button) = createRefs()
-
             UserTopBar(
-                modifier = Modifier.constrainAs(topbar) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    height = Dimension.wrapContent
-                    width = Dimension.fillToConstraints
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 title = stringResource(R.string.activity_register_title)
             )
             Fields(
-                modifier = Modifier.constrainAs(content) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(topbar.bottom, 30.dp)
-                    bottom.linkTo(button.top, 30.dp)
-                    height = Dimension.fillToConstraints
-                    width = Dimension.fillToConstraints
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
                 passwordFieldSubLabelState = passwordFieldSubLabelState,
                 keyboardDoneAction = { login() }
             )
             Button(
-                modifier = Modifier.constrainAs(button) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.value(45.dp)
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp),
                 onClick = {
                     login()
                 }

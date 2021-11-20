@@ -9,7 +9,9 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.model
 
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import java.util.Date
+import kotlin.random.Random
 
 data class Feed(
     val tags: List<String> = emptyList(),
@@ -18,6 +20,6 @@ data class Feed(
     val description: String = "",
     val previewImageUrl: String = "",
     val createdAt: Long = Date().time,
-    val ownerUid: String = "",
-    val feedUid: Int = 0
+    val ownerUid: String = DataStore.me.id,
+    val feedUid: Int = Random.nextInt()
 )

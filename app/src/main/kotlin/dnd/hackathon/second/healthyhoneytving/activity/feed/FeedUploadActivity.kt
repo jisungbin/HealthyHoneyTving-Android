@@ -25,9 +25,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -44,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,14 +55,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.FeedTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.feed.mvi.MviFeedUploadState
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.calcColorAnimationState
+import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.SnsType
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.toKorean
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
@@ -90,55 +92,66 @@ class FeedUploadActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        ConstraintLayout(
+        val context = LocalContext.current
+
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorBackgroundGray)
-                .padding(30.dp)
+                .verticalScroll(rememberScrollState())
+                .padding(30.dp),
+            verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
-            val (topbar, content, button) = createRefs()
-
             val linkFieldState = remember { mutableStateOf(TextFieldValue()) }
             val titleFieldState = remember { mutableStateOf(TextFieldValue()) }
             val descriptionFieldState = remember { mutableStateOf(TextFieldValue()) }
+            val tagFieldState = remember { mutableStateOf(TextFieldValue()) }
             val selectSnsState = remember { mutableStateOf("") }
 
             fun upload() {
+                val link = linkFieldState.value.text
+                val tags = tagFieldState.value.text.split("#")
+                val title = titleFieldState.value.text
+                val description = descriptionFieldState.value.text
+                val selectSns = selectSnsState.value
+
+                if (
+                    link.isNotBlank() && tags.isNotEmpty() && title.isNotBlank() &&
+                    description.isNotBlank() && selectSns != ""
+                ) { // TODO: 링크 형식 채크 필요
+                    val feed = Feed(
+                        tags = tags,
+                        link = link,
+                        title = title,
+                        description = description,
+                        previewImageUrl = "", // TODO
+                    )
+                    // TODO: upload
+                } else {
+                    toast(context, "모두 다 입력해 주세요")
+                }
             }
 
             FeedTopBar(
-                modifier = Modifier.constrainAs(topbar) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    height = Dimension.wrapContent
-                    width = Dimension.fillToConstraints
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 title = stringResource(R.string.activity_feed_upload_title)
             )
             Fields(
                 modifier = Modifier
-                    .constrainAs(content) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(topbar.bottom, 30.dp)
-                        bottom.linkTo(button.top, 30.dp)
-                        height = Dimension.fillToConstraints
-                        width = Dimension.fillToConstraints
-                    },
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 linkFieldState = linkFieldState,
                 titleFieldState = titleFieldState,
                 descriptionFieldState = descriptionFieldState,
+                tagFieldState = tagFieldState,
                 selectSnsState = selectSnsState
             )
             Button(
-                modifier = Modifier.constrainAs(button) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.value(45.dp)
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp),
                 onClick = {
                     upload()
                 }
@@ -158,10 +171,11 @@ class FeedUploadActivity : ComponentActivity() {
         linkFieldState: MutableState<TextFieldValue>,
         titleFieldState: MutableState<TextFieldValue>,
         descriptionFieldState: MutableState<TextFieldValue>,
+        tagFieldState: MutableState<TextFieldValue>,
         selectSnsState: MutableState<String>
     ) {
         val focusManager = LocalFocusManager.current
-        val (linkFocus, titleFocus, descriptionFocus) = FocusRequester.createRefs()
+        val (linkFocus, tagFocus, titleFocus, descriptionFocus) = FocusRequester.createRefs()
 
         Column(
             modifier = modifier,
@@ -171,6 +185,14 @@ class FeedUploadActivity : ComponentActivity() {
                 label = "미디어 링크",
                 textFieldState = linkFieldState,
                 focusRequester = linkFocus,
+                keyboardActions = {
+                    tagFocus.requestFocus()
+                }
+            )
+            Field(
+                label = "관련 태그 (#으로 구분)",
+                textFieldState = tagFieldState,
+                focusRequester = tagFocus,
                 keyboardActions = {
                     titleFocus.requestFocus()
                 }
