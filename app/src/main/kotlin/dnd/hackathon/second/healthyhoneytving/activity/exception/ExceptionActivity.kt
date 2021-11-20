@@ -34,6 +34,7 @@ import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreException
+import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.util.constant.ExceptionConstant
 import io.github.jisungbin.erratum.ErratumExceptionActivity
@@ -55,7 +56,9 @@ class ExceptionActivity : ErratumExceptionActivity() {
             .set(mapOf("data" to exceptionString!!))
         SystemUiController(window).setSystemBarsColor(Color.White)
         setContent {
-            Content()
+            MaterialTheme {
+                Content()
+            }
         }
     }
 

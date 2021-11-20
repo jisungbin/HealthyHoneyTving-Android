@@ -59,7 +59,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.LoginActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.RegisterActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
-import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.UserStore
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colors
@@ -67,8 +67,6 @@ import dnd.hackathon.second.healthyhoneytving.util.constant.DataConstant
 import dnd.hackathon.second.healthyhoneytving.util.core.DataUtil
 import dnd.hackathon.second.healthyhoneytving.util.extension.doDelayed
 import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
-import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
-import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import java.util.Calendar
 
@@ -97,7 +95,7 @@ class StartActivity : ComponentActivity() {
 
     @Composable
     private fun Content() {
-        val autoLoginId = DataUtil.read(applicationContext, DataConstant.User.Id, null)
+        val autoLoginId = DataUtil.read(applicationContext, DataConstant.UserId, null)
 
         var rotate by remember { mutableStateOf(90f) }
         var iconOffsetX by remember { mutableStateOf(0.dp) }
@@ -124,23 +122,23 @@ class StartActivity : ComponentActivity() {
                 rotate = 0F
                 iconOffsetX = (-90).dp
                 showLabel = true
+                vm.loadAllUsers().doWhen(
+                    onSuccess = {},
+                    onFailure = { throwable ->
+                        throw throwable
+                    }
+                )
             }
 
-            doDelayed(2000L) {
+            doDelayed(1500L) {
                 if (autoLoginId == null) {
                     titleOffsetY = (-150).dp
                     showButtons = true
                 } else {
-                    vm.findUserById(autoLoginId).doWhen(
-                        onSuccess = { users ->
-                            UserStore.me = users.first()
-                            finish()
-                            startActivity(Intent(this@StartActivity, MainActivity::class.java))
-                        },
-                        onFailure = { throwable ->
-                            errorToast(this@StartActivity, throwable.toException())
-                        }
-                    )
+                    val me = DataStore.getFirstUserFromId(autoLoginId)
+                    DataStore.me = me
+                    finish()
+                    startActivity(Intent(this@StartActivity, MainActivity::class.java))
                 }
             }
         }

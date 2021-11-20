@@ -23,9 +23,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -44,7 +46,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -55,24 +56,22 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
-import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
+import dnd.hackathon.second.healthyhoneytving.activity.user.composable.UserTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorError
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
-import dnd.hackathon.second.healthyhoneytving.util.extension.doWhen
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
-import dnd.hackathon.second.healthyhoneytving.util.extension.toException
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.viewmodel.observe
@@ -135,33 +134,23 @@ class RegisterActivity : ComponentActivity() {
             }
         }
 
-        ConstraintLayout(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorBackgroundGray)
+                .verticalScroll(rememberScrollState())
                 .padding(30.dp)
         ) {
-            val (topbar, content, button) = createRefs()
-
-            Toolbar(
-                modifier = Modifier.constrainAs(topbar) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    height = Dimension.wrapContent
-                    width = Dimension.fillToConstraints
-                },
+            UserTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 title = stringResource(R.string.activity_register_title)
             )
             Fields(
-                modifier = Modifier.constrainAs(content) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(topbar.bottom, 10.dp)
-                    bottom.linkTo(button.top, 10.dp)
-                    height = Dimension.fillToConstraints
-                    width = Dimension.fillToConstraints
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
                 passwordConfirmFieldState = passwordConfirmFieldState,
@@ -170,16 +159,12 @@ class RegisterActivity : ComponentActivity() {
                 nicknameFieldSubLabel = nicknameFieldSubLabelState,
                 nicknameFieldSubLabalColor = nicknameFieldSubLabalColorState,
                 isNicknameUseableState = isNicknameUseableState,
-                doneKeyboardAction = { register() }
+                keyboardDoneAction = { register() }
             )
             Button(
-                modifier = Modifier.constrainAs(button) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.value(45.dp)
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp),
                 onClick = {
                     register()
                 }
@@ -204,7 +189,7 @@ class RegisterActivity : ComponentActivity() {
         nicknameFieldSubLabel: MutableState<String>,
         nicknameFieldSubLabalColor: Color,
         isNicknameUseableState: MutableState<Boolean?>,
-        doneKeyboardAction: () -> Unit
+        keyboardDoneAction: () -> Unit
     ) {
         val passwordVisibilityState = remember { mutableStateOf(false) }
 
@@ -256,7 +241,7 @@ class RegisterActivity : ComponentActivity() {
                 focusRequester = nicknameFocus,
                 keyboardActions = {
                     focusManager.clearFocus()
-                    doneKeyboardAction()
+                    keyboardDoneAction()
                 }
             )
         }
@@ -276,7 +261,6 @@ class RegisterActivity : ComponentActivity() {
         imeAction: ImeAction = ImeAction.Next,
         keyboardActions: () -> Unit
     ) {
-        val context = LocalContext.current
         val shape = RoundedCornerShape(5.dp)
         val coroutineScope = rememberCoroutineScope()
 
@@ -289,14 +273,19 @@ class RegisterActivity : ComponentActivity() {
                 .wrapContentHeight()
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = label, color = colorTextGray, fontSize = 13.sp)
-                Text(text = subLabelState.value, color = subLabelColor, fontSize = 11.sp)
+                Text(text = label, color = colorTextGray, style = TextStyle(fontSize = 13.sp))
+                Text(
+                    text = subLabelState.value,
+                    color = subLabelColor,
+                    style = TextStyle(fontSize = 11.sp)
+                )
             }
             OutlinedTextField(
                 modifier = Modifier
+                    .padding(top = 5.dp)
                     .fillMaxWidth()
                     .height(50.dp)
                     .background(color = Color.White, shape = shape)
@@ -339,18 +328,12 @@ class RegisterActivity : ComponentActivity() {
                                 modifier = Modifier.padding(5.dp),
                                 onClick = {
                                     coroutineScope.launch {
-                                        vm.findUserByNickname(textField.text).doWhen(
-                                            onSuccess = { users ->
-                                                isNicknameUseableState.value = users.isEmpty()
-                                                if (!isNicknameUseableState.value!!) {
-                                                    subLabelState.value =
-                                                        getString(R.string.activity_register_already_using_nickname)
-                                                }
-                                            },
-                                            onFailure = { throwable ->
-                                                errorToast(context, throwable.toException())
-                                            }
-                                        )
+                                        val users = DataStore.getUsersFromNickname(textField.text)
+                                        isNicknameUseableState.value = users.isEmpty()
+                                        if (!isNicknameUseableState.value!!) {
+                                            subLabelState.value =
+                                                getString(R.string.activity_register_already_using_nickname)
+                                        }
                                     }
                                 }
                             ) {

@@ -10,7 +10,8 @@
 package dnd.hackathon.second.healthyhoneytving.util.constant
 
 object DataConstant {
-    object User {
-        const val Id = "user-id"
-    }
+    const val UserId = "user-id"
+
+    @Suppress("FunctionName")
+    fun TagColor(tag: String) = "$tag-color-tag"
 }

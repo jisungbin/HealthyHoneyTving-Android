@@ -24,9 +24,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -55,12 +57,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
-import dnd.hackathon.second.healthyhoneytving.activity.user.common.Toolbar
+import dnd.hackathon.second.healthyhoneytving.activity.user.composable.UserTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffect
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
@@ -68,7 +68,6 @@ import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
-import dnd.hackathon.second.healthyhoneytving.theme.colorError
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.constant.DataConstant
@@ -122,46 +121,32 @@ class LoginActivity : ComponentActivity() {
             vm.login(id, password)
         }
 
-        ConstraintLayout(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorBackgroundGray)
+                .verticalScroll(rememberScrollState())
                 .padding(30.dp)
         ) {
-            val (topbar, content, button) = createRefs()
-
-            Toolbar(
-                modifier = Modifier.constrainAs(topbar) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    height = Dimension.wrapContent
-                    width = Dimension.fillToConstraints
-                },
+            UserTopBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 title = stringResource(R.string.activity_register_title)
             )
             Fields(
-                modifier = Modifier.constrainAs(content) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(topbar.bottom, 10.dp)
-                    bottom.linkTo(button.top, 10.dp)
-                    height = Dimension.fillToConstraints
-                    width = Dimension.fillToConstraints
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
                 passwordFieldSubLabelState = passwordFieldSubLabelState,
-                doneKeyboardAction = { login() }
+                keyboardDoneAction = { login() }
             )
             Button(
-                modifier = Modifier.constrainAs(button) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                    width = Dimension.fillToConstraints
-                    height = Dimension.value(45.dp)
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp),
                 onClick = {
                     login()
                 }
@@ -181,7 +166,7 @@ class LoginActivity : ComponentActivity() {
         idFieldState: MutableState<TextFieldValue>,
         passwordFieldState: MutableState<TextFieldValue>,
         passwordFieldSubLabelState: MutableState<String>,
-        doneKeyboardAction: () -> Unit
+        keyboardDoneAction: () -> Unit
     ) {
         val focusManager = LocalFocusManager.current
         val (idFocus, passwordFocus) = FocusRequester.createRefs()
@@ -207,7 +192,7 @@ class LoginActivity : ComponentActivity() {
                 focusRequester = passwordFocus,
                 keyboardActions = {
                     focusManager.clearFocus()
-                    doneKeyboardAction()
+                    keyboardDoneAction()
                 }
             )
         }
@@ -233,14 +218,15 @@ class LoginActivity : ComponentActivity() {
                 .wrapContentHeight()
         ) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = label, color = colorTextGray, fontSize = 13.sp)
-                Text(text = subLabelState.value, color = colorError, fontSize = 11.sp)
+                Text(text = label, color = colorTextGray, style = TextStyle(fontSize = 13.sp))
+                Text(text = subLabelState.value, style = TextStyle(fontSize = 11.sp))
             }
             OutlinedTextField(
                 modifier = Modifier
+                    .padding(top = 5.dp)
                     .fillMaxWidth()
                     .height(50.dp)
                     .background(color = Color.White, shape = shape)
@@ -286,7 +272,7 @@ class LoginActivity : ComponentActivity() {
         when (sideEffect) {
             is MviJoinSideEffect.SetupAutoLogin -> DataUtil.save(
                 applicationContext,
-                DataConstant.User.Id,
+                DataConstant.UserId,
                 sideEffect.user.id
             )
             is BaseMviSideEffect.Toast -> toast(sideEffect.message)

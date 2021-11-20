@@ -14,6 +14,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import dnd.hackathon.second.healthyhoneytving.activity.main.business.ApiService
 import dnd.hackathon.second.healthyhoneytving.util.extension.jacksonMapper
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -25,7 +26,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 @Module
 @InstallIn(ViewModelComponent::class)
 object RetrofitModule {
-    private const val BaseUrl = "" // TODO
+    private const val BaseUrl = "https://www.naver.com" // TODO
 
     private fun getInterceptor(vararg interceptors: Interceptor): OkHttpClient {
         val builder = OkHttpClient.Builder()
@@ -35,8 +36,10 @@ object RetrofitModule {
 
     @Provides
     @ViewModelScoped
-    fun provideRetrofit(loggingInterceptor: HttpLoggingInterceptor) = Retrofit.Builder()
+    fun provideRetrofit(loggingInterceptor: HttpLoggingInterceptor): ApiService = Retrofit.Builder()
         .baseUrl(BaseUrl)
         .addConverterFactory(JacksonConverterFactory.create(jacksonMapper))
         .client(getInterceptor(loggingInterceptor))
+        .build()
+        .create(ApiService::class.java)
 }

@@ -30,5 +30,16 @@
     <string name="util_web_toast_non_install_browser">설치돼 있는 브라우저 앱이 없어요 😢</string>
     <string name="activity_register_toast_check_nickname_duplicate">먼저 닉네임 중복 확인을 해 주세요!</string>
     <string name="activity_login_not_match_password">비밀번호가 일치하지 않아요</string>
+    <string name="activity_main_composable_scaffold_bottombar_media">미디어</string>
+    <string name="activity_main_composable_scaffold_bottombar_healthy">건강</string>
+
+    <string name="activity_feed_upload">업로드</string>
+    <string name="activity_feed_upload_toast_success_upload">업로드 성공!</string>
+    <string name="activity_feed_upload_toast_input_all_fields">모두 다 입력해 주세요</string>
+    <string name="activity_feed_upload_media_link">미디어 링크</string>
+    <string name="activity_feed_upload_tags">관련 태그 (#으로 구분)</string>
+    <string name="activity_feed_upload_title">제목</string>
+    <string name="activity_feed_upload_description">간단한 설명</string>
+    <string name="activity_feed_upload_choice_sns_channel">SNS 채널 선택</string>
 
 </resources>
