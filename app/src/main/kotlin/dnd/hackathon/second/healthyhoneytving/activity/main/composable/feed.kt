@@ -138,7 +138,7 @@ fun FeedListItem(modifier: Modifier, feed: Feed, showDotMenu: Boolean = true) {
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -173,7 +173,7 @@ fun FeedListItem(modifier: Modifier, feed: Feed, showDotMenu: Boolean = true) {
         )
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = 20.dp, alignment = Alignment.Start)
@@ -209,7 +209,7 @@ fun FeedListItem(modifier: Modifier, feed: Feed, showDotMenu: Boolean = true) {
         }
         Text(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             text = feed.description,
             maxLines = 2,
