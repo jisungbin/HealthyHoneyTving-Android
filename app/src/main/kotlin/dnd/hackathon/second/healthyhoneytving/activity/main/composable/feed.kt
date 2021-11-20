@@ -136,7 +136,7 @@ private fun Feed(modifier: Modifier, feed: Feed) {
         }
         Text(
             modifier = Modifier.padding(horizontal = 16.dp),
-            text = /*feed.description*/ TestUtil.generateRandomString(100),
+            text = feed.description,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis
         )
