@@ -50,11 +50,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.feed.composable.FeedTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.feed.mvi.MviFeedUploadState
 import dnd.hackathon.second.healthyhoneytving.activity.feed.viewmodel.FeedViewModel
-import dnd.hackathon.second.healthyhoneytving.activity.user.composable.TopBar
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
+import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
@@ -69,6 +70,7 @@ class FeedUploadActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        SystemUiController(window).setSystemBarsColor(colorBackgroundGray)
         setContent {
             MaterialTheme {
                 Content()
@@ -93,7 +95,7 @@ class FeedUploadActivity : ComponentActivity() {
             fun upload() {
             }
 
-            TopBar(
+            FeedTopBar(
                 modifier = Modifier.constrainAs(topbar) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -108,8 +110,8 @@ class FeedUploadActivity : ComponentActivity() {
                     .constrainAs(content) {
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                        top.linkTo(topbar.bottom, 10.dp)
-                        bottom.linkTo(button.top, 10.dp)
+                        top.linkTo(topbar.bottom, 30.dp)
+                        bottom.linkTo(button.top, 30.dp)
                         height = Dimension.fillToConstraints
                         width = Dimension.fillToConstraints
                     }

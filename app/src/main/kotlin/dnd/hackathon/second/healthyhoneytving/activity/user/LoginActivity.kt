@@ -60,7 +60,7 @@ import androidx.constraintlayout.compose.Dimension
 import dagger.hilt.android.AndroidEntryPoint
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
-import dnd.hackathon.second.healthyhoneytving.activity.user.composable.TopBar
+import dnd.hackathon.second.healthyhoneytving.activity.user.composable.UserTopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffect
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
@@ -129,7 +129,7 @@ class LoginActivity : ComponentActivity() {
         ) {
             val (topbar, content, button) = createRefs()
 
-            TopBar(
+            UserTopBar(
                 modifier = Modifier.constrainAs(topbar) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -143,8 +143,8 @@ class LoginActivity : ComponentActivity() {
                 modifier = Modifier.constrainAs(content) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    top.linkTo(topbar.bottom, 10.dp)
-                    bottom.linkTo(button.top, 10.dp)
+                    top.linkTo(topbar.bottom, 30.dp)
+                    bottom.linkTo(button.top, 30.dp)
                     height = Dimension.fillToConstraints
                     width = Dimension.fillToConstraints
                 },
