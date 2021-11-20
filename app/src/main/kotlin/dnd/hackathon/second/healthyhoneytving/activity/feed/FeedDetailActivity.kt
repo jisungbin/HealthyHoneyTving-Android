@@ -68,6 +68,7 @@ import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
 import org.orbitmvi.orbit.viewmodel.observe
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class FeedDetailActivity : ComponentActivity() {
@@ -238,7 +239,7 @@ class FeedDetailActivity : ComponentActivity() {
 
     @Composable
     private fun FeedVote(modifier: Modifier) {
-        var isGood by remember { mutableStateOf(true) }
+        var isGood by remember { mutableStateOf(Random.nextBoolean()) }
 
         Column(
             modifier = modifier,
