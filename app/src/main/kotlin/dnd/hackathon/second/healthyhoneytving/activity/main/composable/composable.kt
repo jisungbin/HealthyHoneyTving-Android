@@ -76,7 +76,7 @@ fun Categorie() {
                     style = TextStyle(fontSize = 20.sp),
                     color = calcColorAnimationState(
                         input = category,
-                        target = categories
+                        target = selectCategory
                     ).value,
                     textAlign = TextAlign.Center
                 )
