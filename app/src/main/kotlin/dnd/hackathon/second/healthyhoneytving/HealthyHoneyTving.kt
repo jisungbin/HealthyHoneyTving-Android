@@ -13,6 +13,7 @@ import android.app.Application
 import android.content.Intent
 import dagger.hilt.android.HiltAndroidApp
 import dnd.hackathon.second.healthyhoneytving.activity.exception.ExceptionActivity
+import dnd.hackathon.second.healthyhoneytving.util.core.NotificationUtil
 import io.github.jisungbin.erratum.Erratum
 import io.github.jisungbin.erratum.ErratumExceptionActivity
 import io.github.jisungbin.logeukes.Logeukes
@@ -21,6 +22,12 @@ import io.github.jisungbin.logeukes.Logeukes
 class HealthyHoneyTving : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        NotificationUtil.createChannel(
+            context = applicationContext,
+            name = getString(R.string.app_name),
+            description = getString(R.string.app_name)
+        )
 
         Erratum.setup(
             application = this,

@@ -72,6 +72,7 @@ import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
+import org.orbitmvi.orbit.viewmodel.observe
 
 @AndroidEntryPoint
 class FeedUploadActivity : ComponentActivity() {
@@ -81,6 +82,7 @@ class FeedUploadActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        vm.observe(lifecycleOwner = this, state = ::handleState, sideEffect = ::handleSideEffect)
         SystemUiController(window).setSystemBarsColor(colorBackgroundGray)
         setContent {
             MaterialTheme {
@@ -125,7 +127,7 @@ class FeedUploadActivity : ComponentActivity() {
                         description = description,
                         previewImageUrl = "", // TODO
                     )
-                    // TODO: upload
+                    vm.uploadFeed(feed)
                 } else {
                     toast(context, getString(R.string.activity_feed_upload_toast_input_all_fields))
                 }

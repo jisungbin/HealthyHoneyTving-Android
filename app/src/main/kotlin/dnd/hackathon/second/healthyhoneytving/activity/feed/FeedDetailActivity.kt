@@ -79,7 +79,7 @@ class FeedDetailActivity : ComponentActivity() {
                         .background(color = Color.White)
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    feed = TestUtil.Feeds.first()
+                    feed = Feed() // TODO
                 )
             }
         }

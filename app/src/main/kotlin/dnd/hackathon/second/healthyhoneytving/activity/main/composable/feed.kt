@@ -51,7 +51,6 @@ import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.feed.FeedDetailActivity
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
-import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
@@ -112,7 +111,7 @@ fun LazyFeed() {
                 ) {
                     val shape = RoundedCornerShape(5.dp)
 
-                    items(TestUtil.Feeds) { feed ->
+                    items(feeds) { feed ->
                         FeedGridItem(
                             modifier = Modifier
                                 .animateItemPlacement()

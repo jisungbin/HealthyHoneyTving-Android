@@ -19,6 +19,7 @@ import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.ViewModelScoped
+import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreComment
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreException
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreFeed
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreUser
@@ -35,6 +36,11 @@ object FirebaseModuleViewModel {
     @FirestoreFeed
     @ViewModelScoped
     fun provideFirestoreFeed(): CollectionReference = Firebase.firestore.collection("feeds")
+
+    @Provides
+    @FirestoreComment
+    @ViewModelScoped
+    fun provideFirestoreComment(): CollectionReference = Firebase.firestore.collection("comments")
 }
 
 @Module

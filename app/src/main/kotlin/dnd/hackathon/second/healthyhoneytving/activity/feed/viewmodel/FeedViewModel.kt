@@ -15,6 +15,7 @@ import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dnd.hackathon.second.healthyhoneytving.activity.feed.mvi.MviFeedUploadState
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
+import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreComment
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreFeed
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.store.DataStore
@@ -29,12 +30,13 @@ import kotlin.coroutines.resume
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    @FirestoreFeed private val firestoreFeed: CollectionReference
+    @FirestoreFeed private val firestoreFeed: CollectionReference,
+    @FirestoreComment private val firestoreComment: CollectionReference
 ) : ViewModel(), ContainerHost<MviFeedUploadState, BaseMviSideEffect> {
 
     override val container = container<MviFeedUploadState, BaseMviSideEffect>(MviFeedUploadState())
 
-    fun upload(feed: Feed) = intent {
+    fun uploadFeed(feed: Feed) = intent {
         firestoreFeed.document(feed.feedUid.toString())
             .set(feed)
             .addOnSuccessListener {
@@ -56,6 +58,29 @@ class FeedViewModel @Inject constructor(
                 }
             }
     }
+
+    /*fun uploadComment(comment: Comment) = intent {
+        firestoreFeed.document(feed.feedUid.toString())
+            .set(feed)
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    reduce {
+                        state.copy(
+                            loaded = true,
+                            uploadResult = true,
+                            exception = null
+                        )
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                viewModelScope.launch {
+                    reduce {
+                        state.copy(exception = exception)
+                    }
+                }
+            }
+    }*/
 
     suspend fun loadAllFeeds() = suspendCancellableCoroutine<Result<Unit>> { continuation ->
         firestoreFeed.get()

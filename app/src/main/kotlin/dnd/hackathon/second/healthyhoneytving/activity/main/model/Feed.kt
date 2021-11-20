@@ -14,7 +14,7 @@ import java.util.Date
 import kotlin.random.Random
 
 data class Feed(
-    val mainType: String,
+    val mainType: String = MainType.Media,
     val tags: List<String> = emptyList(),
     val link: String = "",
     val title: String = "",
