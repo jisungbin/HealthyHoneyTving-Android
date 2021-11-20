@@ -9,6 +9,7 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,9 +42,11 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.feed.FeedUploadActivity
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MainType
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
+import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 
 @Composable
@@ -82,6 +85,7 @@ fun TopBar() {
 
 @Composable
 fun BottomBar(modifier: Modifier) {
+    val activity = getActivity()
     val vm: MainViewModel = composableActivityViewModel()
     val mainTypeState by vm.mainType.collectAsState()
 
@@ -121,7 +125,9 @@ fun BottomBar(modifier: Modifier) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-                onClick = { /*TODO*/ },
+                onClick = {
+                    activity.startActivity(Intent(activity, FeedUploadActivity::class.java))
+                },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
             ) {
                 Icon(

@@ -151,7 +151,7 @@ class LoginActivity : ComponentActivity() {
                 idFieldState = idFieldState,
                 passwordFieldState = passwordFieldState,
                 passwordFieldSubLabelState = passwordFieldSubLabelState,
-                doneKeyboardAction = { login() }
+                keyboardDoneAction = { login() }
             )
             Button(
                 modifier = Modifier.constrainAs(button) {
@@ -180,7 +180,7 @@ class LoginActivity : ComponentActivity() {
         idFieldState: MutableState<TextFieldValue>,
         passwordFieldState: MutableState<TextFieldValue>,
         passwordFieldSubLabelState: MutableState<String>,
-        doneKeyboardAction: () -> Unit
+        keyboardDoneAction: () -> Unit
     ) {
         val focusManager = LocalFocusManager.current
         val (idFocus, passwordFocus) = FocusRequester.createRefs()
@@ -206,7 +206,7 @@ class LoginActivity : ComponentActivity() {
                 focusRequester = passwordFocus,
                 keyboardActions = {
                     focusManager.clearFocus()
-                    doneKeyboardAction()
+                    keyboardDoneAction()
                 }
             )
         }

@@ -14,6 +14,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,10 +32,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -81,6 +86,10 @@ class FeedUploadActivity : ComponentActivity() {
         ) {
             val (topbar, content, button) = createRefs()
 
+            val linkFieldState = remember { mutableStateOf(TextFieldValue()) }
+            val titleFieldState = remember { mutableStateOf(TextFieldValue()) }
+            val descriptionFieldState = remember { mutableStateOf(TextFieldValue()) }
+
             fun upload() {
             }
 
@@ -105,15 +114,9 @@ class FeedUploadActivity : ComponentActivity() {
                         width = Dimension.fillToConstraints
                     }
                     .verticalScroll(rememberScrollState()),
-                idFieldState = idFieldState,
-                passwordFieldState = passwordFieldState,
-                passwordConfirmFieldState = passwordConfirmFieldState,
-                nicknameFieldState = nicknameFieldState,
-                passwordFieldSubLabelState = passwordFieldSubLabelState,
-                nicknameFieldSubLabel = nicknameFieldSubLabelState,
-                nicknameFieldSubLabalColor = nicknameFieldSubLabalColorState,
-                isNicknameUseableState = isNicknameUseableState,
-                doneKeyboardAction = { upload() }
+                linkFieldState = linkFieldState,
+                titleFieldState = titleFieldState,
+                descriptionFieldState = descriptionFieldState,
             )
             Button(
                 modifier = Modifier.constrainAs(button) {
@@ -132,6 +135,50 @@ class FeedUploadActivity : ComponentActivity() {
                     style = TextStyle(fontSize = 15.sp)
                 )
             }
+        }
+    }
+
+    @OptIn(ExperimentalComposeUiApi::class)
+    @Composable
+    private fun Fields(
+        modifier: Modifier,
+        linkFieldState: MutableState<TextFieldValue>,
+        titleFieldState: MutableState<TextFieldValue>,
+        descriptionFieldState: MutableState<TextFieldValue>,
+    ) {
+        val focusManager = LocalFocusManager.current
+        val (linkFocus, titleFocus, descriptionFocus) = FocusRequester.createRefs()
+
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            Field(
+                label = "미디어 링크",
+                textFieldState = linkFieldState,
+                focusRequester = linkFocus,
+                keyboardActions = {
+                    titleFocus.requestFocus()
+                }
+            )
+            Field(
+                label = "제목",
+                textFieldState = titleFieldState,
+                focusRequester = titleFocus,
+                keyboardActions = {
+                    descriptionFocus.requestFocus()
+                }
+            )
+            Field(
+                label = "간단한 설명",
+                textFieldState = descriptionFieldState,
+                imeAction = ImeAction.Done,
+                focusRequester = descriptionFocus,
+                maxLines = 3,
+                keyboardActions = {
+                    focusManager.clearFocus()
+                }
+            )
         }
     }
 

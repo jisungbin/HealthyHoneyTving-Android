@@ -15,3 +15,11 @@ object SnsType {
     const val Instagrem = "INSTAGRAM"
     const val Etc = "ETC"
 }
+
+fun String.toKorean() = when (this) {
+    SnsType.Youtube -> "유튜브"
+    SnsType.TikTok -> "틱톡"
+    SnsType.Instagrem -> "인스타그램"
+    SnsType.Etc -> "기타"
+    else -> throw IndexOutOfBoundsException("알 수 없는 SNS: $this")
+}

@@ -172,7 +172,7 @@ class RegisterActivity : ComponentActivity() {
                 nicknameFieldSubLabel = nicknameFieldSubLabelState,
                 nicknameFieldSubLabalColor = nicknameFieldSubLabalColorState,
                 isNicknameUseableState = isNicknameUseableState,
-                doneKeyboardAction = { register() }
+                keyboardDoneAction = { register() }
             )
             Button(
                 modifier = Modifier.constrainAs(button) {
@@ -206,7 +206,7 @@ class RegisterActivity : ComponentActivity() {
         nicknameFieldSubLabel: MutableState<String>,
         nicknameFieldSubLabalColor: Color,
         isNicknameUseableState: MutableState<Boolean?>,
-        doneKeyboardAction: () -> Unit
+        keyboardDoneAction: () -> Unit
     ) {
         val passwordVisibilityState = remember { mutableStateOf(false) }
 
@@ -258,7 +258,7 @@ class RegisterActivity : ComponentActivity() {
                 focusRequester = nicknameFocus,
                 keyboardActions = {
                     focusManager.clearFocus()
-                    doneKeyboardAction()
+                    keyboardDoneAction()
                 }
             )
         }
