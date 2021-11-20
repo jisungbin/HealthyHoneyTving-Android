@@ -36,11 +36,15 @@
             android:name=".activity.main.MainActivity"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity
+            android:name=".activity.feed.FeedUploadActivity"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".activity.feed.FeedDetailActivity"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".activity.exception.ExceptionActivity" />
-
-        <activity android:name=".activity.feed.FeedUploadActivity" />
-
-        <activity android:name=".activity.feed.FeedDetailActivity" />
 
     </application>
 

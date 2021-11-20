@@ -45,7 +45,7 @@ fun FeedTopBar(modifier: Modifier, title: String) {
             text = title,
             color = Color.Black,
             fontWeight = FontWeight.Bold,
-            style = TextStyle(fontSize = 30.sp)
+            style = TextStyle(fontSize = 25.sp)
         )
     }
 }
