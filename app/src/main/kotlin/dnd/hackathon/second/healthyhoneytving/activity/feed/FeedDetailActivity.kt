@@ -145,8 +145,6 @@ class FeedDetailActivity : ComponentActivity() {
                     .padding(horizontal = 16.dp)
                     .fillMaxWidth(),
                 text = feed.description,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Start
             )
         }

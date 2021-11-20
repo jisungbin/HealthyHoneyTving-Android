@@ -137,7 +137,7 @@ private fun FeedListItem(modifier: Modifier, feed: Feed) {
                     alignment = Alignment.CenterHorizontally
                 )
             ) { // TODO
-                Text(text = /*DataStore.getFirstUserFromId(feed.ownerUid).nickname*/ "안녕")
+                Text(text = DataStore.me.nickname)
                 Text(
                     text = feed.createdAt.toTimeString(),
                     color = Color.LightGray,
@@ -196,7 +196,7 @@ private fun FeedListItem(modifier: Modifier, feed: Feed) {
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             text = feed.description,
-            maxLines = 3,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Start
         )
@@ -205,6 +205,8 @@ private fun FeedListItem(modifier: Modifier, feed: Feed) {
 
 @Composable
 private fun FeedGridItem(modifier: Modifier, feed: Feed) {
+    val nameShape = RoundedCornerShape(5.dp)
+
     Column(modifier = modifier) {
         Box(
             modifier = Modifier
@@ -216,7 +218,15 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
                 imageModel = feed.previewImageUrl,
                 contentScale = ContentScale.FillBounds
             )
-            Text(modifier = Modifier.padding(start = 16.dp), text = DataStore.me.nickname)
+            Text(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .background(color = Color.White.copy(alpha = 0.8f), shape = nameShape)
+                    .clip(nameShape)
+                    .padding(4.dp),
+                text = DataStore.me.nickname,
+                style = TextStyle(fontSize = 15.sp)
+            )
         }
         Row(
             modifier = Modifier
@@ -237,7 +247,10 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
                     painter = painterResource(R.drawable.ic_round_favorite_border_24),
                     contentDescription = null
                 )
-                Text(text = Random.nextInt(0, 30).toString(), style = TextStyle(fontSize = 10.sp))
+                Text(
+                    text = Random.nextInt(0, 30).toString(),
+                    style = TextStyle(fontSize = 10.sp)
+                )
             }
             Row(
                 modifier = Modifier.noRippleClickable(onClick = {}),
