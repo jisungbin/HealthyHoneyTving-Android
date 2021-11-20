@@ -18,6 +18,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinSideEffec
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.di.qualifier.FirestoreUser
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -38,7 +39,7 @@ class JoinViewModel @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun register(user: User) = intent {
-        val users = UserStore.getFromId(user.id)
+        val users = DataStore.getUsersFromId(user.id)
         if (users.isEmpty()) {
             firebaseUser.document(user.id).set(user)
                 .addOnSuccessListener {
@@ -65,7 +66,7 @@ class JoinViewModel @Inject constructor(
     }
 
     fun login(id: String, password: String) = intent {
-        val users = UserStore.getFromId(id)
+        val users = DataStore.getUsersFromId(id)
 
         if (users.isNotEmpty()) {
             val user = users.first()
@@ -90,7 +91,7 @@ class JoinViewModel @Inject constructor(
         firebaseUser.get()
             .addOnSuccessListener { querySnapshot ->
                 val users = querySnapshot.documents.mapNotNull { it.toObject(User::class.java) }
-                UserStore.updateUsers(users)
+                DataStore.updateUsers(users)
                 continuation.resume(Result.success(Unit))
             }
             .addOnFailureListener { exception ->

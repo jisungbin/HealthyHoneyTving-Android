@@ -59,7 +59,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.MainActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.LoginActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.RegisterActivity
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
-import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.UserStore
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colors
@@ -135,8 +135,8 @@ class StartActivity : ComponentActivity() {
                     titleOffsetY = (-150).dp
                     showButtons = true
                 } else {
-                    val me = UserStore.getFirstFromId(autoLoginId)
-                    UserStore.me = me
+                    val me = DataStore.getFirstUserFromId(autoLoginId)
+                    DataStore.me = me
                     finish()
                     startActivity(Intent(this@StartActivity, MainActivity::class.java))
                 }

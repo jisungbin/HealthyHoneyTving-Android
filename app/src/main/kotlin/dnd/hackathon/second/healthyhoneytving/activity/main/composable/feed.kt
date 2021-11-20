@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,11 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.skydoves.landscapist.coil.CoilImage
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
-import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.UserStore
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
+import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
 
 @Composable
 fun LazyFeed() {
@@ -49,12 +54,26 @@ private fun Feed(feed: Feed) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = UserStore.getFirstFromId(feed.ownerUid).nickname)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 5.dp,
+                    alignment = Alignment.CenterHorizontally
+                )
+            ) {
+                Text(text = DataStore.getFirstUserFromId(feed.ownerUid).nickname)
+                Text(
+                    text = feed.createdAt.toTimeString(),
+                    color = Color.LightGray,
+                    style = TextStyle(fontSize = 10.sp)
+                )
+            }
             Icon(
                 modifier = Modifier.noRippleClickable(onClick = {}), // TODO
                 painter = painterResource(R.drawable.ic_round_menu_dot_24),
                 contentDescription = null
             )
         }
+        CoilImage(modifier = Modifier.wrapContentSize(), imageModel = feed.previewImageUrl)
     }
 }

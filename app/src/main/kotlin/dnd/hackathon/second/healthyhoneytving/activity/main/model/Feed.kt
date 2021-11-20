@@ -9,14 +9,15 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.model
 
+import java.util.Date
+
 data class Feed(
     val tags: List<String> = emptyList(),
     val link: String = "",
     val title: String = "",
-    val desscription: String,
+    val desscription: String = "",
     val previewImageUrl: String = "",
-    val like: Int = 0,
-    val hate: Int = 0,
+    val createdAt: Long = Date().time,
     val ownerUid: String = "",
     val feedUid: Int = 0
 )

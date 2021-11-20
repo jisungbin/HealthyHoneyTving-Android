@@ -63,7 +63,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.user.composable.TopBar
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 import dnd.hackathon.second.healthyhoneytving.activity.user.mvi.MviJoinState
 import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.JoinViewModel
-import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.UserStore
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.mvi.BaseMviSideEffect
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
@@ -338,7 +338,7 @@ class RegisterActivity : ComponentActivity() {
                                 modifier = Modifier.padding(5.dp),
                                 onClick = {
                                     coroutineScope.launch {
-                                        val users = UserStore.getFromNickname(textField.text)
+                                        val users = DataStore.getUsersFromNickname(textField.text)
                                         isNicknameUseableState.value = users.isEmpty()
                                         if (!isNicknameUseableState.value!!) {
                                             subLabelState.value =
