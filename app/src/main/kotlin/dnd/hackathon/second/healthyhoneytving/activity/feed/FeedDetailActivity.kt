@@ -22,15 +22,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +53,8 @@ import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
+import dnd.hackathon.second.healthyhoneytving.theme.colors
+import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 
 @AndroidEntryPoint
 class FeedDetailActivity : ComponentActivity() {
@@ -84,14 +95,16 @@ class FeedDetailActivity : ComponentActivity() {
 
             item {
                 FeedListItem(
-                    modifier = Modifier.padding(bottom = 16.dp),
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .animateItemPlacement(),
                     feed = feed,
                     showDotMenu = false
                 )
             }
 
             val comments = TestUtil.Comments
-            itemsIndexed(comments) { index, comment ->
+            items(comments) { comment ->
                 Column(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -102,9 +115,28 @@ class FeedDetailActivity : ComponentActivity() {
                         modifier = Modifier,
                         comment = comment
                     )
-                    if (index < comments.lastIndex) {
-                        Spacer(modifier = Modifier.height(15.dp))
-                    }
+                    Spacer(modifier = Modifier.height(30.dp))
+                }
+            }
+
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                ) {
+                    val shape = RoundedCornerShape(5.dp)
+
+                    CommentField(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .background(color = Color.White, shape = shape)
+                            .animateItemPlacement(),
+                        shape = shape
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
@@ -125,6 +157,42 @@ class FeedDetailActivity : ComponentActivity() {
                     end = nickname.length
                 )
                 toAnnotatedString()
+            }
+        )
+    }
+
+    @Composable
+    private fun CommentField(modifier: Modifier, shape: Shape) {
+        var field by remember { mutableStateOf(TextFieldValue()) }
+
+        OutlinedTextField(
+            modifier = modifier,
+            value = field,
+            maxLines = 4,
+            textStyle = TextStyle(fontSize = 15.sp),
+            onValueChange = { newField -> field = newField },
+            shape = shape,
+            placeholder = {
+                Text(
+                    text = "댓글 달기...",
+                    style = TextStyle(fontSize = 15.sp),
+                    color = colorTextGray
+                )
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                disabledBorderColor = colorTextGray,
+                focusedBorderColor = colors.primary,
+                unfocusedBorderColor = colorTextGray,
+                backgroundColor = Color.White,
+                textColor = Color.Black
+            ),
+            trailingIcon = {
+                Text(
+                    modifier = Modifier.noRippleClickable(onClick = {}),
+                    text = "게시",
+                    color = colors.primary,
+                    style = TextStyle(fontSize = 15.sp),
+                )
             }
         )
     }
