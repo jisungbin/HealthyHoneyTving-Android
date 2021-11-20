@@ -11,4 +11,5 @@ package dnd.hackathon.second.healthyhoneytving.util.constant
 
 object IntentConstant {
     const val FeedId = "intent-feed-id"
+    const val MainType = "intent-main-type"
 }

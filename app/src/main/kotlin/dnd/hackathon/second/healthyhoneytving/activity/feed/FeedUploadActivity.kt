@@ -68,6 +68,7 @@ import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.theme.colorTextGray
 import dnd.hackathon.second.healthyhoneytving.theme.colors
+import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
 import dnd.hackathon.second.healthyhoneytving.util.extension.errorToast
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toast
@@ -117,6 +118,7 @@ class FeedUploadActivity : ComponentActivity() {
                     description.isNotBlank() && selectSns != ""
                 ) { // TODO: 링크 형식 채크 필요
                     val feed = Feed(
+                        mainType = intent.getStringExtra(IntentConstant.MainType)!!,
                         tags = tags,
                         link = link,
                         title = title,

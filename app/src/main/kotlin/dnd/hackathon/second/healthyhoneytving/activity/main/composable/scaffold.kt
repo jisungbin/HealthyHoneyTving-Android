@@ -45,6 +45,7 @@ import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.feed.FeedUploadActivity
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MainType
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
+import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
 import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
@@ -87,7 +88,7 @@ fun TopBar() {
 fun BottomBar(modifier: Modifier) {
     val activity = getActivity()
     val vm: MainViewModel = composableActivityViewModel()
-    val mainTypeState by vm.mainType.collectAsState()
+    val mainType by vm.mainType.collectAsState()
 
     BottomAppBar(
         modifier = modifier.background(color = Color.White),
@@ -116,7 +117,7 @@ fun BottomBar(modifier: Modifier) {
                 title = stringResource(R.string.activity_main_composable_scaffold_bottombar_media),
                 tint = calcColorAnimationState(
                     input = MainType.Media,
-                    target = mainTypeState
+                    target = mainType
                 ).value
             )
             FloatingActionButton(
@@ -127,7 +128,11 @@ fun BottomBar(modifier: Modifier) {
                     bottom.linkTo(parent.bottom)
                 },
                 onClick = {
-                    activity.startActivity(Intent(activity, FeedUploadActivity::class.java))
+                    activity.startActivity(
+                        Intent(activity, FeedUploadActivity::class.java).apply {
+                            putExtra(IntentConstant.MainType, mainType)
+                        }
+                    )
                 },
                 elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
             ) {
@@ -155,7 +160,7 @@ fun BottomBar(modifier: Modifier) {
                 title = stringResource(R.string.activity_main_composable_scaffold_bottombar_healthy),
                 tint = calcColorAnimationState(
                     input = MainType.Healthy,
-                    target = mainTypeState
+                    target = mainType
                 ).value
             )
         }
