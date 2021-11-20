@@ -14,6 +14,8 @@ object SnsType {
     const val TikTok = "TIKTOK"
     const val Instagrem = "INSTAGRAM"
     const val Etc = "ETC"
+
+    fun asList() = listOf(Youtube, TikTok, Instagrem, Etc)
 }
 
 fun String.toKorean() = when (this) {
