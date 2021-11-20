@@ -9,7 +9,11 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.test
 
+import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
+
 object TestUtil {
+    val Feeds = List(50) { Feed() }
+
     object Category {
         val Healthy = listOf("식이요법", "스트레칭", "헬스")
         val Media = listOf("게임", "개그", "공포", "고양이")
