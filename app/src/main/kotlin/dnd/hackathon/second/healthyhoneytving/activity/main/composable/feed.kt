@@ -83,7 +83,14 @@ fun LazyFeed() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 items(TestUtil.Feeds) { feed ->
-                    FeedListItem(modifier = Modifier.animateItemPlacement(), feed = feed)
+                    FeedListItem(
+                        modifier = Modifier
+                            .animateItemPlacement()
+                            .background(color = Color.White)
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        feed = feed
+                    )
                 }
             }
         } else {
@@ -113,10 +120,7 @@ fun LazyFeed() {
 @Composable
 private fun FeedListItem(modifier: Modifier, feed: Feed) {
     Column(
-        modifier = modifier
-            .background(color = Color.White)
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
