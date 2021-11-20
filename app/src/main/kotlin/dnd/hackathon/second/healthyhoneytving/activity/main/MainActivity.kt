@@ -12,7 +12,6 @@ package dnd.hackathon.second.healthyhoneytving.activity.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,16 +28,12 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Horizonta
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.LazyFeed
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.Menu
 import dnd.hackathon.second.healthyhoneytving.activity.main.composable.TopBar
-import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.theme.MaterialTheme
 import dnd.hackathon.second.healthyhoneytving.theme.SystemUiController
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val vm: MainViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

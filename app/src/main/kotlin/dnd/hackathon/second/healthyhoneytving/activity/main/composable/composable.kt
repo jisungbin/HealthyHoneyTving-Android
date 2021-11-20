@@ -33,13 +33,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dnd.hackathon.second.healthyhoneytving.R
-import dnd.hackathon.second.healthyhoneytving.activity.main.model.MainType
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
-import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
+import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
-import dnd.hackathon.second.healthyhoneytving.util.operator.times
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -48,7 +46,7 @@ fun Categorie() {
     val mainTypeState by vm.mainType.collectAsState()
     val selectCategory by vm.selectCategory.collectAsState()
     val categories =
-        (if (mainTypeState == MainType.Media) TestUtil.Category.Media else TestUtil.Category.Healthy) * 3
+        DataStore.feeds.filter { it.mainType == mainTypeState }.map { it.tags }.flatten()
 
     if (selectCategory == "") {
         vm.updateSelectCategory(categories.first())

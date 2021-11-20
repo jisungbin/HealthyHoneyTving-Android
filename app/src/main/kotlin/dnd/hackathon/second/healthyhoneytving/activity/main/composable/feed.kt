@@ -34,6 +34,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,7 +67,11 @@ import kotlin.random.Random
 fun LazyFeed() {
     val activity = getActivity()
     val vm: MainViewModel = composableActivityViewModel()
+    val mainTypeState by vm.mainType.collectAsState()
+    val selectCategory by vm.selectCategory.collectAsState()
     val menuTypeState = vm.menuType.collectAsState()
+    val feeds =
+        DataStore.feeds.filter { it.mainType == mainTypeState && it.tags.contains(selectCategory) }
 
     Crossfade(
         modifier = Modifier.background(color = colorBackgroundGray),
@@ -79,7 +84,7 @@ fun LazyFeed() {
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(TestUtil.Feeds) { feed ->
+                    items(feeds) { feed ->
                         FeedListItem(
                             modifier = Modifier
                                 .animateItemPlacement()

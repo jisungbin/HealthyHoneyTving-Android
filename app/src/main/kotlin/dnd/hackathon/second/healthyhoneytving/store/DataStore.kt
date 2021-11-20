@@ -14,28 +14,29 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.user.model.User
 
 // TODO: 이게 맞는 방법인지는 항상 의문
+@Suppress("ObjectPropertyName")
 object DataStore {
-    private val users: MutableList<User> = mutableListOf()
-    private val feeds: MutableList<Feed> = mutableListOf()
-    private val comments: MutableList<Comment> = mutableListOf()
+    private val _users: MutableList<User> = mutableListOf()
+    private val _feeds: MutableList<Feed> = mutableListOf()
+    private val _comments: MutableList<Comment> = mutableListOf()
+
+    val feeds: List<Feed> get() = _feeds
 
     var me = User()
 
     fun updateUsers(users: List<User>) {
-        this.users.addAll(users)
+        this._users.addAll(users)
     }
 
     fun updateFeeds(feeds: List<Feed>) {
-        this.feeds.addAll(feeds)
+        this._feeds.addAll(feeds)
     }
 
     fun updateCommnets(comments: List<Comment>) {
-        this.comments.addAll(comments)
+        this._comments.addAll(comments)
     }
 
-    fun getUsersFromNickname(nickname: String) = users.filter { user -> user.nickname == nickname }
-    fun getUsersFromId(id: String) = users.filter { user -> user.id == id }
-    fun getFirstUserFromId(id: String) = users.first { user -> user.id == id }
-
-    // fun getCountFromFeedUid(feedUid: Int) = counts.first { count -> count.feedUid == feedUid }
+    fun getUsersFromNickname(nickname: String) = _users.filter { user -> user.nickname == nickname }
+    fun getUsersFromId(id: String) = _users.filter { user -> user.id == id }
+    fun getFirstUserFromId(id: String) = _users.first { user -> user.id == id }
 }
