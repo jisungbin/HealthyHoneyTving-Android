@@ -10,12 +10,8 @@
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
 import android.content.Intent
-import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +35,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -72,64 +67,64 @@ import kotlin.random.Random
 fun LazyFeed() {
     val activity = getActivity()
     val vm: MainViewModel = composableActivityViewModel()
-    val menuTypeState by vm.menuType.collectAsState()
+    val menuTypeState = vm.menuType.collectAsState()
 
-    AnimatedContent(
+    Crossfade(
         modifier = Modifier.background(color = colorBackgroundGray),
-        targetState = menuTypeState,
-        transitionSpec = {
-            fadeIn(animationSpec = tween(500)) with fadeOut(animationSpec = tween(500))
-        }
-    ) {
-        if (menuTypeState == MenuType.List) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(TestUtil.Feeds) { feed ->
-                    FeedListItem(
-                        modifier = Modifier
-                            .animateItemPlacement()
-                            .background(color = Color.White)
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .noRippleClickable(onClick = {
-                                activity.startActivity(
-                                    Intent(activity, FeedDetailActivity::class.java).apply {
-                                        putExtra(IntentConstant.FeedId, feed.feedUid)
-                                    }
-                                )
-                            }),
-                        feed = feed
-                    )
+        targetState = menuTypeState.value
+    ) { menuType ->
+        when (menuType) {
+            MenuType.List -> {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(TestUtil.Feeds) { feed ->
+                        FeedListItem(
+                            modifier = Modifier
+                                .animateItemPlacement()
+                                .background(color = Color.White)
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .noRippleClickable(onClick = {
+                                    activity.startActivity(
+                                        Intent(activity, FeedDetailActivity::class.java).apply {
+                                            putExtra(IntentConstant.FeedId, feed.feedUid)
+                                        }
+                                    )
+                                }),
+                            feed = feed
+                        )
+                    }
                 }
             }
-        } else {
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(2), modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                contentPadding = PaddingValues(10.dp)
-            ) {
-                val shape = RoundedCornerShape(5.dp)
+            MenuType.Grid -> {
+                LazyVerticalGrid(
+                    cells = GridCells.Fixed(2), modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    contentPadding = PaddingValues(10.dp)
+                ) {
+                    val shape = RoundedCornerShape(5.dp)
 
-                items(TestUtil.Feeds) { feed ->
-                    FeedGridItem(
-                        modifier = Modifier
-                            .animateItemPlacement()
-                            .wrapContentSize()
-                            .background(color = Color.White, shape = shape)
-                            .clip(shape)
-                            .noRippleClickable(onClick = {
-                                activity.startActivity(
-                                    Intent(activity, FeedDetailActivity::class.java).apply {
-                                        putExtra(IntentConstant.FeedId, feed.feedUid)
-                                    }
-                                )
-                            }),
-                        feed = feed
-                    )
+                    items(TestUtil.Feeds) { feed ->
+                        FeedGridItem(
+                            modifier = Modifier
+                                .animateItemPlacement()
+                                .wrapContentSize()
+                                .background(color = Color.White, shape = shape)
+                                .clip(shape)
+                                .noRippleClickable(onClick = {
+                                    activity.startActivity(
+                                        Intent(activity, FeedDetailActivity::class.java).apply {
+                                            putExtra(IntentConstant.FeedId, feed.feedUid)
+                                        }
+                                    )
+                                }),
+                            feed = feed
+                        )
+                    }
                 }
             }
         }
