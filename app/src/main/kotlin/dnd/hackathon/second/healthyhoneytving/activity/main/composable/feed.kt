@@ -9,6 +9,7 @@
 
 package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -52,13 +53,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.landscapist.coil.CoilImage
 import dnd.hackathon.second.healthyhoneytving.R
+import dnd.hackathon.second.healthyhoneytving.activity.feed.FeedDetailActivity
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.MenuType
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
 import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewModel
 import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
+import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
+import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
 import kotlin.random.Random
@@ -66,6 +70,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun LazyFeed() {
+    val activity = getActivity()
     val vm: MainViewModel = composableActivityViewModel()
     val menuTypeState by vm.menuType.collectAsState()
 
@@ -88,7 +93,14 @@ fun LazyFeed() {
                             .animateItemPlacement()
                             .background(color = Color.White)
                             .fillMaxWidth()
-                            .wrapContentHeight(),
+                            .wrapContentHeight()
+                            .noRippleClickable(onClick = {
+                                activity.startActivity(
+                                    Intent(activity, FeedDetailActivity::class.java).apply {
+                                        putExtra(IntentConstant.FeedId, feed.feedUid)
+                                    }
+                                )
+                            }),
                         feed = feed
                     )
                 }
@@ -108,7 +120,14 @@ fun LazyFeed() {
                             .animateItemPlacement()
                             .wrapContentSize()
                             .background(color = Color.White, shape = shape)
-                            .clip(shape),
+                            .clip(shape)
+                            .noRippleClickable(onClick = {
+                                activity.startActivity(
+                                    Intent(activity, FeedDetailActivity::class.java).apply {
+                                        putExtra(IntentConstant.FeedId, feed.feedUid)
+                                    }
+                                )
+                            }),
                         feed = feed
                     )
                 }

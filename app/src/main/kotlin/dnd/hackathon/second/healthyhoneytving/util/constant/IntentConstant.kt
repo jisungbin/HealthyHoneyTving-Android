@@ -10,5 +10,5 @@
 package dnd.hackathon.second.healthyhoneytving.util.constant
 
 object IntentConstant {
-    // todo
+    const val FeedId = "intent-feed-id"
 }
