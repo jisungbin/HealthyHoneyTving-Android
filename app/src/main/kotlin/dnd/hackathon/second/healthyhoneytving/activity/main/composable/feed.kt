@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
+import dnd.hackathon.second.healthyhoneytving.activity.user.viewmodel.UserStore
 
 @Composable
 fun LazyFeed() {
@@ -44,7 +45,7 @@ private fun Feed(feed: Feed) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = feed.ownerUid)
+            Text(text = UserStore.getFirstFromId(feed.ownerUid).nickname)
         }
     }
 }

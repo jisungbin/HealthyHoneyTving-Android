@@ -34,4 +34,7 @@ object UserStore {
 
     fun getFromNickname(nickname: String) = users.filter { user -> user.nickname == nickname }
     fun getFromId(id: String) = users.filter { user -> user.id == id }
+
+    fun getFirstFromNickname(nickname: String) = users.first { user -> user.nickname == nickname }
+    fun getFirstFromId(id: String) = users.first { user -> user.id == id }
 }

@@ -135,7 +135,7 @@ class StartActivity : ComponentActivity() {
                     titleOffsetY = (-150).dp
                     showButtons = true
                 } else {
-                    val me = UserStore.getFromId(autoLoginId).first()
+                    val me = UserStore.getFirstFromId(autoLoginId)
                     UserStore.me = me
                     finish()
                     startActivity(Intent(this@StartActivity, MainActivity::class.java))
