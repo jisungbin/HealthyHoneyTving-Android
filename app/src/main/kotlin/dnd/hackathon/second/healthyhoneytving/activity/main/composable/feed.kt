@@ -12,13 +12,12 @@ package dnd.hackathon.second.healthyhoneytving.activity.main.composable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,15 +27,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.landscapist.coil.CoilImage
 import dnd.hackathon.second.healthyhoneytving.R
 import dnd.hackathon.second.healthyhoneytving.activity.main.model.Feed
 import dnd.hackathon.second.healthyhoneytving.activity.main.test.TestUtil
-import dnd.hackathon.second.healthyhoneytving.theme.colors
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
 import dnd.hackathon.second.healthyhoneytving.util.extension.toTimeString
 import kotlin.random.Random
@@ -76,7 +77,7 @@ private fun Feed(modifier: Modifier, feed: Feed) {
                     space = 15.dp,
                     alignment = Alignment.CenterHorizontally
                 )
-            ) {
+            ) { // TODO
                 Text(text = /*DataStore.getFirstUserFromId(feed.ownerUid).nickname*/ "안녕")
                 Text(
                     text = feed.createdAt.toTimeString(),
@@ -90,11 +91,10 @@ private fun Feed(modifier: Modifier, feed: Feed) {
                 contentDescription = null
             )
         }
-        // CoilImage(modifier = Modifier.wrapContentSize(), imageModel = feed.previewImageUrl)
-        Box(
-            modifier = Modifier
-                .size(250.dp)
-                .background(color = colors.secondary)
+        CoilImage(
+            modifier = Modifier.requiredHeightIn(max = 500.dp),
+            imageModel = feed.previewImageUrl,
+            contentScale = ContentScale.FillBounds
         )
         Row(
             modifier = Modifier
@@ -135,10 +135,13 @@ private fun Feed(modifier: Modifier, feed: Feed) {
             }
         }
         Text(
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
             text = feed.description,
             maxLines = 3,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Start
         )
     }
 }
