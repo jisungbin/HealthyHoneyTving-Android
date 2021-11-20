@@ -32,4 +32,6 @@ object Web {
             toast(context, context.getString(R.string.util_web_toast_non_install_browser))
         }
     }
+
+    fun getYoutubeThumbnailAddress(videoId: String) = "https://img.youtube.com/vi/$videoId/0.jpg"
 }

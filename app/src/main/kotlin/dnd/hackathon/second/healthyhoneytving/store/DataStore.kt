@@ -34,8 +34,16 @@ object DataStore {
         this._users.addAll(users)
     }
 
+    fun updateFeed(feed: Feed) {
+        this._feeds += feed
+    }
+
     fun updateFeeds(feeds: List<Feed>) {
         this._feeds += feeds
+    }
+
+    fun updateCommnet(comment: Comment) {
+        this._comments += comment
     }
 
     fun updateCommnets(comments: List<Comment>) {

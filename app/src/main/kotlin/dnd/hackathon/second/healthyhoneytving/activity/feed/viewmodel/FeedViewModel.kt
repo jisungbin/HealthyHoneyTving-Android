@@ -48,6 +48,7 @@ class FeedViewModel @Inject constructor(
                             exception = null
                         )
                     }
+                    DataStore.updateFeed(feed)
                 }
             }
             .addOnFailureListener { exception ->

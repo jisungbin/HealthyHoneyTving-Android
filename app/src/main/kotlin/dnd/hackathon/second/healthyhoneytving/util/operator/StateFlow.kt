@@ -18,3 +18,11 @@ operator fun <T> MutableStateFlow<List<T>>.plusAssign(items: List<T>) {
 operator fun <T> MutableStateFlow<List<T>>.minusAssign(items: List<T>) {
     this.value = this.value - items
 }
+
+operator fun <T> MutableStateFlow<List<T>>.plusAssign(item: T) {
+    this.value = this.value + listOf(item)
+}
+
+operator fun <T> MutableStateFlow<List<T>>.minusAssign(item: T) {
+    this.value = this.value - listOf(item)
+}
