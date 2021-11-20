@@ -225,7 +225,11 @@ class FeedUploadActivity : ComponentActivity() {
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            Text(text = "SNS 채널 선택", color = colorTextGray, style = TextStyle(fontSize = 13.sp))
+            Text(
+                text = stringResource(R.string.activity_feed_upload_choice_sns_channel),
+                color = colorTextGray,
+                style = TextStyle(fontSize = 13.sp)
+            )
             LazyColumn(
                 modifier = Modifier
                     .padding(top = 5.dp)

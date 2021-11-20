@@ -40,5 +40,6 @@
     <string name="activity_feed_upload_tags">관련 태그 (#으로 구분)</string>
     <string name="activity_feed_upload_title">제목</string>
     <string name="activity_feed_upload_description">간단한 설명</string>
+    <string name="activity_feed_upload_choice_sns_channel">SNS 채널 선택</string>
 
 </resources>
