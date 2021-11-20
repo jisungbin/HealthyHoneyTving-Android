@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dnd.hackathon.second.healthyhoneytving.R
@@ -74,7 +75,9 @@ fun HorizontalTopBarCenter(modifier: Modifier, title: String) {
         Text(
             text = title,
             color = Color.Black,
-            style = TextStyle(fontSize = 15.sp)
+            style = TextStyle(fontSize = 15.sp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         Icon(
             modifier = Modifier.noRippleClickable(onClick = {}), // TODO

@@ -55,6 +55,7 @@ import dnd.hackathon.second.healthyhoneytving.activity.main.viewmodel.MainViewMo
 import dnd.hackathon.second.healthyhoneytving.store.DataStore
 import dnd.hackathon.second.healthyhoneytving.theme.colorBackgroundGray
 import dnd.hackathon.second.healthyhoneytving.util.constant.IntentConstant
+import dnd.hackathon.second.healthyhoneytving.util.core.Web
 import dnd.hackathon.second.healthyhoneytving.util.extension.composableActivityViewModel
 import dnd.hackathon.second.healthyhoneytving.util.extension.getActivity
 import dnd.hackathon.second.healthyhoneytving.util.extension.noRippleClickable
@@ -173,7 +174,7 @@ fun FeedListItem(modifier: Modifier, feed: Feed, showDotMenu: Boolean = true) {
         }
         CoilImage(
             modifier = Modifier.requiredHeightIn(max = 500.dp),
-            imageModel = feed.previewImageUrl,
+            imageModel = Web.parseYoutubeThumbnailAddress(feed.link),
             contentScale = ContentScale.FillBounds
         )
         Row(
@@ -232,7 +233,7 @@ private fun FeedGridItem(modifier: Modifier, feed: Feed) {
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),
-            imageModel = feed.previewImageUrl,
+            imageModel = Web.parseYoutubeThumbnailAddress(feed.link),
             contentScale = ContentScale.FillBounds
         )
         Row(

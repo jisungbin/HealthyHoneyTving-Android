@@ -33,6 +33,9 @@ object Web {
         }
     }
 
-    fun parseYoutubeThumbnailAddress(youtubeAddress: String) =
+    fun parseYoutubeThumbnailAddress(youtubeAddress: String) = try {
         "https://img.youtube.com/vi/${youtubeAddress.split("watch?v=")[1]}/0.jpg"
+    } catch (ignored: Exception) {
+        ""
+    }
 }
